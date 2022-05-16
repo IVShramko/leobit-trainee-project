@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace api.Migrations
+namespace Dating.Logic.Migrations
 {
     public partial class RemoveIdentity : Migration
     {

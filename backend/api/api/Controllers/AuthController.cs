@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using Identity = Microsoft.AspNetCore.Identity;
 
-namespace api.Controllers
+namespace Dating.WebAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -82,7 +82,7 @@ namespace api.Controllers
             IdentityUser user = new IdentityUser()
             {
                 UserName = userName,
-                Email = String.Empty
+                Email = string.Empty
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, password);

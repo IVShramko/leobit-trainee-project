@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.DB
+namespace Dating.Logic.DB
 {
     public class AppDbContext : IdentityDbContext
     {

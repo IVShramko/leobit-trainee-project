@@ -1,4 +1,4 @@
-using api.DB;
+using Dating.Logic.DB;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -20,7 +20,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace api
+namespace Dating.WebAPI
 {
     public class Startup
     {

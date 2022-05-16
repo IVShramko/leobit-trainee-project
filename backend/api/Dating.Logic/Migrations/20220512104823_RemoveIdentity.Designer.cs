@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using api.DB;
+using Dating.Logic.DB;
 
-namespace api.Migrations
+namespace Dating.Logic.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20220512104823_RemoveIdentity")]
