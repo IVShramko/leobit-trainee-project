@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+
+using Identity = Microsoft.AspNetCore.Identity;
 
 namespace api.Controllers
 {
@@ -26,16 +29,42 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> Login(string userName, string password)
         {
-            Microsoft.AspNetCore.Identity.SignInResult result = 
-                await _signInManager.PasswordSignInAsync(userName, password, false, false);
+            IdentityUser user = await _userManager.FindByNameAsync(userName);
 
-            if (result.Succeeded)
+            if (user != null)
             {
-                return Content("user logged-in successfully");
+                Identity.SignInResult result =
+                await _signInManager.CheckPasswordSignInAsync(user, password, false);
+
+                if (result.Succeeded)
+                {
+                    var claims = new[]
+                    {
+                        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                        new Claim("UserName", userName)
+                    };
+
+                    var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
+                    var key = new SymmetricSecurityKey(secretBytes);
+
+                    var signinCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                    var token = new JwtSecurityToken(
+                        Constants.Issuer, Constants.Audiance, claims,
+                        DateTime.Now, DateTime.Now.AddHours(1), signinCredentials);
+
+                    var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
+
+                    return Ok(new { access_token = tokenJson });
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             }
             else
             {
-                return Content("User not logged-in");
+                return Unauthorized();
             }
         }
 
@@ -44,7 +73,7 @@ namespace api.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return Content("User logged-out successfully");
+            return Ok();
         }
 
         [HttpGet]
@@ -60,11 +89,11 @@ namespace api.Controllers
 
             if (result.Succeeded)
             {
-                return Content("User registred successfully");
+                return Ok();
             }
             else
             {
-                return Content("User not registrated");
+                return BadRequest();
             }
         }
     }
