@@ -1,0 +1,38 @@
+.background{
+    background-image: linear-gradient(to right, #540d387e, #12527d78), url("img/3.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.form-control{
+    background-color:rgba(1, 1, 1, 0.5);
+    color: aliceblue;
+    border-width: 0%;
+    border: none;
+    font-size: 20px;
+    font-family: Tahoma (sans-serif);
+}
+.form-label{
+    color: aliceblue;
+    font-weight: 400;
+    letter-spacing: 3px;
+}
+.btn{
+    background-color:black;
+    color: aliceblue;
+    border-width: 0%;
+}
+.alert{
+    font-size: 18px;
+}
+.error-message{
+    position: absolute;
+    right: 0;
+    margin: 10px 20px;
+    background-color: #ff001984;
+    color: antiquewhite;
+    border: none;
+    align-items: center;
+    box-shadow: 0 0 10px #ff3030;
+    text-shadow: 0 0 2px antiquewhite;
+}

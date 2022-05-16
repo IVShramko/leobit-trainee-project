@@ -1,0 +1,28 @@
+
+<nav class="navbar navbar-dark bg-dark align-items-center">
+    <h1 class="navbar-brand" routerLink="/home">Dating Website</h1>
+
+    <form *ngIf="!isLoggedIn"
+    class="d-flex justify-content-end me-1">
+      <button 
+      routerLink="/login"
+      [ngClass]="{'btn btn-outline-light mx-1' : true}"
+      type="button">Log in</button>
+      <button 
+      routerLink="/register"
+      [ngClass]="{'btn btn-outline-light mx-1' : true}"
+      type="button">Register</button>
+    </form>
+
+    <div *ngIf="isLoggedIn"
+    class="d-flex justify-content-end">
+      <a class="navbar-brand profile" routerLink="/home">
+        <i class="bi bi-person-circle profile-icon"></i>
+        <h6 class="profile-username">{{userName}}</h6>
+      </a>
+      <button 
+      (click)="OnLogOut()"
+      [ngClass]="{'btn btn-outline-light mx-1' : true}"
+      type="button">Log out</button>
+    </div>
+</nav>
