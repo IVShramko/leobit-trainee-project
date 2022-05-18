@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Dating.WebAPI.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -15,13 +16,16 @@ namespace Dating.WebAPI.Controllers
     [ApiController]
     public class AuthController : Controller
     {
+        private readonly ITokenManager _tokenManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
         public AuthController(
             SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            ITokenManager tokenManager)
         {
+            _tokenManager = tokenManager;
             _signInManager = signInManager;
             _userManager = userManager;
         }
@@ -71,7 +75,9 @@ namespace Dating.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> LogOut()
         {
+            await _tokenManager.DeactivateCurrentAsync();
             await _signInManager.SignOutAsync();
+            
 
             return Ok();
         }

@@ -1,8 +1,10 @@
 using Dating.Logic.DB;
+using Dating.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +84,15 @@ namespace Dating.WebAPI
                       .AllowAnyMethod();
                 });
             });
+
+            services.AddTransient<TokenManagerMiddleware>();
+            services.AddTransient<ITokenManager, TokenManager>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddDistributedRedisCache(r =>
+            {
+                r.Configuration = Configuration["redis:ConnectionString"];
+            });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -96,9 +107,12 @@ namespace Dating.WebAPI
             app.UseRouting();
 
             app.UseAuthentication();
+            
+
             app.UseAuthorization();
 
             app.UseCors();
+            app.UseMiddleware<TokenManagerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
