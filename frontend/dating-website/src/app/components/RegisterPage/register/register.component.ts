@@ -46,7 +46,6 @@ export class RegisterComponent implements OnInit {
 
       this.authService.isRegistered.subscribe(
         (result) => {
-          console.log(result);
           this.regResult = result;
           this.isSend = true;
         }

@@ -77,7 +77,6 @@ export class AuthService {
   {
     this.logOutrequest().subscribe(
       (response) => {
-        console.log(response);
         localStorage.removeItem(this.ACCESS_TOKEN);
         this._isLoggedIn.next(false);
       },
@@ -97,7 +96,6 @@ export class AuthService {
         if (error.status === 400) {
           this._isRegistered.next(false);
         }
-        console.log(error);
       }
     );
   }
@@ -114,6 +112,9 @@ export class AuthService {
 
   private logOutrequest(): Observable<any>
   {
-    return this.server.get<any>(this.path + '/LogOut');
+    const token = localStorage.getItem(this.ACCESS_TOKEN) ?? "";
+    const headers  = new HttpHeaders().append("authorization", token);
+    
+    return this.server.get<any>(this.path + '/LogOut', {headers : headers});
   }
 }
