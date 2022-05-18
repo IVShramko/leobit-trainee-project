@@ -15,14 +15,17 @@
     </form>
 
     <div *ngIf="isLoggedIn"
-    class="d-flex justify-content-end">
-      <a class="navbar-brand profile" routerLink="/home">
-        <i class="bi bi-person-circle profile-icon"></i>
-        <h6 class="profile-username">{{userName}}</h6>
-      </a>
-      <button 
-      (click)="OnLogOut()"
-      [ngClass]="{'btn btn-outline-light mx-1' : true}"
-      type="button">Log out</button>
+    class="justify-content-end">
+      <div class="dropdown me-5">
+        <button class="profile btn btn-outline-light" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+          <i class="bi bi-person-circle profile-icon"></i>
+          <h6 class="profile-username">{{userName}}</h6>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+          <li class="dropdown-item" routerLink="/">Edit profile</li>
+          <li><hr class="dropdown-divider"></li>
+          <li (click)="OnLogOut()" class="dropdown-item" routerLink="/">Log out</li>
+        </ul>
+      </div>
     </div>
 </nav>
