@@ -25,6 +25,9 @@
 .alert{
     font-size: 18px;
 }
+.form-check-input{
+    background-color:rgba(1, 1, 1, 0.5);
+}
 .success-message{
     position: absolute;
     right: 0;
