@@ -11,6 +11,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home/home.component';
 import { NavComponent } from './components/navbar/nav/nav.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized/unauthorized.component';
+import { ProfileComponent } from './components/profile/profile/profile.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile/edit-profile.component';
+import { ViewProfileComponent } from './components/view-profile/view-profile/view-profile.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +23,9 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized/un
     HomeComponent,
     NavComponent,
     UnauthorizedComponent,
+    ProfileComponent,
+    EditProfileComponent,
+    ViewProfileComponent,
   ],
   imports: [
     BrowserModule,
