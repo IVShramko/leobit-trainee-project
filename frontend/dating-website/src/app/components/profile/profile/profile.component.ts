@@ -11,7 +11,7 @@ import { regions } from './regions';
 export class ProfileComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
-    private customValidatorsService: CustomValidatorsService) { }
+    public customValidatorsService: CustomValidatorsService) { }
 
   editProfileForm: FormGroup;
   regions: string[] = [];
@@ -63,6 +63,12 @@ export class ProfileComponent implements OnInit {
       town : [
         null,
         Validators.required
+      ],
+      photo : [
+        null, [
+          Validators.required,
+          this.customValidatorsService.FileTypeValidator
+        ]
       ]
     });
   }
@@ -100,6 +106,11 @@ export class ProfileComponent implements OnInit {
   get town()
   {
     return this.editProfileForm.controls.town;
+  }
+
+  get photo()
+  {
+    return this.editProfileForm.controls.photo;
   }
 
   private GetProfileData()

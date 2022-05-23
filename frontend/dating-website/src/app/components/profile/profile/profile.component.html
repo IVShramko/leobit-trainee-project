@@ -143,7 +143,12 @@
               <div class="row mt-2">
                 <div class="col">
                   <div class="input-group mb-3">
-                    <input type="file" class="form-control">
+                    <input type="file"
+                      formControlName="photo"
+                      [ngClass]="{'form-control' : true,
+                      'is-invalid' : !photo?.valid && photo?.touched,
+                      'is-valid' : photo?.valid}"
+                      accept="image/*">
                   </div>
                 </div>
               </div>

@@ -1,10 +1,11 @@
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { Injectable } from '@angular/core';
+import { pipe, tap } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
 })
-export class CustomValidatorsService {
+export class CustomValidatorsService{
 
   constructor() { }
 
@@ -48,4 +49,21 @@ export class CustomValidatorsService {
     }
     return null;
   }
+
+  FileTypeValidator(control: FormControl)
+  {
+    if (control && control.value)
+    {
+      const allowedExtensions = ['jpg', 'jpeg', 'png'];
+      const extension = control.value.split('.').pop().toLowerCase();
+
+      if (!allowedExtensions.includes(extension))
+      {
+        return {file_type_error : 'file must be a image'}
+      }
+    }
+    return null
+  }
 }
+
+
