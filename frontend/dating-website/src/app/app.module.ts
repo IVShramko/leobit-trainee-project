@@ -1,19 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
 import { RegisterComponent } from './components/RegisterPage/register/register.component';
-import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home/home.component';
 import { NavComponent } from './components/navbar/nav/nav.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized/unauthorized.component';
 import { ProfileComponent } from './components/profile/profile/profile.component';
-import { EditProfileComponent } from './components/edit-profile/edit-profile/edit-profile.component';
-import { ViewProfileComponent } from './components/view-profile/view-profile/view-profile.component';
 
 @NgModule({
   declarations: [
@@ -24,8 +20,6 @@ import { ViewProfileComponent } from './components/view-profile/view-profile/vie
     NavComponent,
     UnauthorizedComponent,
     ProfileComponent,
-    EditProfileComponent,
-    ViewProfileComponent,
   ],
   imports: [
     BrowserModule,
