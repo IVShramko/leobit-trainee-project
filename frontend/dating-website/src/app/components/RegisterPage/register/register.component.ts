@@ -1,3 +1,4 @@
+import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { AuthService } from 'src/app/services/authService/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
@@ -15,7 +16,8 @@ export class RegisterComponent implements OnInit {
   isSend: boolean;
 
   constructor(private formBuiler : FormBuilder,
-    public authService: AuthService, private router: Router) { }
+    public authService: AuthService, private router: Router,
+    private customValidatorsService: CustomValidatorsService) { }
 
   ngOnInit(): void {
     this.registerForm = this.formBuiler.group({
@@ -32,7 +34,7 @@ export class RegisterComponent implements OnInit {
       dateOfBirth : [
         null, [
           Validators.required,
-          this.DateOfBirthValidator
+          this.customValidatorsService.DateOfBirthValidator
         ]
       ],
       gender : [
@@ -46,7 +48,7 @@ export class RegisterComponent implements OnInit {
       confirmPassword : [
         null,[
           Validators.required,
-          this.ConfirmPasswordValidator
+          this.customValidatorsService.ConfirmPasswordValidator
         ]
       ]
     });
@@ -80,47 +82,6 @@ export class RegisterComponent implements OnInit {
   get confirmPassword()
   {
     return this.registerForm.controls.confirmPassword;
-  }
-
-  ConfirmPasswordValidator(control: AbstractControl)
-  {
-    if (control)
-    {
-      const password = control.root.get('password');
-      const confpassword = control.root.get('confirmPassword');
-
-      if (password && confpassword) {
-
-        if (password?.value !== confpassword?.value) 
-        {
-          return {password_error : 'passwords do not match'}
-        }
-      }
-    }
-    return null;
-  }
-
-  DateOfBirthValidator(control: AbstractControl)
-  {
-    if(control)
-    {
-      if(control.value !== null)
-      {
-        const currentDate = Date.now();
-        const birthDate = new Date(control?.value).getTime();
-  
-        let difference = Math.floor((currentDate - birthDate)/1000);
-        difference = Math.floor(difference/3600);
-        difference = Math.floor(difference/24);
-        difference = Math.floor(difference/365);
-  
-        if (difference < 18) 
-        {
-          return {age_error : 'age can not be under 18'}
-        }
-      }
-    }
-    return null;
   }
 
   private GetUserData()

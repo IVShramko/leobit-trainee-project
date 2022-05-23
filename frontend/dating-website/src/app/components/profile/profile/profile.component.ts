@@ -1,5 +1,7 @@
+import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { regions } from './regions';
 
 @Component({
   selector: 'app-profile',
@@ -8,11 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+    private customValidatorsService: CustomValidatorsService) { }
 
   editProfileForm: FormGroup;
+  regions: string[] = [];
 
   ngOnInit(): void {
+    this.regions = Object.keys(regions).filter(f => isNaN(Number(f)));
+
     this.editProfileForm = this.formBuilder.group({
       userName : new FormControl({
         value : null,
@@ -34,11 +40,27 @@ export class ProfileComponent implements OnInit {
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
         ]
       ],
+      phone : [
+        null, [
+          Validators.required,
+          Validators.pattern('^[0-9]{9}')
+        ]
+      ],
       birthDate : [
+        null, [
+          Validators.required,
+          this.customValidatorsService.DateOfBirthValidator
+        ]
+      ],
+      gender : [
         null,
         Validators.required
       ],
-      gender : [
+      region : [
+        null,
+        Validators.required
+      ],
+      town : [
         null,
         Validators.required
       ]
@@ -60,11 +82,25 @@ export class ProfileComponent implements OnInit {
     return this.editProfileForm.controls.email;
   }
 
+  get phone()
+  {
+    return this.editProfileForm.controls.phone;
+  }
+
   get birthDate()
   {
     return this.editProfileForm.controls.birthDate;
   }
 
+  get region()
+  {
+    return this.editProfileForm.controls.region;
+  }
+
+  get town()
+  {
+    return this.editProfileForm.controls.town;
+  }
 
   private GetProfileData()
   {

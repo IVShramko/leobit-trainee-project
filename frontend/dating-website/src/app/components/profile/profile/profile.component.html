@@ -3,88 +3,159 @@
       <div class="col-8">
 
           <form action="" [formGroup]="editProfileForm">
-              <div class="row">
-                  <div class="col">
-                      <label 
-                      [ngClass]="{'form-label': true}" 
-                      for="">User name</label>
-                      <input 
-                      formControlName="userName"
-                      [ngClass]="{'form-control' : true}"
-                      type="text">
-                  </div>
+
+            <div class="row mt-3">
+              <h2>Personal info</h2>
+
+              <div class="row mt-2">
+                <div class="col">
+                    <label 
+                    [ngClass]="{'form-label': true}" 
+                    for="">User name</label>
+                    <input 
+                    formControlName="userName"
+                    [ngClass]="{'form-control' : true}"
+                    type="text">
+                </div>
               </div>
 
               <div class="row mt-2">
-                  <div class="col">
-                      <label 
-                      [ngClass]="{'form-label': true}" 
-                      for="">First name</label>
-                      <input 
-                      formControlName="firstName"
-                      [ngClass]="{'form-control' : true,
-                      'is-invalid' : !firstName?.valid && firstName?.touched,
-                      'is-valid' : firstName?.valid}"
-                      type="text">
-                  </div>
-                  <div class="col">
-                      <label 
-                      [ngClass]="{'form-label': true}" 
-                      for="">Last name</label>
-                      <input 
-                      formControlName="lastName"
-                      [ngClass]="{'form-control' : true,
-                      'is-invalid' : !lastName?.valid && lastName?.touched,
-                      'is-valid' : lastName?.valid}"
-                      type="text">
-                  </div>
+                <div class="col">
+                    <label 
+                    [ngClass]="{'form-label': true}" 
+                    for="">First name</label>
+                    <input 
+                    formControlName="firstName"
+                    [ngClass]="{'form-control' : true,
+                    'is-invalid' : !firstName?.valid && firstName?.touched,
+                    'is-valid' : firstName?.valid}"
+                    type="text">
+                </div>
+                <div class="col">
+                    <label 
+                    [ngClass]="{'form-label': true}" 
+                    for="">Last name</label>
+                    <input 
+                    formControlName="lastName"
+                    [ngClass]="{'form-control' : true,
+                    'is-invalid' : !lastName?.valid && lastName?.touched,
+                    'is-valid' : lastName?.valid}"
+                    type="text">
+                </div>
               </div>
 
               <div class="row mt-2">
-                  <div class="col">
-                      <label 
-                      [ngClass]="{'form-label': true}" 
-                      for="">Email</label>
-                      <input
-                      formControlName="email" 
-                      [ngClass]="{'form-control' : true,
-                      'is-invalid' : !email?.valid && email?.touched,
-                      'is-valid' : email?.valid}"
-                      placeholder="email@test.com" 
-                       type="email">
-                  </div>
+                <div class="col">
+                  <label 
+                  [ngClass]="{'form-label': true}" 
+                  for="">Date of birth</label>
+                  <input 
+                  formControlName="birthDate"
+                  [ngClass]="{'form-control' : true,
+                  'is-invalid' : !birthDate?.valid && birthDate?.touched,
+                  'is-valid' : birthDate?.valid}" 
+                  type="date">
+                </div>
+                <div class="col">
+                  <label 
+                  [ngClass]="{'form-label': true}" 
+                  for="">Gender</label>
+                  <input 
+                  formControlName="gender"
+                  [ngClass]="{'form-control' : true}"
+                  type="text">
+                </div>
+            </div>
+            </div>
+
+            <div class="row mt-5">
+              <h2>Contacts</h2>
+
+              <div class="row mt-2">
+                <div class="col">
+                    <label 
+                    [ngClass]="{'form-label': true}" 
+                    for="">Email</label>
+                    <input
+                    formControlName="email" 
+                    [ngClass]="{'form-control' : true,
+                    'is-invalid' : !email?.valid && email?.touched,
+                    'is-valid' : email?.valid}"
+                    placeholder="email@test.com" 
+                    type="email">
+                </div>
               </div>
 
               <div class="row mt-2">
-                  <div class="col">
-                      <label 
-                      [ngClass]="{'form-label': true}" 
-                      for="">Date of birth</label>
-                      <input 
-                      formControlName="birthDate"
-                      [ngClass]="{'form-control' : true,
-                      'is-invalid' : !birthDate?.valid && birthDate?.touched,
-                      'is-valid' : birthDate?.valid}" 
-                      type="text">
+                <div class="col">
+                  <label 
+                  [ngClass]="{'form-label': true}" 
+                  for="">Phone number</label>
+                  <div class="input-group">
+                    <span class="input-group-text">+380</span>
+                    <input
+                    formControlName="phone" 
+                    [ngClass]="{'form-control' : true,
+                    'is-invalid' : !phone?.valid && phone?.touched,
+                    'is-valid' : phone?.valid}"
+                    type="tel">
                   </div>
-                  <div class="col">
-                      <label 
-                      [ngClass]="{'form-label': true}" 
-                      for="">Gender</label>
-                      <input 
-                      formControlName="gender"
-                      [ngClass]="{'form-control' : true}"
-                      type="text">
-                  </div>
+                </div>
               </div>
+            </div> 
 
-              <div class="row mt-3">
-                  <div class="col text-center">
-                      <button class="btn btn-outline-dark"
-                      [disabled]="!editProfileForm.valid"
-                      (click)="OnApply()">Apply changes</button>
-                  </div>
+            <div class="row mt-5">
+              <h2>Location</h2>
+
+              <div class="row mt-2">
+                <div class="col">
+                  <label 
+                  [ngClass]="{'form-label': true}" 
+                  for="">Region</label>
+                  <select 
+                  formControlName="region"
+                  [ngClass]="{'form-control' : true,
+                  'is-invalid' : !region?.valid && region?.touched,
+                  'is-valid' : region?.valid}" 
+                  type="text">
+                    <option selected [ngValue]="null">Choose region...</option>
+                    <option *ngFor="let region of regions">{{region}}</option>
+                  </select>
+                </div>
+
+                <div class="col">
+                  <label 
+                  [ngClass]="{'form-label': true}" 
+                  for="">Town</label>
+                  <input 
+                  formControlName="town"
+                  [ngClass]="{'form-control' : true,
+                  'is-invalid' : !town?.valid && town?.touched,
+                  'is-valid' : town?.valid}" 
+                  type="text">
+                </div>
               </div>
+            </div>
+            
+            <div class="row mt-5">
+              <h2>Photo</h2>
+
+              <div class="row mt-2">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <input type="file" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col text-center">
+                  <button class="btn btn-outline-dark"
+                  [disabled]="!editProfileForm.valid"
+                  (click)="OnApply()">Apply changes</button>
+              </div>
+            </div>
           </form>
       </div>
   </div>
