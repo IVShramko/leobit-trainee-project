@@ -1,3 +1,4 @@
+import { takeLast } from 'rxjs';
 import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
@@ -27,12 +28,16 @@ export class ProfileComponent implements OnInit {
         Validators.required
       ]),
       firstName : [
-        null,
-        Validators.required
+        null, [
+          Validators.pattern('^[a-z]+'),
+          Validators.required
+        ]
       ],
       lastName : [
-        null,
-        Validators.required
+        null, [
+          Validators.pattern('^[a-z]+'),
+          Validators.required
+        ]
       ],
       email : [
         null, [
@@ -61,8 +66,10 @@ export class ProfileComponent implements OnInit {
         Validators.required
       ],
       town : [
-        null,
-        Validators.required
+        null, [
+          Validators.pattern('^[a-z]+'),
+          Validators.required
+        ]
       ],
       photo : [
         null, [
@@ -71,6 +78,11 @@ export class ProfileComponent implements OnInit {
         ]
       ]
     });
+  }
+
+  get userName()
+  {
+    return this.editProfileForm.controls.userName;
   }
 
   get firstName()
@@ -98,6 +110,11 @@ export class ProfileComponent implements OnInit {
     return this.editProfileForm.controls.birthDate;
   }
 
+  get gender()
+  {
+    return this.editProfileForm.controls.gender;
+  }
+
   get region()
   {
     return this.editProfileForm.controls.region;
@@ -118,8 +135,16 @@ export class ProfileComponent implements OnInit {
     if (this.editProfileForm?.valid)
     {
       return {
+        username : this.userName?.value,
         firstName : this.firstName?.value,
-        lastName : this.lastName?.value
+        lastName : this.lastName?.value,
+        birthDate : this.birthDate?.value,
+        gender : this.gender?.value,
+        email : this.email?.value,
+        phone : "+380" + this.phone?.value,
+        region : this.region?.value,
+        town : this.town?.value,
+        photo : this?.photo?.value.split('\\').pop()
       }
     }
     return null;
