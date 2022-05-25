@@ -1,3 +1,4 @@
+// to do: retrieve regions from database
 export enum regions
 {
     'АР Крим',
