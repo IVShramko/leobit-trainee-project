@@ -61,12 +61,15 @@
                   <label 
                   [ngClass]="{'form-label': true}" 
                   for="">Gender</label>
-                  <input 
+                  <select 
                   formControlName="gender"
                   [ngClass]="{'form-control' : true,
                   'is-invalid' : !gender?.valid && gender?.touched,
-                  'is-valid' : gender?.valid}"
+                  'is-valid' : gender?.valid}" 
                   type="text">
+                    <option disabled selected [ngValue]="null">Choose gender...</option>
+                    <option *ngFor="let gender of genders">{{gender}}</option>
+                  </select>
                 </div>
             </div>
             </div>

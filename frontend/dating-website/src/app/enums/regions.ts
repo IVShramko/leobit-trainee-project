@@ -1,5 +1,5 @@
 // to do: retrieve regions from database
-export enum regions
+export enum Regions
 {
     'АР Крим',
     'Вінницька',

@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'dating-website';
 
   @Output() isLoggedIn: boolean;
-  @Output() userName: string;
+  @Output() userName: string = '#####';
 
   constructor(private authService: AuthService, private userService: UserService) {
 
@@ -19,9 +19,6 @@ export class AppComponent {
     this.authService.isLoggedIn.subscribe(
       (result) => {
         this.isLoggedIn = result
-        if (result) {
-          this.userName = this.userService.user.UserName;
-        }
       }
     );
   }

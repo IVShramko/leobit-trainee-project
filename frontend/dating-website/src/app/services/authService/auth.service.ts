@@ -39,7 +39,6 @@ export class AuthService {
         this._isLoggedIn.next(true);
 
         const decodedToken = helper.decodeToken(token);
-        this.GetInfoFromAccessToken(decodedToken);
       }else
       {
         this._isLoggedIn.next(false);
@@ -50,11 +49,6 @@ export class AuthService {
       this._isLoggedIn.next(false);
     }
     
-  }
-
-  private GetInfoFromAccessToken(token: any)
-  {
-    this.userService.user.UserName = token.UserName;
   }
 
   LogIn(userName: string, password: string)

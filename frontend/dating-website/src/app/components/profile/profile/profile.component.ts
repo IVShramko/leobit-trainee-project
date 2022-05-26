@@ -1,8 +1,9 @@
-import { takeLast } from 'rxjs';
+import { UserProfile } from './../../../models/UserProfile';
 import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { regions } from './regions';
+import { Regions } from '../../../enums/regions';
+import { Genders } from 'src/app/enums/Genders';
 
 @Component({
   selector: 'app-profile',
@@ -16,9 +17,11 @@ export class ProfileComponent implements OnInit {
 
   editProfileForm: FormGroup;
   regions: string[] = [];
+  genders: string[] = [];
 
   ngOnInit(): void {
-    this.regions = Object.keys(regions).filter(f => isNaN(Number(f)));
+    this.regions = Object.keys(Regions).filter(f => isNaN(Number(f)));
+    this.genders = Object.keys(Genders).filter(f => isNaN(Number(f)));
 
     this.editProfileForm = this.formBuilder.group({
       userName : new FormControl({
@@ -59,7 +62,7 @@ export class ProfileComponent implements OnInit {
       ],
       gender : [
         null,
-        Validators.required
+        Validators.required,
       ],
       region : [
         null,
@@ -134,8 +137,8 @@ export class ProfileComponent implements OnInit {
   {
     if (this.editProfileForm?.valid)
     {
-      return {
-        username : this.userName?.value,
+      const profile: UserProfile = {
+        userName : this.userName?.value,
         firstName : this.firstName?.value,
         lastName : this.lastName?.value,
         birthDate : this.birthDate?.value,
@@ -146,13 +149,14 @@ export class ProfileComponent implements OnInit {
         town : this.town?.value,
         photo : this?.photo?.value.split('\\').pop()
       }
+      return profile;
     }
     return null;
   }
 
   OnApply()
   {
-    const data = this.GetProfileData();
-    console.log(data);
+    const userProfile = this.GetProfileData();
+    console.log(userProfile);
   }
 }
