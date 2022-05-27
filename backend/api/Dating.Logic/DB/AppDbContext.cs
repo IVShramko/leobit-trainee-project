@@ -1,4 +1,5 @@
 ﻿using Dating.Logic.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,8 @@ namespace Dating.Logic.DB
             modelBuilder.Entity<UserProfile>()
                 .HasIndex(u => u.AspNetUserId)
                 .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

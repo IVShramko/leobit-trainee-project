@@ -4,14 +4,16 @@ using Dating.Logic.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dating.Logic.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220527085608_CreateUserProfile")]
+    partial class CreateUserProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,7 +28,6 @@ namespace Dating.Logic.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AspNetUserId")
-                        .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
@@ -34,7 +35,6 @@ namespace Dating.Logic.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -63,7 +63,8 @@ namespace Dating.Logic.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AspNetUserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[AspNetUserId] IS NOT NULL");
 
                     b.ToTable("UserProfiles");
                 });
@@ -268,9 +269,7 @@ namespace Dating.Logic.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "AspNetUser")
                         .WithMany()
-                        .HasForeignKey("AspNetUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AspNetUserId");
 
                     b.Navigation("AspNetUser");
                 });

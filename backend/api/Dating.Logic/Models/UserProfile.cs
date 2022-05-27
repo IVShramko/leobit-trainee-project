@@ -14,6 +14,7 @@ namespace Dating.Logic.Models
         [Key]
         public Guid Id { get; set; }
 
+        [Required]
         [MaxLength(450)]
         public string AspNetUserId { get; set; }
 
@@ -32,6 +33,7 @@ namespace Dating.Logic.Models
         [Required]
         public bool Gender { get; set; }
 
+        [Required]
         [MaxLength(256)]
         public string Email { get; set; }
 
