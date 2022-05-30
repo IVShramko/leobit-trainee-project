@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dating.Logic.DTO
 {
-    public class UserProfileFullData
+    public class UserProfileFullDTO
     {
         public Guid Id { get; set; }
 
