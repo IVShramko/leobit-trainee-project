@@ -59,13 +59,13 @@
                         <div class="form-check form-check-inline">
                             <label class="form-label">Male</label>
                             <input formControlName="gender"
-                            type="radio" value="male"
+                            type="radio" [value]="true"
                             [ngClass]="{'form-check-input' : true}">
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-label">Female</label>
                             <input formControlName="gender"
-                            type="radio" value="female"
+                            type="radio" [value]="false"
                             [ngClass]="{'form-check-input' : true}">
                         </div>
                     </div>

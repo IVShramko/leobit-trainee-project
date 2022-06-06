@@ -1,4 +1,6 @@
-﻿using Dating.WebAPI.Services;
+﻿using Dating.Logic.DTO;
+using Dating.Logic.Facades.UserProfileFacade;
+using Dating.WebAPI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -19,15 +21,17 @@ namespace Dating.WebAPI.Controllers
         private readonly ITokenManager _tokenManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserProfileFacade _profileFacade;
 
         public AuthController(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            ITokenManager tokenManager)
+            ITokenManager tokenManager, IUserProfileFacade profileFacade)
         {
             _tokenManager = tokenManager;
             _signInManager = signInManager;
             _userManager = userManager;
+            _profileFacade = profileFacade;
         }
 
         [HttpGet]
@@ -82,25 +86,14 @@ namespace Dating.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Register(string userName, string password)
+        [HttpPost]
+        public async Task<IActionResult> Register(UserProfileRegisterDTO registerData)
         {
-            IdentityUser user = new IdentityUser()
-            {
-                UserName = userName,
-                Email = string.Empty
-            };
+            await _profileFacade.RegisterAsync(registerData);
 
-            IdentityResult result = await _userManager.CreateAsync(user, password);
+            return Ok();
 
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
+
         }
     }
 }

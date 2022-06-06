@@ -8,19 +8,22 @@ export class PhoneMaskDirective {
 
   private isBackspacePressed: boolean = false;
 
-  @HostListener('ngModelChange') private onModelChange()
+  @HostListener('ngModelChange')
+  private onModelChange()
   {
     const currentValue = this.GetInputValue();
     const newValue = this.OnInputChanges(currentValue, this.isBackspacePressed);
     this.SetInputValue(newValue);
   }
 
-  @HostListener('keydown.backspace') private keydownBackspace()
+  @HostListener('keydown.backspace') 
+  private keydownBackspace()
   {
     this.isBackspacePressed = true;
   }
 
-  @HostListener('keyup.backspace') private keyupBackspace()
+  @HostListener('keyup.backspace')
+  private keyupBackspace()
   {
     this.isBackspacePressed = false;
   }
@@ -48,10 +51,6 @@ export class PhoneMaskDirective {
 
   private Backspace(value: string) : string
   {
-    // if()
-    // {
-
-    // }
     return value.substring(0, value.length);
   }
 
@@ -66,6 +65,7 @@ export class PhoneMaskDirective {
     if (value.length === 8) {
       return value.replace(/[(][0-9]{2}[)][-][0-9]{3}/, '$&-');
     }
+    
     return value;
   }
 }

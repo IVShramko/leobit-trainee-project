@@ -12,17 +12,19 @@ namespace Dating.WebAPI.Controllers
     [ApiController]
     public class HomeController : Controller
     {
+        [Authorize]
         [HttpGet]
         public IActionResult Index()
         {
-            return Ok("Index action method");
+            return Ok();
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult Secret()
+        public IActionResult Profile()
         {
-            return Ok("Secret action method");
+            return RedirectToRoute(
+                Url.Link("api", new { controller = "profile", action = "main" }));
         }
     }
 }

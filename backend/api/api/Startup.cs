@@ -1,26 +1,20 @@
 using Dating.Logic.DB;
+using Dating.Logic.Facades.UserFacade;
+using Dating.Logic.Facades.UserProfileFacade;
+using Dating.Logic.Repositories;
 using Dating.WebAPI.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Dating.WebAPI
 {
@@ -35,7 +29,6 @@ namespace Dating.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<AppDbContext>(config => 
             {
                 config.UseSqlServer(
@@ -71,9 +64,11 @@ namespace Dating.WebAPI
                 };
             });
 
+            
 
-            services.AddControllers();
-
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddCors(options =>
             {
@@ -85,14 +80,20 @@ namespace Dating.WebAPI
                 });
             });
 
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            services.AddScoped<IUserFacade, UserFacade>();
+            services.AddScoped<IUserProfileFacade, UserProfileFacade>();
+
             services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddDistributedRedisCache(r =>
             {
                 r.Configuration = Configuration["redis:ConnectionString"];
             });
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -102,16 +103,16 @@ namespace Dating.WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthentication();
             
-
             app.UseAuthorization();
 
-            app.UseCors();
             app.UseMiddleware<TokenManagerMiddleware>();
 
             app.UseEndpoints(endpoints =>

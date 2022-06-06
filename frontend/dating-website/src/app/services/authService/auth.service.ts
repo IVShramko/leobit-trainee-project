@@ -1,9 +1,8 @@
-import { UserService } from './../user/user.service';
+import { Router } from '@angular/router';
+import { RegisterDTO } from './../../models/RegisterData';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, mapTo, Observable, takeLast, tap } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 
@@ -13,76 +12,44 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 export class AuthService {
 
-  constructor(private server: HttpClient, private userService: UserService) { }
+  constructor(private server: HttpClient, private router: Router) { }
 
   private readonly ACCESS_TOKEN = "ACCESS_TOKEN";
 
-  private path : string = "https://localhost:44362/api/auth";
-
-  private _isLoggedIn = new BehaviorSubject<boolean>(false);
-  isLoggedIn = this._isLoggedIn.asObservable();
+  private authPath : string = "https://localhost:44362/api/auth";
+  private homePath : string = "https://localhost:44362/api/home/index";
 
   private _isRegistered = new BehaviorSubject<boolean>(false);
   isRegistered = this._isRegistered.asObservable();
 
-
-  ValidateToken()
-  {
-    const token = localStorage.getItem(this.ACCESS_TOKEN);
-
-    if (token !== null) 
-    {
-      const helper = new JwtHelperService();
-      const isExpired = helper.isTokenExpired(token);
-
-      if (!isExpired) {
-        this._isLoggedIn.next(true);
-
-        const decodedToken = helper.decodeToken(token);
-      }else
-      {
-        this._isLoggedIn.next(false);
-      }
-
-    }else
-    {
-      this._isLoggedIn.next(false);
-    }
-    
-  }
-
-  LogIn(userName: string, password: string)
-  {
-        this.logInRequest(userName, password).subscribe(
-        (response) => {
-          localStorage.setItem(this.ACCESS_TOKEN, response.access_token);
-          this.ValidateToken();
-        },
-        (error: HttpErrorResponse) => {
-          if(error.status === 401)
-          {
-            this._isLoggedIn.next(false);
-          }
-        }
-      );
-  }
-
-  LogOut()
-  {
-    this.logOutrequest().subscribe(
+  LogIn(userName: string, password: string, callback: Function)
+  { 
+    this.LogInRequest(userName, password)
+    .subscribe(
       (response) => {
-        localStorage.removeItem(this.ACCESS_TOKEN);
-        this._isLoggedIn.next(false);
-      },
+        this.SetToken(this.ACCESS_TOKEN, response.access_token)},
       (error: HttpErrorResponse) => {
-        alert('something went wrong. Try again')
-      }
-    );
+        if(error.status === 401)
+        {
+
+        }
+      },
+      () => callback());
   }
 
-  Register(userName : string, password: string)
+  LogOut(callback: Function)
   {
-    this.registerRequest(userName, password).subscribe(
+    this.LogOutrequest()
+    .subscribe(
+      () => this.DeleteToken(this.ACCESS_TOKEN),
+      (error: HttpErrorResponse) => {
+        alert('something went wrong. Try again')},
+      () => callback());
+  }
+
+  Register(data: any)
+  {
+    this.RegisterRequest(data).subscribe(
       (response) => {
         this._isRegistered.next(true);
       },
@@ -94,21 +61,45 @@ export class AuthService {
     );
   }
 
-  private registerRequest(userName : string, password: string) : Observable<any>
+  private GetToken(name: string) : string
   {
-    return this.server.get<string>(this.path + `/register?userName=${userName}&password=${password}`);
+    return localStorage.getItem(name) ?? "";
   }
 
-  private logInRequest(userName: string, password: string): Observable<any>
+  private SetToken(name: string, token: string) : void
   {
-    return this.server.get<any>(this.path + `/login?userName=${userName}&password=${password}`);
+    localStorage.setItem(name, token);
   }
 
-  private logOutrequest(): Observable<any>
+  private DeleteToken(name: string)
   {
-    const token = localStorage.getItem(this.ACCESS_TOKEN) ?? "";
-    const headers  = new HttpHeaders().append("authorization", token);
-    
-    return this.server.get<any>(this.path + '/LogOut', {headers : headers});
+    localStorage.removeItem(name);
   }
+
+  GetAuthHeader(): HttpHeaders
+  {
+    return new HttpHeaders().append("Authorization", 'Bearer ' + this.GetToken(this.ACCESS_TOKEN));
+  }
+
+  AuthRequest()
+  {
+    return this.server.get<any>(this.homePath, {headers: this.GetAuthHeader()});
+  }
+
+  private RegisterRequest(data: any) : Observable<any>
+  {
+    return this.server.post<RegisterDTO>(this.authPath + `/register`, data);
+  }
+
+  private LogInRequest(userName: string, password: string): Observable<any>
+  {
+    return this.server.get<any>(this.authPath + `/login?userName=${userName}&password=${password}`)
+  }
+
+  private LogOutrequest(): Observable<any>
+  {
+    const headers  = this.GetAuthHeader();
+    return this.server.get<any>(this.authPath + '/LogOut', {headers : headers});
+  }
+
 }

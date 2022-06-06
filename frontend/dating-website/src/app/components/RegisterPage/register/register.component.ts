@@ -1,3 +1,4 @@
+import { RegisterDTO } from './../../../models/RegisterData';
 import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { AuthService } from 'src/app/services/authService/auth.service';
 import { Component, OnInit } from '@angular/core';
@@ -88,23 +89,26 @@ export class RegisterComponent implements OnInit {
   {
     if(this.registerForm?.valid)
     {
-      return {
-        username : this.login?.value,
-        email : this.email?.value,
-        birthDate : this.dateOfBirth?.value,
-        gender : this.gender?.value
+      const registerData: RegisterDTO = {
+        UserName : this.login?.value,
+        Email : this.email?.value,
+        Password: this.password?.value,
+        Data : {
+          BirthDate : new Date(this.dateOfBirth?.value),
+          Gender : this.gender?.value
       }
+      }
+
+      return registerData;
     }
+
     return null;
   }
 
   OnRegister()
   {
-    const data = this.GetUserData();
-    const login = this.login?.value;
-    const password = this.password?.value;
-
-    this.authService.Register(login, password);
+    const data = this.GetUserData();;
+    this.authService.Register(data);
     this.authService.isRegistered.subscribe(
       (result) => {
         this.regResult = result;

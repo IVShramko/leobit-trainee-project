@@ -4,78 +4,87 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Component, OnInit } from '@angular/core';
 import { Regions } from '../../../enums/regions';
 import { Genders } from 'src/app/enums/Genders';
+import { UserService } from 'src/app/services/user-service/user.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
+
 export class ProfileComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
-    public customValidatorsService: CustomValidatorsService) { }
+    public customValidatorsService: CustomValidatorsService,
+    private userService: UserService)
+  {}
 
   editProfileForm: FormGroup;
   regions: string[] = [];
   genders: string[] = [];
+  private currentProfile: UserProfile | undefined;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
     this.regions = Object.keys(Regions).filter(f => isNaN(Number(f)));
     this.genders = Object.keys(Genders).filter(f => isNaN(Number(f)));
 
+    this.currentProfile = await this.userService.GetFullProfile().toPromise();
+
+    console.log(this.currentProfile);
     this.editProfileForm = this.formBuilder.group({
-      userName : new FormControl({
-        value : null,
-        disabled : true
-      },[
+      userName: new FormControl({
+        value: this.currentProfile?.userName,
+        disabled: true
+      }, [
         Validators.required
       ]),
-      firstName : [
-        null, [
+      firstName: [
+        this.currentProfile?.firstName, [
           Validators.pattern('^[a-z]+'),
           Validators.required
         ]
       ],
-      lastName : [
-        null, [
+      lastName: [
+        this.currentProfile?.lastName, [
           Validators.pattern('^[a-z]+'),
           Validators.required
         ]
       ],
-      email : [
-        null, [
+      email: [
+        this.currentProfile?.email, [
           Validators.required,
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
         ]
       ],
-      phone : [
-        null, [
+      phone: [
+        this.ParsePhone(this.currentProfile?.phoneNumber as string), [
           Validators.required,
           Validators.pattern('^[(][0-9]{2}[)][-][0-9]{3}[-][0-9]{4}$')
         ]
       ],
-      birthDate : [
-        null, [
+      birthDate: [
+        this.ParseDate(this.currentProfile?.birthDate as string), [
           Validators.required,
           this.customValidatorsService.DateOfBirthValidator
         ]
       ],
-      gender : [
-        null,
+      gender: [
+        Genders[Number(this.currentProfile?.gender)],
         Validators.required,
       ],
-      region : [
-        null,
+      region: [
+        this.currentProfile?.region,
         Validators.required
       ],
-      town : [
-        null, [
+      town: [
+        this.currentProfile?.town, [
           Validators.pattern('^[a-z]+'),
           Validators.required
         ]
       ],
-      photo : [
-        null, [
+      photo: [
+        this.currentProfile?.photo, [
           Validators.required,
           this.customValidatorsService.FileTypeValidator
         ]
@@ -133,30 +142,43 @@ export class ProfileComponent implements OnInit {
     return this.editProfileForm.controls.photo;
   }
 
+  private ParseDate(date: string): string | undefined
+  {
+    return date.split("T").shift();
+  }
+
+  private ParsePhone(phone: string): string | undefined
+  {
+    return phone.split('+380').pop()
+  }
+
   private GetProfileData()
   {
-    if (this.editProfileForm?.valid)
-    {
       const profile: UserProfile = {
+        id : this.currentProfile?.id,
         userName : this.userName?.value,
         firstName : this.firstName?.value,
         lastName : this.lastName?.value,
         birthDate : this.birthDate?.value,
-        gender : this.gender?.value,
+        gender : Boolean(Number(Genders[this.gender?.value as Genders])),
         email : this.email?.value,
-        phone : "+380" + this.phone?.value,
+        phoneNumber : "+380" + this.phone?.value,
         region : this.region?.value,
         town : this.town?.value,
         photo : this?.photo?.value.split('\\').pop()
       }
+
       return profile;
-    }
-    return null;
   }
 
   OnApply()
   {
     const userProfile = this.GetProfileData();
     console.log(userProfile);
+    this.userService.ChangeProfile(userProfile).subscribe(
+      (response) => console.log(response)
+    );
   }
 }
+
+
