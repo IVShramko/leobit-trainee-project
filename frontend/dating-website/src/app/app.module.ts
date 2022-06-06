@@ -11,6 +11,7 @@ import { NavComponent } from './components/navbar/nav/nav.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized/unauthorized.component';
 import { ProfileComponent } from './components/profile/profile/profile.component';
 import { PhoneMaskDirective } from './derectives/phone-mask.directive';
+import { CriteriaComponent } from './components/search-criteria/criteria/criteria.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { PhoneMaskDirective } from './derectives/phone-mask.directive';
     UnauthorizedComponent,
     ProfileComponent,
     PhoneMaskDirective,
+    CriteriaComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,4 @@
+import { RegionService } from './../../../services/regions-service/region.service';
 import { UserProfile } from './../../../models/UserProfile';
 import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -16,7 +17,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     public customValidatorsService: CustomValidatorsService,
-    private userService: UserService)
+    private userService: UserService, private regionService: RegionService)
   {}
 
   editProfileForm: FormGroup;
@@ -26,7 +27,7 @@ export class ProfileComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
 
-    this.regions = Object.keys(Regions).filter(f => isNaN(Number(f)));
+    this.regions = this.regionService.GetAllRegions();
     this.genders = Object.keys(Genders).filter(f => isNaN(Number(f)));
 
     this.currentProfile = await this.userService.GetFullProfile().toPromise();
