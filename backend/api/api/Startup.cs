@@ -1,4 +1,5 @@
 using Dating.Logic.DB;
+using Dating.Logic.Facades.SearchFacade;
 using Dating.Logic.Facades.UserFacade;
 using Dating.Logic.Facades.UserProfileFacade;
 using Dating.Logic.Repositories;
@@ -85,6 +86,8 @@ namespace Dating.WebAPI
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IUserFacade, UserFacade>();
             services.AddScoped<IUserProfileFacade, UserProfileFacade>();
+
+            services.AddScoped<ISearchFacade, SearchFacade>();
 
             services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<ITokenManager, TokenManager>();

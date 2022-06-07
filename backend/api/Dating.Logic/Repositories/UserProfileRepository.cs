@@ -5,6 +5,8 @@ using Dating.Logic.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -55,6 +57,56 @@ namespace Dating.Logic.Repositories
                 .SingleOrDefaultAsync();
 
             return userData;
+        }
+
+        public async Task<ICollection<SearchResultDTO>> GetProfilesOnCriteria(CriteriaDTO criteria)
+        {
+            IQueryable<UserProfile> query = _context.UserProfiles
+                .Where(u => u.FirstName != null && u.LastName!=null)
+                .Select(u => u);
+
+            query = query.Where(u => u.Gender == criteria.Gender).Select(u => u);
+
+            if (criteria.MinAge.HasValue)
+            {
+                query = query
+                    .Where(u => DateTime.Compare(u.BirthDate.AddYears((int)(criteria.MinAge - 18)), DateTime.Today) <= 0)
+                    .Select(u => u);
+            }
+
+            if (criteria.MaxAge.HasValue)
+            {
+                query = query
+                    .Where(u => DateTime.Compare(u.BirthDate.AddYears((int)((criteria.MinAge - 18) * -1)), DateTime.Today) >= 0)
+                    .Select(u => u);
+            }
+
+            if (!String.IsNullOrWhiteSpace(criteria.Region))
+            {
+                query = query
+                    .Where(u => u.Region.Contains(criteria.Region))
+                    .Select(u => u);
+            }
+
+            if (!String.IsNullOrWhiteSpace(criteria.Town))
+            {
+                query = query
+                    .Where(u => u.Town.Contains(criteria.Town))
+                    .Select(u => u);
+            }
+
+            ICollection<SearchResultDTO> result = await query
+                .Select(u => new SearchResultDTO
+                {
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Age = u.BirthDate.Year,
+                    UserName = u.AspNetUser.UserName
+                })
+                .OrderBy(u => u.FirstName)
+                .ToListAsync();
+
+            return result;
         }
 
         public void SaveUserData(UserProfile userProfile)

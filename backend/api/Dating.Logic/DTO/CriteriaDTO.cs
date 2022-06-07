@@ -4,9 +4,9 @@
     {
         public bool Gender { get; set; }
 
-        public int MinAge { get; set; }
+        public int? MinAge { get; set; }
 
-        public int MaxAge { get; set; }
+        public int? MaxAge { get; set; }
 
         public string Region { get; set; }
 

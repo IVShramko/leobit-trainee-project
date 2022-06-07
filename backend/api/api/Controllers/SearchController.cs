@@ -1,5 +1,8 @@
 ﻿using Dating.Logic.DTO;
+using Dating.Logic.Facades.SearchFacade;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Dating.WebAPI.Controllers
 {
@@ -7,10 +10,18 @@ namespace Dating.WebAPI.Controllers
     [ApiController]
     public class SearchController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult Criteria(CriteriaDTO criteria)
+        private readonly ISearchFacade _searchFacade;
+
+        public SearchController(ISearchFacade searchFacade)
         {
-            return Ok();
+            _searchFacade = searchFacade;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Criteria(CriteriaDTO criteria)
+        {
+            ICollection<SearchResultDTO> result = await _searchFacade.Search(criteria);
+            return Ok(result);
         }
     }
 }
