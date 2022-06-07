@@ -1,9 +1,9 @@
 import { NavigationEnd, Router, RouterEvent } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { filter, Subject } from 'rxjs';
 import { UserService } from 'src/app/services/user-service/user.service';
-import { AuthService } from 'src/app/services/authService/auth.service';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Component, Output } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',

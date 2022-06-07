@@ -1,6 +1,6 @@
 import { RegisterDTO } from './../../../models/RegisterData';
 import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
-import { AuthService } from 'src/app/services/authService/auth.service';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';

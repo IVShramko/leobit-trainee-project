@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { RegisterDTO } from './../../models/RegisterData';
+import { RegisterDTO } from '../../models/RegisterData';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';

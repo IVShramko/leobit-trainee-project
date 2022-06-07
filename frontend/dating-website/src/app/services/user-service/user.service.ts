@@ -1,4 +1,4 @@
-import { AuthService } from 'src/app/services/authService/auth.service';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
