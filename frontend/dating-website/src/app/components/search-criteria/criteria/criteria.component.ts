@@ -1,3 +1,4 @@
+import { SearchService } from './../../../services/search-service/search.service';
 import { Criteria } from './../../../models/Criteria';
 import { RegionService } from './../../../services/regions-service/region.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -10,7 +11,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CriteriaComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private regionService: RegionService) 
+  constructor(private formBuilder: FormBuilder,
+    private regionService: RegionService, private searchService: SearchService) 
   {
     this.regions = this.regionService.GetAllRegions();
   }
@@ -79,7 +81,7 @@ export class CriteriaComponent implements OnInit {
 
   Search()
   {
-    
+    this.searchService.CriteriaRequest(this.GetCriteria());
   }
 
 }
