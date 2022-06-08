@@ -12,6 +12,8 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized/un
 import { ProfileComponent } from './components/profile/profile/profile.component';
 import { PhoneMaskDirective } from './derectives/phone-mask.directive';
 import { CriteriaComponent } from './components/search-criteria/criteria/criteria.component';
+import { SearchResultComponent } from './components/search-result/search-result/search-result.component';
+import { SearchResultItemComponent } from './components/search-result-item/search-result-item/search-result-item.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { CriteriaComponent } from './components/search-criteria/criteria/criteri
     UnauthorizedComponent,
     ProfileComponent,
     PhoneMaskDirective,
-    CriteriaComponent
+    CriteriaComponent,
+    SearchResultComponent,
+    SearchResultItemComponent
   ],
   imports: [
     BrowserModule,

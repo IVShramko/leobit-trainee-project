@@ -1,53 +1,53 @@
-<div class="container">
-    <div class="row justify-content-center mt-3">
-        <div class="col-8">
-            <h1>Enter search criteria</h1>
-            <form action="" [formGroup]="criteriaForm">
-                <div class="row my-4">
-                    <h4 class="form-label">Choose gender</h4>
-                    <div class="col">
-                        <select formControlName="gender" class="form-select">
-                            <option [ngValue]="true">Male</option>
-                            <option [ngValue]="false">Female</option>
-                        </select>
-                    </div>
+<div class="row mt-3">
+    <div class="col">
+        <h1>Enter search criteria</h1>
+        <form action="" [formGroup]="criteriaForm">
+            <div class="row my-4">
+                <h4 class="form-label">Choose gender</h4>
+                <div class="col">
+                    <select formControlName="gender" 
+                    [ngClass]="{'form-select': true, 'is-invalid': !gender?.valid && gender?.touched}">
+                        <option [ngValue]="true">Male</option>
+                        <option [ngValue]="false">Female</option>
+                    </select>
                 </div>
+            </div>
 
-                <div class="row my-4">
-                    <h4 class="form-label">Choose age</h4>
-                    <div class="col">
-                        <label class="form-label">From:</label>
-                        <input formControlName="minAge" type="number" class="form-control" min="18" max="60">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">To:</label>
-                        <input formControlName="maxAge" type="number" class="form-control" min="18" max="60">
-                    </div>
+            <div class="row my-4">
+                <h4 class="form-label">Choose age</h4>
+                <div class="col">
+                    <label class="form-label">From:</label>
+                    <input formControlName="minAge" type="number" class="form-control" min="18" max="60">
                 </div>
+                <div class="col">
+                    <label class="form-label">To:</label>
+                    <input formControlName="maxAge" type="number" class="form-control" min="18" max="60">
+                </div>
+            </div>
 
-                <div class="row my-4">
-                    <h4 class="form-label">Choose region</h4>
-                    <div class="col">
-                        <select formControlName="region" class="form-select">
-                            <option [ngValue]="region" *ngFor="let region of regions">{{region}}</option>
-                        </select>
-                    </div>
+            <div class="row my-4">
+                <h4 class="form-label">Choose region</h4>
+                <div class="col">
+                    <select formControlName="region" class="form-select">
+                        <option [ngValue]="region" *ngFor="let region of regions">{{region}}</option>
+                    </select>
                 </div>
+            </div>
 
-                <div class="row my-4">
-                    <h4 class="form-label">Enter town</h4>
-                    <div class="col">
-                        <input formControlName="town" type="text" class="form-control">
-                    </div>
+            <div class="row my-4">
+                <h4 class="form-label">Enter town</h4>
+                <div class="col">
+                    <input formControlName="town" type="text" class="form-control">
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col text-center">
-                        <button class="btn btn-outline-dark"
-                        (click)="Search()">Search</button>
-                    </div>
+            <div class="row">
+                <div class="col text-center">
+                    <button class="btn btn-outline-dark"
+                    [disabled]="!criteriaForm?.valid"
+                    (click)="Search()">Search</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>

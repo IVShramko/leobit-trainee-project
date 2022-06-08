@@ -1,7 +1,7 @@
 import { SearchService } from './../../../services/search-service/search.service';
 import { Criteria } from './../../../models/Criteria';
 import { RegionService } from './../../../services/regions-service/region.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -25,7 +25,8 @@ export class CriteriaComponent implements OnInit {
   ngOnInit(): void {
     this.criteriaForm = this.formBuilder.group({
       gender: [
-        null
+        null,
+        Validators.required
       ],
       minAge: [
         this.MIN_AGE
@@ -81,7 +82,8 @@ export class CriteriaComponent implements OnInit {
 
   Search()
   {
-    this.searchService.CriteriaRequest(this.GetCriteria());
+    console.log('1');
+    this.searchService.criteria.next(this.GetCriteria());
   }
 
 }
