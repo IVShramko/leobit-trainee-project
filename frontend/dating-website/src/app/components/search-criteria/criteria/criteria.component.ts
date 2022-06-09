@@ -85,5 +85,5 @@ export class CriteriaComponent implements OnInit {
     console.log('1');
     this.searchService.criteria.next(this.GetCriteria());
   }
-
+  
 }
