@@ -14,6 +14,8 @@ import { PhoneMaskDirective } from './derectives/phone-mask.directive';
 import { CriteriaComponent } from './components/search-criteria/criteria/criteria.component';
 import { SearchResultComponent } from './components/search-result/search-result/search-result.component';
 import { SearchResultItemComponent } from './components/search-result-item/search-result-item/search-result-item.component';
+import { SearchResultPageComponent } from './components/search-result-page/search-result-page/search-result-page.component';
+import { SearchResultPaginationComponent } from './components/search-result-pagination/search-result-pagination/search-result-pagination.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { SearchResultItemComponent } from './components/search-result-item/searc
     PhoneMaskDirective,
     CriteriaComponent,
     SearchResultComponent,
-    SearchResultItemComponent
+    SearchResultItemComponent,
+    SearchResultPageComponent,
+    SearchResultPaginationComponent
   ],
   imports: [
     BrowserModule,

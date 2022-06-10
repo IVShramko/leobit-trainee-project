@@ -1,5 +1,5 @@
 import { SearchService } from './../../../services/search-service/search.service';
-import { Criteria } from './../../../models/Criteria';
+import { Criteria, ProfileCriteria } from './../../../models/Criteria';
 import { RegionService } from './../../../services/regions-service/region.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
@@ -67,9 +67,9 @@ export class CriteriaComponent implements OnInit {
     return this.criteriaForm.controls.town;
   }
 
-  private GetCriteria()
+  private GetProfileCriteria()
   {
-    const criteria: Criteria = {
+    const criteria: ProfileCriteria = {
       Gender: this.gender?.value,
       MinAge: this.minAge?.value,
       MaxAge: this.maxAge?.value,
@@ -80,10 +80,10 @@ export class CriteriaComponent implements OnInit {
     return criteria;
   }
 
-  Search()
+  RunSearch()
   {
     console.log('1');
-    this.searchService.criteria.next(this.GetCriteria());
+    this.searchService.ProfileCriteria.next(this.GetProfileCriteria());
   }
   
 }

@@ -1,10 +1,7 @@
 <div class="row">
     <div class="col">
-        <h1>Result:</h1>
-        <div class="row row-cols-auto row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-evenly">
-            <div class="col my-2" *ngFor="let searchResult of searchResults$ | async">
-                <app-search-result-item [searchResultItem]="searchResult" ></app-search-result-item>
-            </div>
-        </div>
+        <h1>Total results: {{ResultsTotal$ | async}}</h1>
+        <app-search-result-page [UserProfiles]="Profiles$ | async"></app-search-result-page>
+        <app-search-result-pagination (PageChangeEvent)="ChangeResultPage($event)" [pageSize]="PageSize" [SearchResultTotal]="ResultsTotal$ | async"></app-search-result-pagination>
     </div>
 </div>

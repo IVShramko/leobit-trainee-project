@@ -1,3 +1,4 @@
+import { PROFILE_PATH } from './../../Paths';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -12,7 +13,7 @@ export class UserService {
 
   constructor(private server: HttpClient, private authService: AuthService) { }
 
-  private readonly path: string = "https://localhost:44362/api/profile/";
+  private readonly path: string = PROFILE_PATH;
 
   GetFullProfile(): Observable<UserProfile>
   {

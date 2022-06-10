@@ -1,4 +1,4 @@
-import { SearchResult } from 'src/app/models/SearchResult';
+import { SearchResult, SearchResultUserProfile } from 'src/app/models/SearchResult';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -10,10 +10,10 @@ export class SearchResultItemComponent implements OnInit {
 
   constructor() { }
 
-  @Input() searchResultItem: SearchResult;
+  @Input() Profile: SearchResultUserProfile;
 
   ngOnInit(): void {
-    console.log(this.searchResultItem);
+    console.log(this.Profile);
   }
   
 }

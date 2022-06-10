@@ -1,3 +1,5 @@
+import { ACCESS_TOKEN } from './../../Constants';
+import { AUTH_PATH, HOME_PATH } from './../../Paths';
 import { Router } from '@angular/router';
 import { RegisterDTO } from '../../models/RegisterData';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -14,10 +16,9 @@ export class AuthService {
 
   constructor(private server: HttpClient, private router: Router) { }
 
-  private readonly ACCESS_TOKEN = "ACCESS_TOKEN";
-
-  private authPath : string = "https://localhost:44362/api/auth";
-  private homePath : string = "https://localhost:44362/api/home/index";
+  private readonly ACCESS_TOKEN = ACCESS_TOKEN;
+  private readonly authPath : string = AUTH_PATH;
+  private readonly homePath : string = HOME_PATH;
 
   private _isRegistered = new BehaviorSubject<boolean>(false);
   isRegistered = this._isRegistered.asObservable();

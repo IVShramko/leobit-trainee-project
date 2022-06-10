@@ -1,6 +1,7 @@
+import { SEARCH_PATH } from './../../Paths';
 import { SearchResult } from 'src/app/models/SearchResult';
 import { HttpClient } from '@angular/common/http';
-import { Criteria } from './../../models/Criteria';
+import { Criteria, ProfileCriteria } from './../../models/Criteria';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
@@ -11,13 +12,12 @@ export class SearchService {
 
   constructor(private server: HttpClient) { }
 
-  private readonly searchPath: string = "https://localhost:44362/api/search";
+  private readonly searchPath: string = SEARCH_PATH;
 
-  criteria = new Subject<Criteria>();
+  ProfileCriteria = new Subject<ProfileCriteria>();
 
-  Search(criteria: Criteria): Observable<SearchResult[]>
+  Search(criteria: Criteria): Observable<SearchResult>
   {
-    console.log('3');
-    return this.server.post<SearchResult[]>(this.searchPath + '/criteria', criteria);
+    return this.server.post<SearchResult>(this.searchPath + '/criteria', criteria);
   }
 }
