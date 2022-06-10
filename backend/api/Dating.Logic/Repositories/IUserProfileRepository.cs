@@ -11,7 +11,7 @@ namespace Dating.Logic.Repositories
 
         public Task<UserProfileMainDTO> GetMainUserDataAsync(string aspNetUserId);
 
-        public Task<ICollection<SearchResultDTO>> GetProfilesOnCriteria(CriteriaDTO criteria);
+        public Task<SearchResultDTO> GetProfilesOnCriteriaAsync(CriteriaDTO criteria);
 
         public void SaveUserData(UserProfile profile);
 

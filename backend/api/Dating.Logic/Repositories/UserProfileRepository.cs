@@ -59,7 +59,25 @@ namespace Dating.Logic.Repositories
             return userData;
         }
 
-        public async Task<ICollection<SearchResultDTO>> GetProfilesOnCriteria(CriteriaDTO criteria)
+        public async Task<SearchResultDTO> GetProfilesOnCriteriaAsync(CriteriaDTO criteria)
+        {
+            SearchResultDTO result = new SearchResultDTO();
+
+            IEnumerable<SearchResultProfile> profiles = 
+                await GetAllProfilesOnCriteriaAsync(criteria.Profile);
+
+            result.ResultsTotal = profiles.Count();
+
+            profiles = profiles
+                .Skip(criteria.PageSize * (criteria.PageIndex - 1))
+                .Take(criteria.PageSize);
+
+            result.Profiles = profiles;
+
+            return result;
+        }
+
+        private async Task<IEnumerable<SearchResultProfile>> GetAllProfilesOnCriteriaAsync(ProfileCriteria criteria)
         {
             IQueryable<UserProfile> query = _context.UserProfiles
                 .Where(u => u.FirstName != null && u.LastName != null);
@@ -90,8 +108,8 @@ namespace Dating.Logic.Repositories
                     .Where(u => u.Town.Contains(criteria.Town));
             }
 
-            ICollection<SearchResultDTO> result = await query
-                .Select(u => new SearchResultDTO
+            IEnumerable<SearchResultProfile> result = await query
+                .Select(u => new SearchResultProfile
                 {
                     FirstName = u.FirstName,
                     LastName = u.LastName,

@@ -17,9 +17,9 @@ namespace Dating.Logic.Facades.SearchFacade
             _repository = repository;
         }
 
-        public async Task<ICollection<SearchResultDTO>> Search(CriteriaDTO criteria)
+        public async Task<SearchResultDTO> Search(CriteriaDTO criteria)
         {
-            return await _repository.GetProfilesOnCriteria(criteria);
+            return await _repository.GetProfilesOnCriteriaAsync(criteria);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Dating.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Criteria(CriteriaDTO criteria)
         {
-            ICollection<SearchResultDTO> result = await _searchFacade.Search(criteria);
+            SearchResultDTO result = await _searchFacade.Search(criteria);
             return Ok(result);
         }
     }

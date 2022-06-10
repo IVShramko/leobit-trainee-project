@@ -13,7 +13,6 @@ export class SearchResultItemComponent implements OnInit {
   @Input() Profile: SearchResultUserProfile;
 
   ngOnInit(): void {
-    console.log(this.Profile);
   }
   
 }

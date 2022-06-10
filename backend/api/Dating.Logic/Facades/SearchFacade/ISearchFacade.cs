@@ -9,6 +9,6 @@ namespace Dating.Logic.Facades.SearchFacade
 {
     public interface ISearchFacade
     {
-        public Task<ICollection<SearchResultDTO>> Search(CriteriaDTO criteria);
+        public Task<SearchResultDTO> Search(CriteriaDTO criteria);
     }
 }

@@ -1,7 +1,11 @@
 <div class="row">
     <div class="col">
         <h1>Total results: {{ResultsTotal$ | async}}</h1>
-        <app-search-result-page [UserProfiles]="Profiles$ | async"></app-search-result-page>
-        <app-search-result-pagination (PageChangeEvent)="ChangeResultPage($event)" [pageSize]="PageSize" [SearchResultTotal]="ResultsTotal$ | async"></app-search-result-pagination>
+        <div class="row my-3">
+            <app-search-result-page [UserProfiles]="Profiles$ | async"></app-search-result-page>
+        </div>
+        <div class="row my-3">
+            <app-search-result-pagination (PageChangeEvent)="ChangeResultPage($event)" [pageSize]="PageSize" [pageIndex]="PageIndex" [SearchResultTotal]="ResultsTotal$ | async"></app-search-result-pagination>
+        </div>
     </div>
 </div>

@@ -18,7 +18,7 @@ export class SearchResultComponent implements OnInit {
   searchResults$ = new Observable<SearchResult>();
   ResultsTotal$ = new Subject<number>();
   Profiles$ = new Subject<SearchResultUserProfile[]>();
-  PageIndex: number = 1;
+  PageIndex: number;
   PageSize: number = PAGE_SIZE;
   private _profileCriteria: ProfileCriteria;
 
@@ -26,6 +26,7 @@ export class SearchResultComponent implements OnInit {
   {
     this.searchService.ProfileCriteria.subscribe((profileCriteria) => 
     {
+      this.SetPageIndex(1);
       this._profileCriteria = profileCriteria;
       this.LoadResultPage();
     })
@@ -39,8 +40,13 @@ export class SearchResultComponent implements OnInit {
 
   ChangeResultPage(index: number)
   {
-    this.PageIndex = index;
+    this.SetPageIndex(index);
     this.LoadResultPage();
+  }
+
+  private SetPageIndex(index: number)
+  {
+    this.PageIndex = index;
   }
   
   private GetPageData(fullCriteria: Criteria)

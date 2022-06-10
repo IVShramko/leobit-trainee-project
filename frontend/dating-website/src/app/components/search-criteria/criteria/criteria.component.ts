@@ -82,7 +82,6 @@ export class CriteriaComponent implements OnInit {
 
   RunSearch()
   {
-    console.log('1');
     this.searchService.ProfileCriteria.next(this.GetProfileCriteria());
   }
   
