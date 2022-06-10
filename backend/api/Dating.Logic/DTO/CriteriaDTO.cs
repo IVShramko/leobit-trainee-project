@@ -2,6 +2,15 @@
 {
     public class CriteriaDTO
     {
+        public int PageSize { get; set; }
+
+        public int PageIndex { get; set; }
+
+        public ProfileCriteria Profile { get; set; }
+    }
+
+    public class ProfileCriteria
+    {
         public bool Gender { get; set; }
 
         public int? MinAge { get; set; }
