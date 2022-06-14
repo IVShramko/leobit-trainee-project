@@ -63,21 +63,26 @@ namespace Dating.Logic.Repositories
         {
             SearchResultDTO result = new SearchResultDTO();
 
-            IEnumerable<SearchResultProfile> profiles = 
-                await GetAllProfilesOnCriteriaAsync(criteria.Profile);
+            IQueryable<UserProfile> query = PrepareQuery(criteria.Profile);
+            result.ResultsTotal = query.Count();
 
-            result.ResultsTotal = profiles.Count();
-
-            profiles = profiles
+            result.Profiles = await query
+                .OrderBy(u => u.FirstName)
                 .Skip(criteria.PageSize * (criteria.PageIndex - 1))
-                .Take(criteria.PageSize);
-
-            result.Profiles = profiles;
+                .Take(criteria.PageSize)
+                .Select(u => new SearchResultProfile
+                {
+                    UserName = u.AspNetUser.UserName,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Age = DateTime.Now.Year - u.BirthDate.Year
+                })
+                .ToListAsync();
 
             return result;
         }
 
-        private async Task<IEnumerable<SearchResultProfile>> GetAllProfilesOnCriteriaAsync(ProfileCriteria criteria)
+        private IQueryable<UserProfile> PrepareQuery(ProfileCriteria criteria)
         {
             IQueryable<UserProfile> query = _context.UserProfiles
                 .Where(u => u.FirstName != null && u.LastName != null);
@@ -108,18 +113,7 @@ namespace Dating.Logic.Repositories
                     .Where(u => u.Town.Contains(criteria.Town));
             }
 
-            IEnumerable<SearchResultProfile> result = await query
-                .Select(u => new SearchResultProfile
-                {
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Age = DateTime.Today.Year - u.BirthDate.Year,
-                    UserName = u.AspNetUser.UserName
-                })
-                .OrderBy(u => u.FirstName)
-                .ToListAsync();
-
-            return result;
+            return query;
         }
 
         public void SaveUserData(UserProfile userProfile)
