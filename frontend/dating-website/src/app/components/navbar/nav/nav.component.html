@@ -18,13 +18,7 @@
     class="justify-content-end">
       <div class="dropdown me-4">
         <button class="btn btn-outline-light" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-          <div class="profile">
-            <i class="bi bi-person-circle profile-icon"></i>
-            <h6 class="profile-username">{{MainProfile?.userName}}</h6>
-          </div>
-          <div class="profile">
-            <h6 class="profile-username">{{MainProfile?.firstName}} {{MainProfile?.lastName}}</h6>
-          </div>
+          <app-main-profile></app-main-profile>
         </button>
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
           <li class="dropdown-item" routerLink="profile">Profile</li>

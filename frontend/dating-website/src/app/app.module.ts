@@ -16,6 +16,7 @@ import { SearchResultComponent } from './components/search-result/search-result/
 import { SearchResultItemComponent } from './components/search-result-item/search-result-item/search-result-item.component';
 import { SearchResultPageComponent } from './components/search-result-page/search-result-page/search-result-page.component';
 import { SearchResultPaginationComponent } from './components/search-result-pagination/search-result-pagination/search-result-pagination.component';
+import { MainProfileComponent } from './components/main-profile/main-profile/main-profile.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SearchResultPaginationComponent } from './components/search-result-pagi
     SearchResultComponent,
     SearchResultItemComponent,
     SearchResultPageComponent,
-    SearchResultPaginationComponent
+    SearchResultPaginationComponent,
+    MainProfileComponent
   ],
   imports: [
     BrowserModule,

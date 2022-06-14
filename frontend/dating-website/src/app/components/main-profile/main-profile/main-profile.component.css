@@ -1,0 +1,17 @@
+#top, #bottom {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+}
+#top > h6, #bottom > h6{
+    margin: 0;
+}
+i {
+    margin-right: 0.5em;
+    align-self: flex-end;
+}
+
+#top > h6
+{
+    font-size: 22px;
+}
