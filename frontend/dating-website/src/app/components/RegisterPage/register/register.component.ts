@@ -13,8 +13,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   registerForm : FormGroup;
-  regResult: boolean;
-  isSend: boolean;
+  isError: boolean | null = null;
 
   constructor(private formBuiler : FormBuilder,
     public authService: AuthService, private router: Router,
@@ -87,32 +86,26 @@ export class RegisterComponent implements OnInit {
 
   private GetUserData()
   {
-    if(this.registerForm?.valid)
-    {
-      const registerData: RegisterDTO = {
-        UserName : this.login?.value,
-        Email : this.email?.value,
-        Password: this.password?.value,
-        Data : {
-          BirthDate : new Date(this.dateOfBirth?.value),
-          Gender : this.gender?.value
+    const registerData: RegisterDTO = {
+      UserName : this.login?.value,
+      Email : this.email?.value,
+      Password: this.password?.value,
+      Data : {
+        BirthDate : new Date(this.dateOfBirth?.value),
+        Gender : this.gender?.value
       }
-      }
-
-      return registerData;
     }
 
-    return null;
+    return registerData;
   }
 
-  OnRegister()
+  Register()
   {
-    const data = this.GetUserData();;
-    this.authService.Register(data);
-    this.authService.isRegistered.subscribe(
+    const data = this.GetUserData();
+    this.authService.Register(data).subscribe(
       (result) => {
-        this.regResult = result;
-        this.isSend = true;
-      })
+        this.isError = result
+      }
+    )
   }
 }

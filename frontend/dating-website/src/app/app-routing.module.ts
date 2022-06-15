@@ -1,3 +1,5 @@
+import { AuthGuard } from './guards/AuthGuard';
+import { CanActivate } from '@angular/router';
 import { ProfileComponent } from './components/profile/profile/profile.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized/unauthorized.component';
 import { NgModule } from '@angular/core';
@@ -10,6 +12,7 @@ const routes: Routes = [
   {
     path : 'home', 
     component : HomeComponent,
+    canActivate : [AuthGuard]
   },
   {
     path : 'login', 
@@ -25,7 +28,8 @@ const routes: Routes = [
   },
   {
     path : 'profile', 
-    component : ProfileComponent
+    component : ProfileComponent,
+    canActivate : [AuthGuard]
   }
 ];
 

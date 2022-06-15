@@ -36,7 +36,7 @@ namespace Dating.Logic.Facades.UserProfileFacade
             return await _repository.GetMainUserDataAsync(aspNetUserId);
         }
 
-        public async Task RegisterAsync(UserProfileRegisterDTO registerData)
+        public async Task<bool> RegisterAsync(UserProfileRegisterDTO registerData)
         {
             IdentityUser user = new IdentityUser()
             {
@@ -57,7 +57,11 @@ namespace Dating.Logic.Facades.UserProfileFacade
                 };
 
                 _repository.SaveUserData(profile);
+
+                return true;
             }
+
+            return false;
         }
 
         public async Task ChangeProfileAsync(UserProfileFullDTO fullData)

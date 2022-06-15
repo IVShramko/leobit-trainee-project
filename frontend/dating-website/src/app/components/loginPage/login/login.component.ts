@@ -39,9 +39,11 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls.password;
   }
 
-  OnlogIn (userName: string, password: string)
+  LogIn (userName: string, password: string)
   {
-    this.authService.LogIn(userName, password, () => this.router.navigate(['/']));
+    this.authService.LogIn(userName, password).subscribe(
+      (result) => result ? this.router.navigate(['/home']) : this.isError = result
+    );
   }
 
 }

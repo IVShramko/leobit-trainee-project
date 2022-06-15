@@ -18,12 +18,12 @@
     class="justify-content-end">
       <div class="dropdown me-4">
         <button class="btn btn-outline-light" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-          <app-main-profile></app-main-profile>
+          <app-main-profile [MainProfile]="MainProfile | async"></app-main-profile>
         </button>
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
           <li class="dropdown-item" routerLink="profile">Profile</li>
           <li><hr class="dropdown-divider"></li>
-          <li (click)="OnLogOut()" class="dropdown-item">Log out</li>
+          <li (click)="LogOut()" class="dropdown-item">Log out</li>
         </ul>
       </div>
     </div>

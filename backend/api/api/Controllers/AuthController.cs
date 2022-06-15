@@ -89,11 +89,13 @@ namespace Dating.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserProfileRegisterDTO registerData)
         {
-            await _profileFacade.RegisterAsync(registerData);
+            bool res = await _profileFacade.RegisterAsync(registerData);
+            if (res)
+            {
+                return Ok();
+            }
 
-            return Ok();
-
-
+            return BadRequest();
         }
     }
 }

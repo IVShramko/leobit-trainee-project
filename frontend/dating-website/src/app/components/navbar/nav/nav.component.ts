@@ -1,4 +1,4 @@
-import { takeLast } from 'rxjs';
+import { takeLast, Subject, Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -17,28 +17,28 @@ export class NavComponent implements OnInit {
 
   ngOnChanges()
   {
-    if (this.IsAuthenticated)
-    {
-      this.LoadMainProfile();
-    }
+    this.LoadMainProfile();
+    this.IsAuthenticated = this.authService.Authenticate();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  MainProfile: MainData | undefined
-
+  MainProfile = new Observable<MainData>();
   @Input() IsAuthenticated: boolean | null;
 
-  private async LoadMainProfile()
+  private LoadMainProfile()
   {
-    this.MainProfile = await this.userService.GetMainProfile().pipe(takeLast(1)).toPromise();
+    this.MainProfile = this.userService.GetMainProfile();
   }
 
-  OnLogOut()
+  LogOut()
   {
-    this.authService.LogOut(
-      () => this.router.navigate(['/']));
+    this.authService.LogOut().subscribe(
+      (result) => {
+        this.IsAuthenticated = false;
+        result ? this.router.navigate(['/unauthorized']) : result
+      }
+    )
   }
 
 }

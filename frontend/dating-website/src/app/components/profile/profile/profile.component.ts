@@ -42,13 +42,13 @@ export class ProfileComponent implements OnInit {
       ]),
       firstName: [
         this.currentProfile?.firstName, [
-          Validators.pattern('^[a-z]+'),
+          Validators.pattern('^[a-z, A-Z]+'),
           Validators.required
         ]
       ],
       lastName: [
         this.currentProfile?.lastName, [
-          Validators.pattern('^[a-z]+'),
+          Validators.pattern('^[a-z, A-Z]+'),
           Validators.required
         ]
       ],
@@ -80,7 +80,7 @@ export class ProfileComponent implements OnInit {
       ],
       town: [
         this.currentProfile?.town, [
-          Validators.pattern('^[a-z]+'),
+          Validators.pattern('^[a-z, A-Z]+'),
           Validators.required
         ]
       ],
@@ -150,7 +150,7 @@ export class ProfileComponent implements OnInit {
 
   private ParsePhone(phone: string): string | undefined
   {
-    return phone.split('+380').pop()
+    return phone?.split('+380').pop()
   }
 
   private GetProfileData()
@@ -175,9 +175,8 @@ export class ProfileComponent implements OnInit {
   OnApply()
   {
     const userProfile = this.GetProfileData();
-    console.log(userProfile);
     this.userService.ChangeProfile(userProfile).subscribe(
-      (response) => console.log(response)
+      (response) => window.location.reload()
     );
   }
 }

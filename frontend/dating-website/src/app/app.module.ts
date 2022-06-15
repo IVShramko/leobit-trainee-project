@@ -1,3 +1,4 @@
+import { AuthGuard } from './guards/AuthGuard';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -33,7 +34,7 @@ import { MainProfileComponent } from './components/main-profile/main-profile/mai
     SearchResultItemComponent,
     SearchResultPageComponent,
     SearchResultPaginationComponent,
-    MainProfileComponent
+    MainProfileComponent,
   ],
   imports: [
     BrowserModule,

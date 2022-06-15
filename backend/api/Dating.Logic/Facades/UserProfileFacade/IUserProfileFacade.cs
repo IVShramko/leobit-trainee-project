@@ -13,7 +13,7 @@ namespace Dating.Logic.Facades.UserProfileFacade
 
         public Task<UserProfileMainDTO> GetUserProfileMainDataAsync(string aspNetUserId);
 
-        public Task RegisterAsync(UserProfileRegisterDTO registerData);
+        public Task<bool> RegisterAsync(UserProfileRegisterDTO registerData);
 
         public Task ChangeProfileAsync(UserProfileFullDTO fullData);
     }

@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { RegisterDTO } from '../../models/RegisterData';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, Subject, mapTo, catchError, tap, ReplaySubject } from 'rxjs';
+import { of } from 'rxjs';
 
 
 @Injectable({
@@ -18,47 +18,56 @@ export class AuthService {
 
   private readonly ACCESS_TOKEN = ACCESS_TOKEN;
   private readonly authPath : string = AUTH_PATH;
-  private readonly homePath : string = HOME_PATH;
+  private readonly homePath: string = HOME_PATH;
 
-  private _isRegistered = new BehaviorSubject<boolean>(false);
-  isRegistered = this._isRegistered.asObservable();
+  private _AuthenticationStatus$ = new BehaviorSubject<boolean>(false);
+  AuthenticationStatus$ = this._AuthenticationStatus$.asObservable();
 
-  LogIn(userName: string, password: string, callback: Function)
+  Authenticate()
+  {    
+    const headers  = this.GetAuthHeader();
+    this.server.get(this.homePath + '/index', {headers: headers}).pipe(
+      mapTo(true),
+      catchError((error) => of(false)),
+      tap((val) => this._AuthenticationStatus$.next(val))
+    )
+    return !!this.GetToken(this.ACCESS_TOKEN);
+  }
+
+  LogIn(userName: string, password: string) : Observable<boolean>
   { 
-    this.LogInRequest(userName, password)
-    .subscribe(
-      (response) => {
-        this.SetToken(this.ACCESS_TOKEN, response.access_token)},
-      (error: HttpErrorResponse) => {
-        if(error.status === 401)
-        {
-
-        }
-      },
-      () => callback());
+    return this.server.get<any>(this.authPath + `/login?userName=${userName}&password=${password}`)
+    .pipe(
+      tap((token) => this.SetToken(this.ACCESS_TOKEN,token.access_token)),
+      mapTo(true),
+      catchError((error) => of(false)),
+      tap((val:boolean) => {
+        this._AuthenticationStatus$.next(val)
+      })
+    )
   }
 
-  LogOut(callback: Function)
+  LogOut(): Observable<boolean>
   {
-    this.LogOutrequest()
-    .subscribe(
-      () => this.DeleteToken(this.ACCESS_TOKEN),
-      (error: HttpErrorResponse) => {
-        alert('something went wrong. Try again')},
-      () => callback());
+    const headers  = this.GetAuthHeader();
+    return this.server.get<any>(this.authPath + '/LogOut', {headers : headers})
+    .pipe(
+      mapTo(true),
+      catchError((error) => of(false)),
+      tap((val) => {
+        console.log(val)
+        this._AuthenticationStatus$.next(!val);
+        val ? this.DeleteToken(this.ACCESS_TOKEN) : val;
+      }),
+    )
   }
 
-  Register(data: any)
+  Register(data: RegisterDTO) : Observable<boolean>
   {
-    this.RegisterRequest(data).subscribe(
-      (response) => {
-        this._isRegistered.next(true);
-      },
-      (error: HttpErrorResponse) => {
-        if (error.status === 400) {
-          this._isRegistered.next(false);
-        }
-      }
+    return this.server.post<RegisterDTO>(this.authPath + `/register`, data)
+    .pipe(
+      mapTo(true),
+      catchError((error) => of(false))
     );
   }
 
@@ -80,27 +89,6 @@ export class AuthService {
   GetAuthHeader(): HttpHeaders
   {
     return new HttpHeaders().append("Authorization", 'Bearer ' + this.GetToken(this.ACCESS_TOKEN));
-  }
-
-  AuthRequest()
-  {
-    return this.server.get<any>(this.homePath, {headers: this.GetAuthHeader()});
-  }
-
-  private RegisterRequest(data: any) : Observable<any>
-  {
-    return this.server.post<RegisterDTO>(this.authPath + `/register`, data);
-  }
-
-  private LogInRequest(userName: string, password: string): Observable<any>
-  {
-    return this.server.get<any>(this.authPath + `/login?userName=${userName}&password=${password}`)
-  }
-
-  private LogOutrequest(): Observable<any>
-  {
-    const headers  = this.GetAuthHeader();
-    return this.server.get<any>(this.authPath + '/LogOut', {headers : headers});
   }
 
 }

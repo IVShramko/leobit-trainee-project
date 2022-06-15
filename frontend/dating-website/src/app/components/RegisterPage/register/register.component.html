@@ -1,11 +1,12 @@
 <div class="container-fluid h-100 background">
-    <div *ngIf="isSend && !regResult"
+    <div *ngIf="!isError && isError!== null"
     class="alert alert-danger error-message" role="alert">
         Invalid login or password
     </div>
-    <div *ngIf="isSend && regResult"
+    <div *ngIf="isError && isError!== null"
     class="alert alert-danger success-message" role="alert">
         You registered successfully!
+        <a class="link-light" routerLink="/login">Login</a>
     </div>
     <div class="row h-100 align-items-center">
         <form class="form-background"
@@ -102,7 +103,7 @@
                 <div class="col text-center">
                     <button
                     [disabled]="!registerForm.valid"
-                    (click)="OnRegister()"
+                    (click)="Register()"
                     [ngClass]="{'btn btn-dark btn-lg' : true}"
                     type="button">Register</button>
                 </div>

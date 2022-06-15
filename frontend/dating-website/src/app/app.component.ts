@@ -1,5 +1,5 @@
 import { NavigationEnd, Router, RouterEvent } from '@angular/router';
-import { filter, Subject } from 'rxjs';
+import { BehaviorSubject, filter, Observable, Subject, takeLast } from 'rxjs';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Component, Output } from '@angular/core';
@@ -15,35 +15,11 @@ export class AppComponent {
 
   constructor(private authService: AuthService,
     private userService: UserService, private router: Router) 
-  {
-    router.events.pipe(
-      filter((event): event is RouterEvent => event instanceof NavigationEnd))
-      .subscribe((event: RouterEvent) => {
-        if(event.url === '/')
-        {
-          this.Authenticate();
-        }
-      });
+  {}
+
+  IsAuthenticated = new Observable<boolean>();
+
+  ngOnInit(): void {
+    this.IsAuthenticated = this.authService.AuthenticationStatus$
   }
-
-  ngOnInit(): void {}
-
-  private _AuthenticationStatus$ = new Subject<boolean>();
-  @Output() AuthenticationStatus = this._AuthenticationStatus$.asObservable();
-
-  private Authenticate()
-  {
-    this.authService.AuthRequest()
-      .subscribe(
-        (response) => {
-          this._AuthenticationStatus$.next(true);
-          this.router.navigate(['home']);
-        },
-        (error: HttpErrorResponse) => {
-          this._AuthenticationStatus$.next(false);
-          this.router.navigate(['unauthorized']);
-        }
-    );
-  }
-
 }

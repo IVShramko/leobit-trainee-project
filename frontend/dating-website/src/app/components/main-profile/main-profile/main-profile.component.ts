@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MainData } from 'src/app/models/MainData';
 
 @Component({
@@ -13,10 +13,6 @@ export class MainProfileComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  MainProfile: MainData ={
-    userName: 'testtest',
-    firstName: 'Ivan',
-    lastName: 'Shramko'
-  }
+  @Input() MainProfile: MainData | null
 
 }
