@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dating.Logic.DB;
 using Dating.Logic.DTO;
+using Dating.Logic.Enums;
 using Dating.Logic.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Dating.Logic.Repositories
@@ -66,8 +68,9 @@ namespace Dating.Logic.Repositories
             IQueryable<UserProfile> query = PrepareQuery(criteria.Profile);
             result.ResultsTotal = query.Count();
 
+            query = OrderQuery(query, criteria.Filter);
+
             result.Profiles = await query
-                .OrderBy(u => u.FirstName)
                 .Skip(criteria.PageSize * (criteria.PageIndex - 1))
                 .Take(criteria.PageSize)
                 .Select(u => new SearchResultProfile
@@ -113,6 +116,20 @@ namespace Dating.Logic.Repositories
                     .Where(u => u.Town.Contains(criteria.Town));
             }
 
+            return query;
+        }
+
+        private IQueryable<UserProfile> OrderQuery(IQueryable<UserProfile> query, Filters filter)
+        {
+            switch (filter)
+            {
+                case Filters.Age:
+                    query = query.OrderByDescending(u => u.BirthDate);
+                    break;
+                case Filters.Name:
+                    query = query.OrderBy(u => u.FirstName);
+                    break;
+            }
             return query;
         }
 
