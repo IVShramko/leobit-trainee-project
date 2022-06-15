@@ -1,7 +1,7 @@
 import { PAGE_SIZE } from './../../../Constants';
 import { ProfileCriteria } from './../../../models/Criteria';
 import { SearchService } from './../../../services/search-service/search.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SearchResult, SearchResultUserProfile } from 'src/app/models/SearchResult';
 import { Observable, Subject } from 'rxjs';
 import { Criteria } from 'src/app/models/Criteria';
@@ -18,15 +18,15 @@ export class SearchResultComponent implements OnInit {
   searchResults$ = new Observable<SearchResult>();
   ResultsTotal$ = new Subject<number>();
   Profiles$ = new Subject<SearchResultUserProfile[]>();
-  PageIndex: number;
-  PageSize: number = PAGE_SIZE;
+  PageIndex: number = 1;
+  PageSize: number = 2;
+  SearchFilter: string = 'Age';
   private _profileCriteria: ProfileCriteria;
 
   ngOnInit(): void 
   {
     this.searchService.ProfileCriteria.subscribe((profileCriteria) => 
     {
-      this.SetPageIndex(1);
       this._profileCriteria = profileCriteria;
       this.LoadResultPage();
     })
@@ -38,15 +38,22 @@ export class SearchResultComponent implements OnInit {
     this.GetPageData(fullCriteria);
   }
 
-  ChangeResultPage(index: number)
+  OnPageIndexChange(index: number)
   {
-    this.SetPageIndex(index);
+    this.PageIndex = index;
     this.LoadResultPage();
   }
 
-  private SetPageIndex(index: number)
+  OnPageSizeChange(index: number)
   {
-    this.PageIndex = index;
+    this.PageSize = index;
+    this.LoadResultPage();
+  }
+
+  OnSearchFilterChange(filter: string)
+  {
+    this.SearchFilter = filter;
+    this.LoadResultPage();
   }
   
   private GetPageData(fullCriteria: Criteria)
@@ -63,6 +70,7 @@ export class SearchResultComponent implements OnInit {
     const fullCriteria: Criteria = {
       pageIndex: this.PageIndex,
       pageSize: this.PageSize,
+      searchFilter: this.SearchFilter,
       profile: profileCriteria
     }
 

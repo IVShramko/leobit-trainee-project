@@ -1,0 +1,24 @@
+<div class="row bg-light">
+    <form [formGroup]="settingsForm">
+        <div class="row align-items-center">
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-funnel"></i>
+                    </span>
+                    <select class="form-select" formControlName="filter"
+                    (change)="ChangeFilter()">
+                        <option selected disabled [ngValue]="null">Choose filter</option>
+                        <option value="Age">Age</option>
+                        <option value="Name">Name</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label">Number:</label>
+                <input (change)="ChangeSize()"
+                formControlName="size" type="range" min="2" max="8" step="2" class="form-range">
+            </div>
+        </div>    
+    </form>
+</div>
