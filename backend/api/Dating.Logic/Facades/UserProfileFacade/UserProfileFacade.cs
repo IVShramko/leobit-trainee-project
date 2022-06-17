@@ -3,6 +3,7 @@ using Dating.Logic.DB;
 using Dating.Logic.DTO;
 using Dating.Logic.Models;
 using Dating.Logic.Repositories;
+using Dating.Logic.Repositories.ImageRepository;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -16,26 +17,43 @@ namespace Dating.Logic.Facades.UserProfileFacade
 {
     public class UserProfileFacade : IUserProfileFacade
     {
-        private readonly IUserProfileRepository _repository;
+        private readonly IUserProfileRepository _profileRepository;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IMapper _mapper;
+        private readonly IImageRepository _imageRepository;
 
-        public UserProfileFacade(IUserProfileRepository repository,
-            UserManager<IdentityUser> userManager, IMapper mapper)
+        public UserProfileFacade(IUserProfileRepository profileRepository,
+            UserManager<IdentityUser> userManager, IImageRepository imageRepository)
         {
-            _repository = repository;
+            _profileRepository = profileRepository;
             _userManager = userManager;
-            _mapper = mapper;
+            _imageRepository = imageRepository;
         }
 
         public async Task<UserProfileFullDTO> GetUserProfileFullDataAsync(string aspNetUserId)
         {
-            return await _repository.GetFullUserDataAsync(aspNetUserId);
+            var profile = await _profileRepository.GetFullUserDataAsync(aspNetUserId);
+
+            string photo = _imageRepository.GetPhotoById(profile.Avatar, profile.Id);
+
+            UserProfileFullDTO fullData = new UserProfileFullDTO()
+            {
+                Id = profile.Id,
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                BirthDate = profile.BirthDate,
+                Gender = profile.Gender,
+                PhoneNumber = profile.PhoneNumber,
+                Region = profile.Region,
+                Town = profile.Town,
+                Photo = photo
+            };
+
+            return fullData;
         }
 
         public async Task<UserProfileMainDTO> GetUserProfileMainDataAsync(string aspNetUserId)
         {
-            return await _repository.GetMainUserDataAsync(aspNetUserId);
+            return await _profileRepository.GetMainUserDataAsync(aspNetUserId);
         }
 
         public async Task<bool> RegisterAsync(UserProfileRegisterDTO registerData)
@@ -58,7 +76,7 @@ namespace Dating.Logic.Facades.UserProfileFacade
                     Gender = registerData.Data.Gender
                 };
 
-                _repository.SaveUserData(profile);
+                _profileRepository.SaveUserData(profile);
 
                 return true;
             }
@@ -70,7 +88,7 @@ namespace Dating.Logic.Facades.UserProfileFacade
         {
             var aspUser = await _userManager.FindByNameAsync(fullData.UserName);
 
-            Guid photoid = AddPhoto(fullData.Photo, fullData.Id);
+            Guid photoId = _imageRepository.AddPhoto(fullData.Photo, fullData.Id);
 
             UserProfile profile = new UserProfile()
             {
@@ -83,28 +101,11 @@ namespace Dating.Logic.Facades.UserProfileFacade
                 Gender = fullData.Gender,
                 PhoneNumber = fullData.PhoneNumber,
                 Region = fullData.Region,
-                Town = fullData.Town
+                Town = fullData.Town,
+                Avatar = photoId
             };
 
-            _repository.UpdateUserData(profile);
-
-        }
-
-        private Guid AddPhoto(string DataUrlString, Guid UserId)
-        {
-            var base64Data = Regex.Match(DataUrlString, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
-
-            var photobytes = Convert.FromBase64String(base64Data);
-
-            string root = Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "/img";
-
-            string path = Directory.CreateDirectory(root + "/" + UserId).FullName;
-
-            Guid id = Guid.NewGuid();
-
-            File.WriteAllBytes(path + "/" + id, photobytes);
-
-            return id;
+            _profileRepository.UpdateUserData(profile);
         }
     }
 }

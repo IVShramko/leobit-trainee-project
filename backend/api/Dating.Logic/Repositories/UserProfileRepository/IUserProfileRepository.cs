@@ -7,7 +7,7 @@ namespace Dating.Logic.Repositories
 {
     public interface IUserProfileRepository
     {
-        public Task<UserProfileFullDTO> GetFullUserDataAsync(string aspNetUserId);
+        public Task<UserProfile> GetFullUserDataAsync(string aspNetUserId);
 
         public Task<UserProfileMainDTO> GetMainUserDataAsync(string aspNetUserId);
 

@@ -3,6 +3,7 @@ using Dating.Logic.Facades.SearchFacade;
 using Dating.Logic.Facades.UserFacade;
 using Dating.Logic.Facades.UserProfileFacade;
 using Dating.Logic.Repositories;
+using Dating.Logic.Repositories.ImageRepository;
 using Dating.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -88,6 +89,8 @@ namespace Dating.WebAPI
             services.AddScoped<IUserProfileFacade, UserProfileFacade>();
 
             services.AddScoped<ISearchFacade, SearchFacade>();
+
+            services.AddScoped<IImageRepository, ImageRepository>();
 
             services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<ITokenManager, TokenManager>();

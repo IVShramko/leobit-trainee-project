@@ -23,23 +23,23 @@ namespace Dating.Logic.Repositories
             _context = context;
         }
 
-        public async Task<UserProfileFullDTO> GetFullUserDataAsync(string aspNetUserId)
+        public async Task<UserProfile> GetFullUserDataAsync(string aspNetUserId)
         {
-            UserProfileFullDTO userData = await _context.UserProfiles
+            UserProfile userData = await _context.UserProfiles
                 .Where(p => p.AspNetUserId == aspNetUserId)
-                .Select(p => new UserProfileFullDTO
-                {
-                    Id = p.Id,
-                    UserName = p.AspNetUser.UserName,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Email = p.AspNetUser.Email,
-                    BirthDate = p.BirthDate,
-                    Gender = p.Gender,
-                    PhoneNumber = p.PhoneNumber,
-                    Region = p.Region,
-                    Town = p.Town
-                })
+                //.Select(p => new UserProfileFullDTO
+                //{
+                //    Id = p.Id,
+                //    UserName = p.AspNetUser.UserName,
+                //    FirstName = p.FirstName,
+                //    LastName = p.LastName,
+                //    Email = p.AspNetUser.Email,
+                //    BirthDate = p.BirthDate,
+                //    Gender = p.Gender,
+                //    PhoneNumber = p.PhoneNumber,
+                //    Region = p.Region,
+                //    Town = p.Town
+                //})
                 .SingleOrDefaultAsync();
 
             return userData;
