@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit {
   regions: string[] = [];
   genders: string[] = [];
   private currentProfile: UserProfile | undefined;
+  private profileImage : string;
 
   async ngOnInit(): Promise<void> {
 
@@ -32,7 +33,6 @@ export class ProfileComponent implements OnInit {
 
     this.currentProfile = await this.userService.GetFullProfile().toPromise();
 
-    console.log(this.currentProfile);
     this.editProfileForm = this.formBuilder.group({
       userName: new FormControl({
         value: this.currentProfile?.userName,
@@ -142,6 +142,29 @@ export class ProfileComponent implements OnInit {
   {
     return this.editProfileForm.controls.photo;
   }
+  
+  async OnFileUpload(event: Event)
+  {
+    const input = event.currentTarget as HTMLInputElement;
+    const file = input.files?.item(0);
+    
+    if(file)
+    {
+      this.profileImage = await this.ConvertToBase64(file) as string;
+    } 
+  }
+
+  private ConvertToBase64(file: File)
+  {
+    return new Promise((resolve, reject) =>
+    {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
 
   private ParseDate(date: string): string | undefined
   {
@@ -166,17 +189,19 @@ export class ProfileComponent implements OnInit {
         phoneNumber : "+380" + this.phone?.value,
         region : this.region?.value,
         town : this.town?.value,
-        photo : this?.photo?.value.split('\\').pop()
+        photo : this.profileImage
       }
 
       return profile;
   }
 
+
   OnApply()
   {
     const userProfile = this.GetProfileData();
+    console.log(userProfile);
     this.userService.ChangeProfile(userProfile).subscribe(
-      (response) => window.location.reload()
+      () => window.location.reload()
     );
   }
 }

@@ -11,7 +11,7 @@ import { HomeComponent } from './components/home/home/home.component';
 import { NavComponent } from './components/navbar/nav/nav.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized/unauthorized.component';
 import { ProfileComponent } from './components/profile/profile/profile.component';
-import { PhoneMaskDirective } from './derectives/phone-mask.directive';
+import { PhoneMaskDirective } from './directives/phone-mask.directive';
 import { CriteriaComponent } from './components/search-criteria/criteria/criteria.component';
 import { SearchResultComponent } from './components/search-result/search-result/search-result.component';
 import { SearchResultItemComponent } from './components/search-result-item/search-result-item/search-result-item.component';
@@ -19,6 +19,7 @@ import { SearchResultPageComponent } from './components/search-result-page/searc
 import { SearchResultPaginationComponent } from './components/search-result-pagination/search-result-pagination/search-result-pagination.component';
 import { MainProfileComponent } from './components/main-profile/main-profile/main-profile.component';
 import { SearchSettingsComponent } from './components/search-settings/search-settings/search-settings.component';
+import { FileUploadDirective } from './directives/file-upload.directive';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SearchSettingsComponent } from './components/search-settings/search-set
     SearchResultPaginationComponent,
     MainProfileComponent,
     SearchSettingsComponent,
+    FileUploadDirective,
   ],
   imports: [
     BrowserModule,
