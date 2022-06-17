@@ -27,6 +27,8 @@ namespace Dating.Logic.DTO
         public string Region { get; set; }
 
         public string Town { get; set; }
+
+        public string Photo { get; set; }
     }
 }
 

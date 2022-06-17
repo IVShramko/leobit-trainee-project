@@ -6,8 +6,10 @@ using Dating.Logic.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Dating.Logic.Facades.UserProfileFacade
@@ -68,12 +70,41 @@ namespace Dating.Logic.Facades.UserProfileFacade
         {
             var aspUser = await _userManager.FindByNameAsync(fullData.UserName);
 
-                UserProfile profile = _mapper.Map<UserProfile>(fullData);
+            Guid photoid = AddPhoto(fullData.Photo, fullData.Id);
 
-                profile.AspNetUserId = aspUser.Id;
-                profile.AspNetUser = aspUser;
-                _repository.UpdateUserData(profile);
-            
+            UserProfile profile = new UserProfile()
+            {
+                Id = fullData.Id,
+                AspNetUser = aspUser,
+                AspNetUserId = aspUser.Id,
+                FirstName = fullData.FirstName,
+                LastName = fullData.LastName,
+                BirthDate = fullData.BirthDate,
+                Gender = fullData.Gender,
+                PhoneNumber = fullData.PhoneNumber,
+                Region = fullData.Region,
+                Town = fullData.Town
+            };
+
+            _repository.UpdateUserData(profile);
+
+        }
+
+        private Guid AddPhoto(string DataUrlString, Guid UserId)
+        {
+            var base64Data = Regex.Match(DataUrlString, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+
+            var photobytes = Convert.FromBase64String(base64Data);
+
+            string root = Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "/img";
+
+            string path = Directory.CreateDirectory(root + "/" + UserId).FullName;
+
+            Guid id = Guid.NewGuid();
+
+            File.WriteAllBytes(path + "/" + id, photobytes);
+
+            return id;
         }
     }
 }
