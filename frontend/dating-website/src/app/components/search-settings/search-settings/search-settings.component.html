@@ -9,8 +9,8 @@
                     <select class="form-select" formControlName="filter"
                     (change)="ChangeFilter()">
                         <option selected disabled [ngValue]="null">Choose filter</option>
-                        <option value="Age">Age</option>
-                        <option value="Name">Name</option>
+                        <option [ngValue]="0">Age</option>
+                        <option [ngValue]="1">Name</option>
                     </select>
                 </div>
             </div>

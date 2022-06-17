@@ -1,3 +1,4 @@
+import { Filters } from './../../../enums/Filters';
 import { PAGE_SIZE } from './../../../Constants';
 import { ProfileCriteria } from './../../../models/Criteria';
 import { SearchService } from './../../../services/search-service/search.service';
@@ -73,6 +74,8 @@ export class SearchResultComponent implements OnInit {
       searchFilter: this.SearchFilter,
       profile: profileCriteria
     }
+
+    console.log(fullCriteria);
 
     return fullCriteria;
   }

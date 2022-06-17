@@ -1,3 +1,4 @@
+import { Filters } from './../enums/Filters';
 export interface Criteria
 {
     profile: ProfileCriteria

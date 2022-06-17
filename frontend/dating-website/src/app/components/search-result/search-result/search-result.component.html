@@ -8,6 +8,11 @@
                 <app-search-settings (sizeChangeEvent)="OnPageSizeChange($event)" (filterChangeEvent)="OnSearchFilterChange($event)"></app-search-settings>
             </div>
         </div>
+        <div class="row mt-5" *ngIf="(ResultsTotal$ | async) === 0">
+            <div class="col align-items-center">
+                <h1 class="text-center">No matches found</h1>
+            </div>
+        </div>
         <div class="row my-3">
             <app-search-result-page [UserProfiles]="Profiles$ | async"></app-search-result-page>
         </div>

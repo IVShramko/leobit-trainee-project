@@ -1,8 +1,8 @@
-import { PAGE_SIZE } from './../../../Constants';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, Input, OnInit } from '@angular/core';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { Filters } from 'src/app/enums/Filters';
 
 @Component({
   selector: 'app-search-settings',
@@ -14,7 +14,7 @@ export class SearchSettingsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) { }
 
   settingsForm: FormGroup;
-  
+  filters: Filters;
   filterParameter: string;
   pageSize: number;
   @Output() sizeChangeEvent = new EventEmitter<number>();
@@ -26,7 +26,7 @@ export class SearchSettingsComponent implements OnInit {
         2
       ],
       filter: [
-        'Age'
+        null
       ]
     })
   }
@@ -47,6 +47,6 @@ export class SearchSettingsComponent implements OnInit {
 
   ChangeFilter()
   {
-    this.filterChangeEvent.emit(this.filter?.value);
+    this.filterChangeEvent.emit(Filters[this.filter?.value]);
   }
 }
