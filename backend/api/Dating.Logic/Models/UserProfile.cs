@@ -27,5 +27,7 @@ namespace Dating.Logic.Models
         public string Region { get; set; }
 
         public string Town { get; set; }
+
+        public Guid Avatar { get; set; }
     }
 }
