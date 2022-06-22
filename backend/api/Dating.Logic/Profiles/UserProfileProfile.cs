@@ -8,7 +8,7 @@ namespace Dating.Logic.Profiles
     {
         public UserProfileProfile()
         {
-            CreateMap<UserProfileFullDTO, UserProfile>();
+            CreateMap<UserProfileFullDTO, UserProfileFullDTO>();
         }
     }
 }

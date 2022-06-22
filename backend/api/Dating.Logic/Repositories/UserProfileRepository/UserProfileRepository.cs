@@ -27,19 +27,19 @@ namespace Dating.Logic.Repositories
         {
             UserProfile userData = await _context.UserProfiles
                 .Where(p => p.AspNetUserId == aspNetUserId)
-                //.Select(p => new UserProfileFullDTO
-                //{
-                //    Id = p.Id,
-                //    UserName = p.AspNetUser.UserName,
-                //    FirstName = p.FirstName,
-                //    LastName = p.LastName,
-                //    Email = p.AspNetUser.Email,
-                //    BirthDate = p.BirthDate,
-                //    Gender = p.Gender,
-                //    PhoneNumber = p.PhoneNumber,
-                //    Region = p.Region,
-                //    Town = p.Town
-                //})
+                .Select(p => new UserProfile
+                {
+                    Id = p.Id,
+                    AspNetUser = p.AspNetUser,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    BirthDate = p.BirthDate,
+                    Gender = p.Gender,
+                    PhoneNumber = p.PhoneNumber,
+                    Region = p.Region,
+                    Town = p.Town,
+                    Avatar = p.Avatar
+                })
                 .SingleOrDefaultAsync();
 
             return userData;
@@ -65,7 +65,7 @@ namespace Dating.Logic.Repositories
         {
             SearchResultDTO result = new SearchResultDTO();
 
-            IQueryable<UserProfile> query = PrepareQuery(criteria.Profile);
+            IQueryable<Models.UserProfile> query = PrepareQuery(criteria.Profile);
             result.ResultsTotal = query.Count();
 
             query = OrderQuery(query, criteria.Filter);
@@ -85,9 +85,9 @@ namespace Dating.Logic.Repositories
             return result;
         }
 
-        private IQueryable<UserProfile> PrepareQuery(ProfileCriteria criteria)
+        private IQueryable<Models.UserProfile> PrepareQuery(ProfileCriteria criteria)
         {
-            IQueryable<UserProfile> query = _context.UserProfiles
+            IQueryable<Models.UserProfile> query = _context.UserProfiles
                 .Where(u => u.FirstName != null && u.LastName != null);
 
             query = query.Where(u => u.Gender == criteria.Gender);
@@ -119,7 +119,7 @@ namespace Dating.Logic.Repositories
             return query;
         }
 
-        private IQueryable<UserProfile> OrderQuery(IQueryable<UserProfile> query, Filters filter)
+        private IQueryable<Models.UserProfile> OrderQuery(IQueryable<Models.UserProfile> query, Filters filter)
         {
             switch (filter)
             {
@@ -133,13 +133,13 @@ namespace Dating.Logic.Repositories
             return query;
         }
 
-        public void SaveUserData(UserProfile userProfile)
+        public void SaveUserData(Models.UserProfile userProfile)
         {
             _context.UserProfiles.Add(userProfile);
             _context.SaveChanges();
         }
 
-        public void UpdateUserData(UserProfile userProfile)
+        public void UpdateUserData(Models.UserProfile userProfile)
         {
             _context.UserProfiles.Update(userProfile);
             _context.SaveChanges();

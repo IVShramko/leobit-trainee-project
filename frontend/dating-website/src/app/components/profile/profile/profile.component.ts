@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { Regions } from '../../../enums/regions';
 import { Genders } from 'src/app/enums/Genders';
 import { UserService } from 'src/app/services/user-service/user.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -17,14 +18,16 @@ export class ProfileComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     public customValidatorsService: CustomValidatorsService,
-    private userService: UserService, private regionService: RegionService)
+    private userService: UserService, private regionService: RegionService, 
+    private sanitizer: DomSanitizer)
   {}
 
   editProfileForm: FormGroup;
   regions: string[] = [];
   genders: string[] = [];
   private currentProfile: UserProfile | undefined;
-  private profileImage : string;
+  profileImage : string;
+  ImageSourse: any;
 
   async ngOnInit(): Promise<void> {
 
@@ -32,6 +35,8 @@ export class ProfileComponent implements OnInit {
     this.genders = Object.keys(Genders).filter(f => isNaN(Number(f)));
 
     this.currentProfile = await this.userService.GetFullProfile().toPromise();
+
+    this.ImageSourse = this.sanitizer.bypassSecurityTrustResourceUrl("data:image/png;base64," + this.currentProfile?.photo as string);
 
     this.editProfileForm = this.formBuilder.group({
       userName: new FormControl({
@@ -85,7 +90,7 @@ export class ProfileComponent implements OnInit {
         ]
       ],
       photo: [
-        this.currentProfile?.photo, [
+        null, [
           Validators.required,
           this.customValidatorsService.FileTypeValidator
         ]
@@ -194,7 +199,6 @@ export class ProfileComponent implements OnInit {
 
       return profile;
   }
-
 
   OnApply()
   {

@@ -35,11 +35,13 @@ namespace Dating.Logic.Facades.UserProfileFacade
 
             string photo = _imageRepository.GetPhotoById(profile.Avatar, profile.Id);
 
-            UserProfileFullDTO fullData = new UserProfileFullDTO()
+            UserProfileFullDTO fullData = new UserProfileFullDTO
             {
                 Id = profile.Id,
+                UserName = profile.AspNetUser.UserName,
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
+                Email = profile.AspNetUser.Email,
                 BirthDate = profile.BirthDate,
                 Gender = profile.Gender,
                 PhoneNumber = profile.PhoneNumber,
@@ -69,7 +71,7 @@ namespace Dating.Logic.Facades.UserProfileFacade
             if (result.Succeeded)
             {
                 var aspUser = await _userManager.FindByNameAsync(registerData.UserName);
-                UserProfile profile = new UserProfile
+                Models.UserProfile profile = new Models.UserProfile
                 {
                     AspNetUserId = aspUser.Id,
                     BirthDate = registerData.Data.BirthDate,
@@ -84,13 +86,13 @@ namespace Dating.Logic.Facades.UserProfileFacade
             return false;
         }
 
-        public async Task ChangeProfileAsync(UserProfileFullDTO fullData)
+        public async Task ChangeProfileAsync(DTO.UserProfileFullDTO fullData)
         {
             var aspUser = await _userManager.FindByNameAsync(fullData.UserName);
 
             Guid photoId = _imageRepository.AddPhoto(fullData.Photo, fullData.Id);
 
-            UserProfile profile = new UserProfile()
+            Models.UserProfile profile = new Models.UserProfile()
             {
                 Id = fullData.Id,
                 AspNetUser = aspUser,

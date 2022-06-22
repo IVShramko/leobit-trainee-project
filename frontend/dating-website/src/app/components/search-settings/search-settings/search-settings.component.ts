@@ -30,6 +30,7 @@ export class SearchSettingsComponent implements OnInit {
       ]
     })
   }
+  
   get size()
   {
     return this.settingsForm.controls.size;

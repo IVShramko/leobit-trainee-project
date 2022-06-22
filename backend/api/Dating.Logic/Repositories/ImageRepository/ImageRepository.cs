@@ -39,11 +39,24 @@ namespace Dating.Logic.Repositories.ImageRepository
 
         public string GetPhotoById(Guid id, Guid userId)
         {
-            string path = Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "/img/" + userId;
-  
-            var photobytes = File.ReadAllBytes(path);
+            string folderPath = Path.Combine(
+                Directory.GetParent(Directory.GetCurrentDirectory()).FullName,
+                "img",
+                userId.ToString());
+
+            string filePath = Path.Combine(folderPath, id.ToString());
+
+            try
+            {
+                var photobytes = File.ReadAllBytes(filePath);
                 
-            return Convert.ToBase64String(photobytes);
+                return Convert.ToBase64String(photobytes);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+
         }
     }
 }
