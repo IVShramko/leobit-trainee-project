@@ -1,3 +1,4 @@
+import { AccountComponent } from './components/account/account/account.component';
 import { AuthGuard } from './guards/AuthGuard';
 import { CanActivate } from '@angular/router';
 import { ProfileComponent } from './components/profile/profile/profile.component';
@@ -27,8 +28,8 @@ const routes: Routes = [
     component : UnauthorizedComponent,
   },
   {
-    path : 'profile', 
-    component : ProfileComponent,
+    path : 'account', 
+    component : AccountComponent,
     canActivate : [AuthGuard]
   }
 ];

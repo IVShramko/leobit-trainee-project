@@ -20,6 +20,9 @@ import { SearchResultPaginationComponent } from './components/search-result-pagi
 import { MainProfileComponent } from './components/main-profile/main-profile/main-profile.component';
 import { SearchSettingsComponent } from './components/search-settings/search-settings/search-settings.component';
 import { FileUploadDirective } from './directives/file-upload.directive';
+import { GalleryComponent } from './components/gallery/gallery/gallery.component';
+import { AccountComponent } from './components/account/account/account.component';
+import { AlbumComponent } from './components/album/album/album.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,9 @@ import { FileUploadDirective } from './directives/file-upload.directive';
     MainProfileComponent,
     SearchSettingsComponent,
     FileUploadDirective,
+    GalleryComponent,
+    AccountComponent,
+    AlbumComponent,
   ],
   imports: [
     BrowserModule,
