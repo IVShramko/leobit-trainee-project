@@ -1,9 +1,14 @@
 using Dating.Logic.DB;
+using Dating.Logic.Facades.GalleryFacade;
 using Dating.Logic.Facades.SearchFacade;
 using Dating.Logic.Facades.UserFacade;
 using Dating.Logic.Facades.UserProfileFacade;
 using Dating.Logic.Repositories;
 using Dating.Logic.Repositories.ImageRepository;
+using Dating.Logic.Repositories.UserAlbumRepository;
+using Dating.Logic.Repositories.UserPhotoRepository;
+using Dating.Logic.Resourses.AlbumManager;
+using Dating.Logic.Resourses.PhotoManager;
 using Dating.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -84,17 +89,24 @@ namespace Dating.WebAPI
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            //repositories
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            services.AddScoped<IUserAlbumRepository, UserAlbumRepository>();
+            services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
+
+            //facades
             services.AddScoped<IUserFacade, UserFacade>();
             services.AddScoped<IUserProfileFacade, UserProfileFacade>();
-
             services.AddScoped<ISearchFacade, SearchFacade>();
+            services.AddScoped<IGalleryFacade, GalleryFacade>();
 
-            services.AddScoped<IImageRepository, ImageRepository>();
-
-            services.AddTransient<TokenManagerMiddleware>();
+            //managers
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IPhotoManager, PhotoManager>();
+            services.AddScoped<IAlbumManager, AlbumManager>();
+
+            services.AddTransient<TokenManagerMiddleware>();
 
             services.AddDistributedRedisCache(r =>
             {
