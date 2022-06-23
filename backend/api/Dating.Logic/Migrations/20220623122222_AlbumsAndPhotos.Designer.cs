@@ -4,14 +4,16 @@ using Dating.Logic.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dating.Logic.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220623122222_AlbumsAndPhotos")]
+    partial class AlbumsAndPhotos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,9 +61,12 @@ namespace Dating.Logic.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid?>("UserAlbumId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AlbumId");
+                    b.HasIndex("UserAlbumId");
 
                     b.ToTable("UserPhotos");
                 });
@@ -318,13 +323,11 @@ namespace Dating.Logic.Migrations
 
             modelBuilder.Entity("Dating.Logic.Models.UserPhoto", b =>
                 {
-                    b.HasOne("Dating.Logic.Models.UserAlbum", "Album")
+                    b.HasOne("Dating.Logic.Models.UserAlbum", "UserAlbum")
                         .WithMany()
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserAlbumId");
 
-                    b.Navigation("Album");
+                    b.Navigation("UserAlbum");
                 });
 
             modelBuilder.Entity("Dating.Logic.Models.UserProfile", b =>

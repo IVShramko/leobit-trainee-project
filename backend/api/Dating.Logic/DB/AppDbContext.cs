@@ -12,6 +12,10 @@ namespace Dating.Logic.DB
 
         public DbSet<UserProfile> UserProfiles { get; set; }
 
+        public DbSet<UserAlbum> UserAlbums { get; set; }
+
+        public DbSet<UserPhoto> UserPhotos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserProfile>()
