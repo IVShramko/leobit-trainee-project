@@ -17,6 +17,7 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
         {
             _context = context;
         }
+
         public async Task<ICollection<UserAlbumDTO>> GetAllAlbumsAsync(Guid userId)
         {
             return await _context.UserAlbums

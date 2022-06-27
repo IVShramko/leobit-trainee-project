@@ -29,8 +29,9 @@ namespace Dating.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Photos(Guid albumId)
         {
+            var photos = await _galleryFacade.GetAllPhotosAsync(albumId);
 
-            return Ok();
+            return Ok(photos);
         }
 
         [HttpPost]

@@ -8,5 +8,7 @@ namespace Dating.Logic.Facades.GalleryFacade
     public interface IGalleryFacade
     {
         public Task<ICollection<UserAlbumDTO>> GetAllAlbumsAsync(Guid userId);
+
+        public Task<ICollection<UserPhotoDTO>> GetAllPhotosAsync(Guid albumId);
     }
 }
