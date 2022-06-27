@@ -65,7 +65,7 @@ namespace Dating.Logic.Repositories
         {
             SearchResultDTO result = new SearchResultDTO();
 
-            IQueryable<Models.UserProfile> query = PrepareQuery(criteria.Profile);
+            IQueryable<UserProfile> query = PrepareQuery(criteria.Profile);
             result.ResultsTotal = query.Count();
 
             query = OrderQuery(query, criteria.Filter);
@@ -85,9 +85,9 @@ namespace Dating.Logic.Repositories
             return result;
         }
 
-        private IQueryable<Models.UserProfile> PrepareQuery(ProfileCriteria criteria)
+        private IQueryable<UserProfile> PrepareQuery(ProfileCriteria criteria)
         {
-            IQueryable<Models.UserProfile> query = _context.UserProfiles
+            IQueryable<UserProfile> query = _context.UserProfiles
                 .Where(u => u.FirstName != null && u.LastName != null);
 
             query = query.Where(u => u.Gender == criteria.Gender);
@@ -119,7 +119,7 @@ namespace Dating.Logic.Repositories
             return query;
         }
 
-        private IQueryable<Models.UserProfile> OrderQuery(IQueryable<Models.UserProfile> query, Filters filter)
+        private IQueryable<UserProfile> OrderQuery(IQueryable<UserProfile> query, Filters filter)
         {
             switch (filter)
             {
@@ -133,13 +133,13 @@ namespace Dating.Logic.Repositories
             return query;
         }
 
-        public void SaveUserData(Models.UserProfile userProfile)
+        public void SaveUserData(UserProfile userProfile)
         {
             _context.UserProfiles.Add(userProfile);
             _context.SaveChanges();
         }
 
-        public void UpdateUserData(Models.UserProfile userProfile)
+        public void UpdateUserData(UserProfile userProfile)
         {
             _context.UserProfiles.Update(userProfile);
             _context.SaveChanges();

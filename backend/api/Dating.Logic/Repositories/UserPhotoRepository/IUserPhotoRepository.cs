@@ -8,5 +8,6 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
 {
     public interface IUserPhotoRepository
     {
+        
     }
 }

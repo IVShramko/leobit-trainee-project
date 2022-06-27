@@ -93,6 +93,7 @@ namespace Dating.WebAPI
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IUserAlbumRepository, UserAlbumRepository>();
             services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
+            services.AddScoped<IImageRepository,ImageRepository>();
 
             //facades
             services.AddScoped<IUserFacade, UserFacade>();

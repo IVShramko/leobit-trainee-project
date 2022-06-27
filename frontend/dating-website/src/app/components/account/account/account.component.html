@@ -3,18 +3,19 @@
         <div class="col">
             <ul class="nav nav-tabs nav-fill" id="nav-tab">
                 <li class="nav-item">
-                    <button class="nav-link active link-dark" data-bs-toggle="tab" data-bs-target="#nav-profile">Profile</button>
+                    <a class="nav-link link-dark" routerLink="./profile" 
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    Profile</a>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link link-dark" data-bs-toggle="tab" data-bs-target="#nav-gallery">Gallery</button>
+                    <a class="nav-link link-dark" routerLink="./gallery" 
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+                    Gallery</a>
                 </li>
               </ul>
               <div class="tab-content" id="nav-tabContent">
-                  <div class="tab-pane fade show active" id="nav-profile">
-                      <app-profile></app-profile>
-                  </div>
-                  <div class="tab-pane fade" id="nav-gallery">
-                      <app-gallery></app-gallery>
+                  <div class="tab-pane fade show active">
+                    <router-outlet></router-outlet>
                   </div>
               </div>
         </div>

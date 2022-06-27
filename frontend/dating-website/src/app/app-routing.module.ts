@@ -8,6 +8,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home/home.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
 import { RegisterComponent } from './components/RegisterPage/register/register.component';
+import { GalleryComponent } from './components/gallery/gallery/gallery.component';
+import { AlbumComponent } from './components/album/album/album.component';
 
 const routes: Routes = [
   {
@@ -30,7 +32,21 @@ const routes: Routes = [
   {
     path : 'account', 
     component : AccountComponent,
-    canActivate : [AuthGuard]
+    canActivate : [AuthGuard],
+    children : [
+      {
+        path : 'profile', 
+        component : ProfileComponent,
+      },
+      {
+        path : 'gallery', 
+        component : GalleryComponent
+      },
+      {
+        path : 'gallery/:name', 
+        component : AlbumComponent
+      }
+    ]
   }
 ];
 
