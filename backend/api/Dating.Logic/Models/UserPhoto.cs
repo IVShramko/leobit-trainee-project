@@ -15,8 +15,5 @@ namespace Dating.Logic.Models
         [MaxLength(100)]
         public string Name { get; set; }
 
-        [Required]
-        [MaxLength(10)]
-        public string Extension { get; set; }
     }
 }
