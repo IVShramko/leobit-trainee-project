@@ -30,12 +30,12 @@ export class GalleryService {
 
   // GetAllAlbums(userId: string): Observable<Album[]>
   // {
-  //   return this.server.get<Album[]>(this.path + 'albums');
+  //   return this.server.get<Album[]>(this.path + '/albums');
   // }
 
   GetAllPhotos(albumId: string): Observable<Photo[]>
   {
-    return this.server.get<Photo[]>(this.path + 'photos');
+    return this.server.get<Photo[]>(this.path + '/photos');
   }
 
 }
