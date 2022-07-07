@@ -1,7 +1,8 @@
 using Dating.Logic.DB;
-using Dating.Logic.Facades.GalleryFacade;
+using Dating.Logic.Facades.AccountFacade;
+using Dating.Logic.Facades.AlbumFacade;
+using Dating.Logic.Facades.PhotoFacade;
 using Dating.Logic.Facades.SearchFacade;
-using Dating.Logic.Facades.UserFacade;
 using Dating.Logic.Facades.UserProfileFacade;
 using Dating.Logic.Repositories;
 using Dating.Logic.Repositories.ImageRepository;
@@ -9,6 +10,7 @@ using Dating.Logic.Repositories.UserAlbumRepository;
 using Dating.Logic.Repositories.UserPhotoRepository;
 using Dating.Logic.Resourses.AlbumManager;
 using Dating.Logic.Resourses.PhotoManager;
+using Dating.Logic.Services;
 using Dating.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -71,8 +73,6 @@ namespace Dating.WebAPI
                 };
             });
 
-            
-
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -96,10 +96,11 @@ namespace Dating.WebAPI
             services.AddScoped<IImageRepository,ImageRepository>();
 
             //facades
-            services.AddScoped<IUserFacade, UserFacade>();
+            services.AddScoped<IAccountFacade, AccountFacade>();
             services.AddScoped<IUserProfileFacade, UserProfileFacade>();
             services.AddScoped<ISearchFacade, SearchFacade>();
-            services.AddScoped<IGalleryFacade, GalleryFacade>();
+            services.AddScoped<IAlbumFacade, AlbumFacade>();
+            services.AddScoped<IPhotoFacade, PhotoFacade>();
 
             //managers
             services.AddTransient<ITokenManager, TokenManager>();

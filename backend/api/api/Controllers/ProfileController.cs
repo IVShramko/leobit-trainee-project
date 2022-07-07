@@ -1,9 +1,9 @@
 ﻿using Dating.Logic.DTO;
 using Dating.Logic.Facades.UserProfileFacade;
+using Dating.Logic.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 namespace Dating.WebAPI.Controllers
@@ -13,30 +13,21 @@ namespace Dating.WebAPI.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IUserProfileFacade _profileFacade;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ITokenManager _tokenManager;
 
         public ProfileController(IUserProfileFacade profileFacade,
-            IHttpContextAccessor httpContextAccessor)
+            ITokenManager tokenManager)
         {
             _profileFacade = profileFacade;
-            _httpContextAccessor = httpContextAccessor;
+            _tokenManager = tokenManager;
         }
 
         [HttpGet]
         public async Task<IActionResult> Main()
         {
-            var authHeader = _httpContextAccessor
-                .HttpContext.Request.Headers["authorization"];
+            Guid id = _tokenManager.ReadProfileId();
 
-            string jsontoken = authHeader.Single().Split(" ").Last();
-            var token = new JwtSecurityTokenHandler().ReadJwtToken(jsontoken);
-
-            var aspnetid = token.Claims
-                .Where(c => c.Type == "sub")
-                .Select(c => c.Value)
-                .FirstOrDefault();
-
-            var mainProfile = await _profileFacade.GetUserProfileMainDataAsync(aspnetid);
+            var mainProfile = await _profileFacade.GetUserProfileMainDataAsync(id);
 
             return Ok(mainProfile);
         }
@@ -44,15 +35,10 @@ namespace Dating.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Full()
         {
-            var authHeader = _httpContextAccessor
-                .HttpContext.Request.Headers["authorization"];
-            var jsontoken = authHeader.Single().Split(" ").Last();
-            var token = new JwtSecurityTokenHandler().ReadJwtToken(jsontoken);
-            var aspnetid = token.Claims
-                .Where(c => c.Type == "sub")
-                .Select(c => c.Value)
-                .FirstOrDefault();
-            var fullProfile = await _profileFacade.GetUserProfileFullDataAsync(aspnetid);
+            Guid id = _tokenManager.ReadProfileId();
+
+            var fullProfile = await _profileFacade.GetUserProfileFullDataAsync(id);
+
             return Ok(fullProfile);
         }
 

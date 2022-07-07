@@ -2,7 +2,7 @@
 
 namespace Dating.Logic.DTO
 {
-    public class UserAlbumDTO
+    public class PhotoMainDTO
     {
         public Guid Id { get; set; }
 

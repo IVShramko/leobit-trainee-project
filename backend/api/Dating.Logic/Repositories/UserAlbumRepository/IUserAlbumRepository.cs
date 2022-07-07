@@ -8,6 +8,14 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
 {
     public interface IUserAlbumRepository
     {
-        public Task<ICollection<UserAlbumDTO>> GetAllAlbumsAsync(Guid userId);
+        public Task<ICollection<AlbumMainDTO>> GetAllAsync(Guid userId);
+
+        public Task<AlbumFullDTO> GetAlbumByIdAsync(Guid id);
+
+        public bool Exists(Guid userId, string name);
+
+        public bool Create(UserAlbum album);
+
+        public bool Update(UserAlbum album);
     }
 }

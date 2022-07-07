@@ -1,4 +1,4 @@
-export interface Photo
+export interface PhotoMain
 {
     id: string
     name: string

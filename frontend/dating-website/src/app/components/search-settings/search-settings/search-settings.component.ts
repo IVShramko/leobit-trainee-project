@@ -1,5 +1,5 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { Filters } from 'src/app/enums/Filters';
@@ -18,7 +18,7 @@ export class SearchSettingsComponent implements OnInit {
   filterParameter: string;
   pageSize: number;
   @Output() sizeChangeEvent = new EventEmitter<number>();
-  @Output() filterChangeEvent = new EventEmitter<string>();
+  @Output() filterChangeEvent = new EventEmitter<number>();
 
   ngOnInit(): void {
     this.settingsForm = this.formBuilder.group({
@@ -48,6 +48,6 @@ export class SearchSettingsComponent implements OnInit {
 
   ChangeFilter()
   {
-    this.filterChangeEvent.emit(Filters[this.filter?.value]);
+    this.filterChangeEvent.emit(this.filter?.value);
   }
 }

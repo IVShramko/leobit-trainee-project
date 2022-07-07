@@ -1,5 +1,4 @@
 import { Filters } from './../../../enums/Filters';
-import { PAGE_SIZE } from './../../../Constants';
 import { ProfileCriteria } from './../../../models/Criteria';
 import { SearchService } from './../../../services/search-service/search.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -21,7 +20,7 @@ export class SearchResultComponent implements OnInit {
   Profiles$ = new Subject<SearchResultUserProfile[]>();
   PageIndex: number = 1;
   PageSize: number = 2;
-  SearchFilter: string = 'Age';
+  SearchFilter: number = 0;
   private _profileCriteria: ProfileCriteria;
 
   ngOnInit(): void 
@@ -51,7 +50,7 @@ export class SearchResultComponent implements OnInit {
     this.LoadResultPage();
   }
 
-  OnSearchFilterChange(filter: string)
+  OnSearchFilterChange(filter: number)
   {
     this.SearchFilter = filter;
     this.LoadResultPage();
@@ -71,12 +70,10 @@ export class SearchResultComponent implements OnInit {
     const fullCriteria: Criteria = {
       pageIndex: this.PageIndex,
       pageSize: this.PageSize,
-      searchFilter: this.SearchFilter,
+      Filter: this.SearchFilter,
       profile: profileCriteria
     }
-
-    console.log(fullCriteria);
-
+    
     return fullCriteria;
   }
 

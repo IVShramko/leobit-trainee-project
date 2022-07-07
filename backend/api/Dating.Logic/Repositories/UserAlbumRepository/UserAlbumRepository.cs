@@ -18,16 +18,63 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
             _context = context;
         }
 
-        public async Task<ICollection<UserAlbumDTO>> GetAllAlbumsAsync(Guid userId)
+        public async Task<AlbumFullDTO> GetAlbumByIdAsync(Guid id)
+        {
+            return await _context.UserAlbums
+                .Where(a => a.Id == id)
+                .Select(a => new AlbumFullDTO
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Description = a.Description
+                })
+                .SingleOrDefaultAsync();
+        }
+
+        public bool Exists(Guid userId, string name)
+        {
+            return _context.UserAlbums
+                .Where(a => a.UserProfileId == userId && a.Name == name)
+                .Any();
+        }
+
+        public async Task<ICollection<AlbumMainDTO>> GetAllAsync(Guid userId)
         {
             return await _context.UserAlbums
                 .Where(a => a.UserProfileId == userId)
-                .Select(a => new UserAlbumDTO
+                .OrderBy(a => a.Name)
+                .Select(a => new AlbumMainDTO
                 {
                     Id = a.Id,
                     Name = a.Name
                 })
                 .ToListAsync();
+        }
+
+        public bool Create(UserAlbum album)
+        {
+            _context.UserAlbums.Add(album);
+            int result = _context.SaveChanges();
+
+            if (result != 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool Update(UserAlbum album)
+        {
+            _context.UserAlbums.Update(album);
+            int result = _context.SaveChanges();
+
+            if (result != 0)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

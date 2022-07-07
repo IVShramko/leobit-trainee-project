@@ -1,4 +1,4 @@
-﻿namespace Dating.WebAPI
+﻿namespace Dating.Logic.Services
 {
     public static class Constants
     {

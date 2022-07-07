@@ -1,13 +1,15 @@
-import { AbstractControl, FormControl } from '@angular/forms';
+import { AlbumService } from 'src/app/services/album-service/album.service';
+import { AbstractControl, AsyncValidatorFn, FormControl } from '@angular/forms';
 import { Injectable } from '@angular/core';
-import { pipe, tap } from 'rxjs'
+import { map, pipe, tap } from 'rxjs'
+import { NavComponent } from 'src/app/components/navbar/nav/nav.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomValidatorsService{
 
-  constructor() { }
+  constructor(private albumService: AlbumService) { }
 
   ConfirmPasswordValidator(control: AbstractControl)
   {
@@ -63,6 +65,13 @@ export class CustomValidatorsService{
       }
     }
     return null
+  }
+
+  AlbumNameValidator() : AsyncValidatorFn
+  {
+    return (control) => this.albumService.CheckNameValidity(control?.value)
+      .pipe(
+        map((res) => res ? null : {name_error: 'incorrect name'}))
   }
 }
 

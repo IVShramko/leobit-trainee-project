@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Dating.Logic.Repositories.UserPhotoRepository
@@ -18,11 +17,11 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
             _context = context;
         }
 
-        public async Task<ICollection<UserPhotoDTO>> GetAllPhotosAsync(Guid albumId)
+        public async Task<ICollection<PhotoMainDTO>> GetAllAsync(Guid albumId)
         {
             return await _context.UserPhotos
-                .Where(p => p.Id == albumId)
-                .Select(p => new UserPhotoDTO
+                .Where(p => p.AlbumId == albumId)
+                .Select(p => new PhotoMainDTO
                 {
                     Id = p.Id,
                     Name = p.Name

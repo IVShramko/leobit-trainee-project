@@ -7,6 +7,6 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
 {
     public interface IUserPhotoRepository
     {
-        public Task<ICollection<UserPhotoDTO>> GetAllPhotosAsync(Guid albumId);
+        public Task<ICollection<PhotoMainDTO>> GetAllAsync(Guid albumId);
     }
 }

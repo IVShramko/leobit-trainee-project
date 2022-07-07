@@ -1,3 +1,4 @@
+import { AlbumsComponent } from './components/albums/albums/albums.component';
 import { AccountComponent } from './components/account/account/account.component';
 import { AuthGuard } from './guards/AuthGuard';
 import { CanActivate } from '@angular/router';
@@ -8,7 +9,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home/home.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
 import { RegisterComponent } from './components/RegisterPage/register/register.component';
-import { GalleryComponent } from './components/gallery/gallery/gallery.component';
 import { AlbumComponent } from './components/album/album/album.component';
 
 const routes: Routes = [
@@ -39,11 +39,11 @@ const routes: Routes = [
         component : ProfileComponent,
       },
       {
-        path : 'gallery', 
-        component : GalleryComponent
+        path : 'albums', 
+        component : AlbumsComponent
       },
       {
-        path : 'gallery/:name', 
+        path : 'albums/:id', 
         component : AlbumComponent
       }
     ]

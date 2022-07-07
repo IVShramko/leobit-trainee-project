@@ -1,15 +1,10 @@
-﻿using AutoMapper;
-using Dating.Logic.DB;
+﻿using Dating.Logic.DB;
 using Dating.Logic.DTO;
 using Dating.Logic.Enums;
 using Dating.Logic.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Dating.Logic.Repositories
@@ -23,10 +18,10 @@ namespace Dating.Logic.Repositories
             _context = context;
         }
 
-        public async Task<UserProfile> GetFullUserDataAsync(string aspNetUserId)
+        public async Task<UserProfile> GetFullUserDataAsync(Guid id)
         {
             UserProfile userData = await _context.UserProfiles
-                .Where(p => p.AspNetUserId == aspNetUserId)
+                .Where(p => p.Id == id)
                 .Select(p => new UserProfile
                 {
                     Id = p.Id,
@@ -45,10 +40,10 @@ namespace Dating.Logic.Repositories
             return userData;
         }
 
-        public async Task<UserProfileMainDTO> GetMainUserDataAsync(string aspNetUserId)
+        public async Task<UserProfileMainDTO> GetMainUserDataAsync(Guid id)
         {
             UserProfileMainDTO userData = await _context.UserProfiles
-                .Where(p => p.AspNetUserId == aspNetUserId)
+                .Where(p => p.Id == id)
                 .Select(p => new UserProfileMainDTO
                 {
                     Id = p.Id,
@@ -68,7 +63,7 @@ namespace Dating.Logic.Repositories
             IQueryable<UserProfile> query = PrepareQuery(criteria.Profile);
             result.ResultsTotal = query.Count();
 
-            query = OrderQuery(query, criteria.Filter);
+            query = OrderQuery(query, (Filters)criteria.Filter);
 
             result.Profiles = await query
                 .Skip(criteria.PageSize * (criteria.PageIndex - 1))
@@ -143,6 +138,14 @@ namespace Dating.Logic.Repositories
         {
             _context.UserProfiles.Update(userProfile);
             _context.SaveChanges();
+        }
+
+        public Guid GetProfileIdByAspNetId(string aspNetId)
+        {
+            return _context.UserProfiles
+                .Where(p => p.AspNetUserId == aspNetId)
+                .Select(p => p.Id)
+                .FirstOrDefault();
         }
     }
 }

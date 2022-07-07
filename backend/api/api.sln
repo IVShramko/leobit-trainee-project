@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dating.WebAPI", "api\Dating.WebAPI.csproj", "{447B7FDA-AB51-49DB-BC80-6658D0BB9F89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dating.Logic", "Dating.Logic\Dating.Logic.csproj", "{3B7103F7-6D7A-4B63-90F6-10C905AE5FF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dating.Logic", "Dating.Logic\Dating.Logic.csproj", "{3B7103F7-6D7A-4B63-90F6-10C905AE5FF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

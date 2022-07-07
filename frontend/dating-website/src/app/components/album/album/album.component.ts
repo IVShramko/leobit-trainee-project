@@ -1,7 +1,9 @@
+import { PhotoService } from './../../../services/photo-service/photo.service';
+import { AlbumFull } from './../../../models/AlbumFull';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Photo } from 'src/app/models/Photo';
-import { GalleryService } from 'src/app/services/gallery-service/gallery.service';
+import { AlbumService } from 'src/app/services/album-service/album.service';
+import { PhotoMain } from 'src/app/models/PhotoMain';
 
 @Component({
   selector: 'app-album',
@@ -10,28 +12,26 @@ import { GalleryService } from 'src/app/services/gallery-service/gallery.service
 })
 export class AlbumComponent implements OnInit {
 
-  name: string;
-  id: string;
-  photos: Photo[];
+  album: AlbumFull;
+  photos: PhotoMain[];
 
   constructor(private route: ActivatedRoute,
-    private galleryService: GalleryService) { }
+    private albumService: AlbumService,
+    private photoService: PhotoService) { }
 
   ngOnInit(): void {
+
     this.route.params.subscribe(
       (params: Params) => {
-        this.name = params.name
-      }
-    );
-    this.route.queryParams.subscribe(
-      (queryParams) => {
-        this.id = queryParams.id;
         
-        this.galleryService.GetAllPhotos(this.id).subscribe(
-          (photos) => this.photos = photos
-        )
-      }
-    );
+        this.albumService.GetAlbumById(params.id).subscribe(
+          (album) => {
+            this.album = album
+
+            this.photoService.GetAllPhotos(album.id).subscribe(
+              (photos) => this.photos = photos
+            )});
+      });
   }
 
 }

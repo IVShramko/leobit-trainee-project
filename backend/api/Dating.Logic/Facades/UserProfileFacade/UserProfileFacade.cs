@@ -1,16 +1,9 @@
-﻿using AutoMapper;
-using Dating.Logic.DB;
-using Dating.Logic.DTO;
+﻿using Dating.Logic.DTO;
 using Dating.Logic.Models;
 using Dating.Logic.Repositories;
 using Dating.Logic.Repositories.ImageRepository;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Dating.Logic.Facades.UserProfileFacade
@@ -29,9 +22,9 @@ namespace Dating.Logic.Facades.UserProfileFacade
             _imageRepository = imageRepository;
         }
 
-        public async Task<UserProfileFullDTO> GetUserProfileFullDataAsync(string aspNetUserId)
+        public async Task<UserProfileFullDTO> GetUserProfileFullDataAsync(Guid id)
         {
-            var profile = await _profileRepository.GetFullUserDataAsync(aspNetUserId);
+            var profile = await _profileRepository.GetFullUserDataAsync(id);
 
             string photo = _imageRepository.GetPhotoById(profile.Avatar, profile.Id);
 
@@ -53,9 +46,9 @@ namespace Dating.Logic.Facades.UserProfileFacade
             return fullData;
         }
 
-        public async Task<UserProfileMainDTO> GetUserProfileMainDataAsync(string aspNetUserId)
+        public async Task<UserProfileMainDTO> GetUserProfileMainDataAsync(Guid id)
         {
-            return await _profileRepository.GetMainUserDataAsync(aspNetUserId);
+            return await _profileRepository.GetMainUserDataAsync(id);
         }
 
         public async Task<bool> RegisterAsync(UserProfileRegisterDTO registerData)
@@ -71,7 +64,7 @@ namespace Dating.Logic.Facades.UserProfileFacade
             if (result.Succeeded)
             {
                 var aspUser = await _userManager.FindByNameAsync(registerData.UserName);
-                Models.UserProfile profile = new Models.UserProfile
+                UserProfile profile = new UserProfile
                 {
                     AspNetUserId = aspUser.Id,
                     BirthDate = registerData.Data.BirthDate,
@@ -86,13 +79,13 @@ namespace Dating.Logic.Facades.UserProfileFacade
             return false;
         }
 
-        public async Task ChangeProfileAsync(DTO.UserProfileFullDTO fullData)
+        public async Task ChangeProfileAsync(UserProfileFullDTO fullData)
         {
             var aspUser = await _userManager.FindByNameAsync(fullData.UserName);
 
             Guid photoId = _imageRepository.AddPhoto(fullData.Photo, fullData.Id);
 
-            Models.UserProfile profile = new Models.UserProfile()
+            UserProfile profile = new UserProfile()
             {
                 Id = fullData.Id,
                 AspNetUser = aspUser,

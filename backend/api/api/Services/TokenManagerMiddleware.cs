@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dating.Logic.Services;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Threading.Tasks;
 

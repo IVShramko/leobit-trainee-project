@@ -1,3 +1,4 @@
+import { TokenInterceptor } from './interceptors/token.interceptor';
 import { AuthGuard } from './guards/AuthGuard';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -6,7 +7,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/loginPage/login/login.component';
 import { RegisterComponent } from './components/RegisterPage/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HomeComponent } from './components/home/home/home.component';
 import { NavComponent } from './components/navbar/nav/nav.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized/unauthorized.component';
@@ -20,9 +22,9 @@ import { SearchResultPaginationComponent } from './components/search-result-pagi
 import { MainProfileComponent } from './components/main-profile/main-profile/main-profile.component';
 import { SearchSettingsComponent } from './components/search-settings/search-settings/search-settings.component';
 import { FileUploadDirective } from './directives/file-upload.directive';
-import { GalleryComponent } from './components/gallery/gallery/gallery.component';
 import { AccountComponent } from './components/account/account/account.component';
 import { AlbumComponent } from './components/album/album/album.component';
+import { AlbumsComponent } from './components/albums/albums/albums.component';
 
 @NgModule({
   declarations: [
@@ -42,17 +44,24 @@ import { AlbumComponent } from './components/album/album/album.component';
     MainProfileComponent,
     SearchSettingsComponent,
     FileUploadDirective,
-    GalleryComponent,
     AccountComponent,
     AlbumComponent,
+    AlbumsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

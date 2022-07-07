@@ -4,7 +4,7 @@ export interface Criteria
     profile: ProfileCriteria
     pageSize: number
     pageIndex: number
-    searchFilter: string
+    Filter: number
 }
 export interface ProfileCriteria
 {

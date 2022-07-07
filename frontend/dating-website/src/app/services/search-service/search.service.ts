@@ -12,12 +12,12 @@ export class SearchService {
 
   constructor(private server: HttpClient) { }
 
-  private readonly searchPath: string = SEARCH_PATH;
+  private readonly path: string = SEARCH_PATH;
 
   ProfileCriteria = new Subject<ProfileCriteria>();
 
   Search(criteria: Criteria): Observable<SearchResult>
   {
-    return this.server.post<SearchResult>(this.searchPath + '/criteria', criteria);
+    return this.server.post<SearchResult>(this.path + 'criteria', criteria);
   }
 }
