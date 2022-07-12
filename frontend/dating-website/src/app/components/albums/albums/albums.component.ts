@@ -22,13 +22,13 @@ export class AlbumsComponent implements OnInit {
 
   albums: AlbumMain[];
 
-  editForm: FormGroup;
-  createForm: FormGroup;
+  albumForm: FormGroup;
+  id:string ='';
 
   ngOnInit(): void {
     this.LoadPageData();
 
-    this.createForm = this.formBuilder.group({
+    this.albumForm = this.formBuilder.group({
       name: [
         null, [
           Validators.required,
@@ -41,37 +41,19 @@ export class AlbumsComponent implements OnInit {
       ]
     })
 
-    this.createForm.controls.name
-      .addAsyncValidators(
-        this.customValidatorsService.AlbumNameValidator())
-
-    this.editForm = this.formBuilder.group({
-      name: [
-        null,[
-          Validators.required,
-          Validators.pattern('^[a-zA-Z0-9_.-]+')
-        ]
-      ]
-    })
-
-    this.editForm.controls.name
+    this.albumForm.controls.name
       .addAsyncValidators(
         this.customValidatorsService.AlbumNameValidator())
   }
 
-  get editName()
+  get name()
   {
-    return this.editForm.controls.name;
-  }
-
-  get createName()
-  {
-    return this.createForm.controls.name;
+    return this.albumForm.controls.name;
   }
 
   get description()
   {
-    return this.createForm.controls.description;
+    return this.albumForm.controls.description;
   }
 
   private LoadPageData()
@@ -89,7 +71,7 @@ export class AlbumsComponent implements OnInit {
   CreateAlbum()
   {
     const newAlbum: AlbumCreate = {
-      name: this.createName?.value,
+      name: this.name?.value,
       description: this.description?.value
     }
 
@@ -100,8 +82,34 @@ export class AlbumsComponent implements OnInit {
     )
   }
 
+  LoadFullAlbum(id: string)
+  {
+    this.albumService.GetAlbumById(id).subscribe(
+      (album) => {
+        this.id = album.id;
+        this.name?.setValue(album.name);
+        this.description?.setValue(album.description)
+      }
+    )
+  }
+
   EditAlbum()
   {
+    const newAlbum: AlbumFull = {
+      id: this.id,
+      name: this.name?.value,
+      description: this.description?.value
+    }
 
+    this.albumService.UpdateAlbum(newAlbum).subscribe(
+      (res) => this.LoadPageData()
+    )
+  }
+
+  DeleteAlbum()
+  {
+    this.albumService.DeleteAlbum(this.id).subscribe(
+      (res) => this.LoadPageData(),
+    )
   }
 }

@@ -83,7 +83,7 @@ namespace Dating.WebAPI
                 {
                     policy.AllowAnyOrigin()
                       .AllowAnyHeader()
-                      .AllowAnyMethod();
+                      .AllowAnyMethod();                      
                 });
             });
 

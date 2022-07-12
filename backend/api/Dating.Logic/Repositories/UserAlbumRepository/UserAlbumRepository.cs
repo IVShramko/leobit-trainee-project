@@ -18,17 +18,11 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
             _context = context;
         }
 
-        public async Task<AlbumFullDTO> GetAlbumByIdAsync(Guid id)
+        public async Task<UserAlbum> GetAlbumByIdAsync(Guid id)
         {
             return await _context.UserAlbums
                 .Where(a => a.Id == id)
-                .Select(a => new AlbumFullDTO
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                    Description = a.Description
-                })
-                .SingleOrDefaultAsync();
+                .FirstOrDefaultAsync();
         }
 
         public bool Exists(Guid userId, string name)
@@ -67,6 +61,19 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
         public bool Update(UserAlbum album)
         {
             _context.UserAlbums.Update(album);
+            int result = _context.SaveChanges();
+
+            if (result != 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool Delete(UserAlbum album)
+        {
+            _context.Remove(album);
             int result = _context.SaveChanges();
 
             if (result != 0)

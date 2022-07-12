@@ -2,14 +2,12 @@
 
 namespace Dating.Logic.DTO
 {
-    public class PhotoMainDTO
+    public class PhotoCreateDTO
     {
-        public Guid Id { get; set; }
-
         public Guid AlbumId { get; set; }
 
         public string Name { get; set; }
 
-        public string base64 { get; set; }
+        public string Base64 { get; set; }
     }
 }

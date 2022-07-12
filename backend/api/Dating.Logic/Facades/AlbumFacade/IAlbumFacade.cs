@@ -15,7 +15,9 @@ namespace Dating.Logic.Facades.AlbumFacade
 
         public bool CreateAlbum(Guid userId, AlbumCreateDTO album);
 
-        public bool UpdateAlbum(Guid userId, AlbumFullDTO album);
+        public Task<bool> UpdateAlbumAsync(Guid userId, AlbumFullDTO album);
+
+        public Task<bool> DeleteAlbumAsync(Guid userId, Guid albumId);
 
     }
 }

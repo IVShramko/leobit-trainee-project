@@ -1,0 +1,26 @@
+.alert{
+    font-size: 18px;
+}
+.success-message{
+    position: absolute;
+    right: 0;
+    margin: 10px 20px;
+    background-color: #2dc30084;
+    color: antiquewhite;
+    border: none;
+    align-items: center;
+    box-shadow: 0 0 10px #48ff30;
+    text-shadow: 0 0 2px antiquewhite;
+}
+
+.error-message{
+    position: absolute;
+    right: 0;
+    margin: 10px 20px;
+    background-color: #ff001984;
+    color: antiquewhite;
+    border: none;
+    align-items: center;
+    box-shadow: 0 0 10px #ff3030;
+    text-shadow: 0 0 2px antiquewhite;
+}

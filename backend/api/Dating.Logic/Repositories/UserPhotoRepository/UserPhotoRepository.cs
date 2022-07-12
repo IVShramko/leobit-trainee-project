@@ -1,5 +1,6 @@
 ﻿using Dating.Logic.DB;
 using Dating.Logic.DTO;
+using Dating.Logic.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,32 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
             _context = context;
         }
 
+        public bool Create(UserPhoto photo)
+        {
+            _context.UserPhotos.Add(photo);
+            int result = _context.SaveChanges();
+
+            if (result != 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool Delete(UserPhoto photo)
+        {
+            _context.UserPhotos.Remove(photo);
+            int result = _context.SaveChanges();
+
+            if (result != 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<ICollection<PhotoMainDTO>> GetAllAsync(Guid albumId)
         {
             return await _context.UserPhotos
@@ -24,9 +51,17 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
                 .Select(p => new PhotoMainDTO
                 {
                     Id = p.Id,
-                    Name = p.Name
+                    Name = p.Name,
+                    AlbumId = p.AlbumId
                 })
                 .ToListAsync();
+        }
+
+        public UserPhoto GetPhotoById(Guid id)
+        {
+            return _context.UserPhotos
+                .Where(p => p.Id == id)
+                .FirstOrDefault();
         }
     }
 }

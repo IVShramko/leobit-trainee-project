@@ -56,17 +56,42 @@ namespace Dating.WebAPI.Controllers
 
             bool result = _albumFacade.CreateAlbum(id, album);
 
-            return Ok(result);
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
 
         [HttpPut]
-        public IActionResult Update(AlbumFullDTO album)
+        public async Task<IActionResult> UpdateAsync(AlbumFullDTO album)
         {
             Guid id = _tokenManager.ReadProfileId();
 
-            bool result = _albumFacade.UpdateAlbum(id, album);
+            bool result = await _albumFacade.UpdateAlbumAsync(id, album);
 
-            return Ok(result);
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(Guid id)
+        {
+            Guid userId = _tokenManager.ReadProfileId();
+
+            bool result = await _albumFacade.DeleteAlbumAsync(userId, id);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }

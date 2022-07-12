@@ -1,6 +1,5 @@
-export interface PhotoMain
+export interface PhotoCreate
 {
-    id: string
     albumId: string
     name: string
     base64: string

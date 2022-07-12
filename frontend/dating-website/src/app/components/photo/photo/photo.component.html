@@ -1,0 +1,18 @@
+<div appViewPhotoName (imageHover)="OnToggleFocus($event)" class="row">
+    <div class="col position-relative">
+        <ng-content></ng-content>
+        <div class="position-absolute top-50 start-50 translate-middle" 
+        [hidden]="!isFocused">
+        <div class="d-flex">
+            <button type="button" class="btn btn-dark mx-1">
+                <i class="bi bi-eye"></i>
+            </button>
+            <button type="button" class="btn btn-dark mx-1">
+                <i class="bi bi-trash3-fill"></i>
+            </button>
+        </div>
+        </div>
+    </div>
+</div>
+
+

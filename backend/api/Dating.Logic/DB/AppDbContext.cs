@@ -21,6 +21,11 @@ namespace Dating.Logic.DB
                 .HasIndex(u => u.AspNetUserId)
                 .IsUnique();
 
+            //modelBuilder.Entity<UserAlbum>()
+            //    .HasMany(a => a.Photos)
+            //    .WithOne(p => p.Album)
+            //    .IsRequired();
+
             base.OnModelCreating(modelBuilder);
         }
     }

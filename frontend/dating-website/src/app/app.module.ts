@@ -25,6 +25,8 @@ import { FileUploadDirective } from './directives/file-upload.directive';
 import { AccountComponent } from './components/account/account/account.component';
 import { AlbumComponent } from './components/album/album/album.component';
 import { AlbumsComponent } from './components/albums/albums/albums.component';
+import { PhotoComponent } from './components/photo/photo/photo.component';
+import { ViewPhotoNameDirective } from './directives/view-photo-name.directive';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { AlbumsComponent } from './components/albums/albums/albums.component';
     AccountComponent,
     AlbumComponent,
     AlbumsComponent,
+    PhotoComponent,
+    ViewPhotoNameDirective,
   ],
   imports: [
     BrowserModule,
