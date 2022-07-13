@@ -22,6 +22,12 @@ namespace Dating.Logic.Resourses.PhotoManager
 
             string photoPath = Path.Combine(albumPath, photo.Name);
 
+            
+            if (File.Exists(photoPath))
+            {
+                throw new IOException();
+            }
+
             File.WriteAllBytes(photoPath, bytes);
         }
 

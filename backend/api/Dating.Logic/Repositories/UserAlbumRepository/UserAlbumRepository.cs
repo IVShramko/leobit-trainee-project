@@ -60,7 +60,10 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
 
         public bool Update(UserAlbum album)
         {
-            _context.UserAlbums.Update(album);
+            var entity = _context.UserAlbums.Find(album.Id);
+            _context.Entry(entity).State = EntityState.Detached;
+
+            _context.Update(album);
             int result = _context.SaveChanges();
 
             if (result != 0)
@@ -73,6 +76,9 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
 
         public bool Delete(UserAlbum album)
         {
+            var entity = _context.UserAlbums.Find(album.Id);
+            _context.Entry(entity).State = EntityState.Detached;
+
             _context.Remove(album);
             int result = _context.SaveChanges();
 

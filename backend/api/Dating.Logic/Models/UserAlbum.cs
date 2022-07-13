@@ -19,7 +19,5 @@ namespace Dating.Logic.Models
         [Required]
         [MaxLength(100)]
         public string Description { get; set; }
-
-        //public ICollection<UserPhoto> Photos { get; set; }
     }
 }

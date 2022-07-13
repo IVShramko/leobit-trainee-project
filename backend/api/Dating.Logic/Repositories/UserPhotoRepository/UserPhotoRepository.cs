@@ -33,7 +33,10 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
 
         public bool Delete(UserPhoto photo)
         {
-            _context.UserPhotos.Remove(photo);
+            var entity = _context.UserPhotos.Find(photo.Id);
+            _context.Entry(entity).State = EntityState.Detached;
+
+            _context.Remove(photo);
             int result = _context.SaveChanges();
 
             if (result != 0)
