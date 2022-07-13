@@ -61,6 +61,7 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
         {
             return _context.UserPhotos
                 .Where(p => p.Id == id)
+                .Include(p => p.Album)
                 .FirstOrDefault();
         }
     }

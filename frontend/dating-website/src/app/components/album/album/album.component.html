@@ -16,8 +16,8 @@
     </div>
     
     <div class="row content">
-        <app-photo *ngFor="let photo of photos" [photo]="photo">
-            <img #image [src]="ConvertToImage(photo.base64)">
+        <app-photo *ngFor="let photo of photos" [photo]="photo" (onDelete)="OnPhotoDelete($event)">
+            <img #image [src]="ConvertToImage(photo.base64, photo.name)">
         </app-photo>
     </div>
 

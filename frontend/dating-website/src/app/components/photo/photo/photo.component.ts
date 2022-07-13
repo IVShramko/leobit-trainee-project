@@ -1,5 +1,5 @@
 import { PhotoMain } from 'src/app/models/PhotoMain';
-import { AfterContentInit, Input, OnChanges } from '@angular/core';
+import { AfterContentInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Component, ContentChild, ElementRef, OnInit, Renderer2, } from '@angular/core';
 
 @Component({
@@ -11,6 +11,7 @@ export class PhotoComponent implements OnInit, AfterContentInit {
 
   @ContentChild('image') image: ElementRef;
   @Input() photo: PhotoMain;
+  @Output('onDelete') deleteId = new EventEmitter<string>();
 
   isFocused: boolean = false;
 
@@ -29,4 +30,8 @@ export class PhotoComponent implements OnInit, AfterContentInit {
     this.isFocused = value;
   }
 
+  OnDelete()
+  {
+    this.deleteId.emit(this.photo.id);
+  }
 }

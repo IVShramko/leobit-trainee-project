@@ -67,6 +67,13 @@ export class AlbumComponent implements OnInit {
     );
   }
 
+  OnPhotoDelete(id: string)
+  {
+    this.photoService.DeletePhoto(id).subscribe(
+      (res) => this.LoadPhotos(this.album.id)
+    )
+  }
+
   private ConvertToBase64(file: File)
   {
     return new Promise((resolve, reject) => 
@@ -79,9 +86,11 @@ export class AlbumComponent implements OnInit {
     });
   }
 
-  ConvertToImage(base64: string): SafeResourceUrl
+  ConvertToImage(base64: string, name: string): SafeResourceUrl
   {
+    const extension = name.split('.').shift();
+    
     return this.sanitizer.bypassSecurityTrustResourceUrl(
-      "data:image/png;base64," + base64 as string);
+      `data:image/${extension};base64,` + base64 as string);
   }
 }
