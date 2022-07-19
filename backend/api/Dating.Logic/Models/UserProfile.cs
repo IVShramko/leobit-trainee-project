@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dating.Logic.Models
@@ -29,5 +30,7 @@ namespace Dating.Logic.Models
         public string Town { get; set; }
 
         public Guid Avatar { get; set; }
+
+        public ICollection<UserAlbum> Albums { get; set; }
     }
 }

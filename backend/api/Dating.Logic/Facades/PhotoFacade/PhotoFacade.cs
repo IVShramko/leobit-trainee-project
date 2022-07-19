@@ -26,21 +26,13 @@ namespace Dating.Logic.Facades.PhotoFacade
 
         public async Task<bool> CreatePhotoAsync(Guid userId, PhotoCreateDTO photo)
         {
-            UserAlbum album = await _albumRepository.GetAlbumByIdAsync(photo.AlbumId);
+            AlbumFullDTO album = await _albumRepository.GetAlbumByIdAsync(photo.AlbumId);
 
             try
             {
-                _photoManager.CreatePhoto(userId, album.Name, photo);
+                _photoManager.CreatePhoto(userId, album.Name, photo);        
 
-                UserPhoto newPhoto = new UserPhoto()
-                {
-                    Id = Guid.NewGuid(),
-                    Album = album,
-                    AlbumId = album.Id,
-                    Name = photo.Name
-                };
-
-                return _photoRepository.Create(newPhoto);
+                return _photoRepository.Create(album.Id, photo);
             }
             catch (Exception)
             {
@@ -56,7 +48,7 @@ namespace Dating.Logic.Facades.PhotoFacade
             {
                 _photoManager.DeletePhoto(userId, photo.Album.Name, photo.Name);
 
-                return _photoRepository.Delete(photo);
+                return _photoRepository.Delete(id);
             }
             catch (Exception)
             {
@@ -78,11 +70,11 @@ namespace Dating.Logic.Facades.PhotoFacade
                     string base64 = _photoManager
                         .GetPhotoBase64String(userId, albumName, photo.Name);
 
-                    photo.base64 = base64;
+                    photo.Data = base64;
                 }
                 catch (Exception)
                 {
-                    photo.base64 = null;
+                    photo.Data = null;
                 }
             }
 

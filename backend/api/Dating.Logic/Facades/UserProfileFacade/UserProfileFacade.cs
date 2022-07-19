@@ -51,7 +51,7 @@ namespace Dating.Logic.Facades.UserProfileFacade
             return await _profileRepository.GetMainUserDataAsync(id);
         }
 
-        public async Task<bool> RegisterAsync(UserProfileRegisterDTO registerData)
+        public async Task<bool> RegisterAsync(UserRegisterDTO registerData)
         {
             IdentityUser user = new IdentityUser()
             {
@@ -64,16 +64,10 @@ namespace Dating.Logic.Facades.UserProfileFacade
             if (result.Succeeded)
             {
                 var aspUser = await _userManager.FindByNameAsync(registerData.UserName);
-                UserProfile profile = new UserProfile
-                {
-                    AspNetUserId = aspUser.Id,
-                    BirthDate = registerData.Data.BirthDate,
-                    Gender = registerData.Data.Gender
-                };
+               
+                bool res = _profileRepository.SaveUserData(aspUser, registerData.Profile);
 
-                _profileRepository.SaveUserData(profile);
-
-                return true;
+                return res;
             }
 
             return false;

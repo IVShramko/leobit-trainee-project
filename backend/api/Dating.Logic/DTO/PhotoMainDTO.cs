@@ -10,6 +10,6 @@ namespace Dating.Logic.DTO
 
         public string Name { get; set; }
 
-        public string base64 { get; set; }
+        public string Data { get; set; }
     }
 }

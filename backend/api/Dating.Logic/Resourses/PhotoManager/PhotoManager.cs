@@ -15,7 +15,7 @@ namespace Dating.Logic.Resourses.PhotoManager
             string albumPath = Path.Combine(userPath, albumName);
 
             string base64 = Regex
-                    .Match(photo.Base64, @"data:image/(?<type>.+?),(?<data>.+)")
+                    .Match(photo.Data, @"data:image/(?<type>.+?),(?<data>.+)")
                     .Groups["data"].Value;
 
             byte[] bytes = Convert.FromBase64String(base64);

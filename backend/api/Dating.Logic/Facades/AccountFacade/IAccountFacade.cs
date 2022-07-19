@@ -5,10 +5,10 @@ namespace Dating.Logic.Facades.AccountFacade
 {
     public interface IAccountFacade
     {
-        public Task<string> LogIn(string userName, string password);
+        Task<string> LogIn(string userName, string password);
 
-        public Task LogOut();
+        Task LogOut();
 
-        public Task Register(UserProfileRegisterDTO registerData);
+        Task Register(UserRegisterDTO registerData);
     }
 }

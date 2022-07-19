@@ -45,6 +45,10 @@ const routes: Routes = [
       {
         path : 'albums/:id', 
         component : AlbumComponent
+      },
+      {
+        path : '**', 
+        redirectTo: 'profile'
       }
     ]
   }

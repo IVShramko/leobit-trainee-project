@@ -6,16 +6,16 @@ namespace Dating.Logic.Services
 {
     public interface ITokenManager
     {
-        public Task<bool> IsCurentActiveToken();
+        Task<bool> IsCurentActiveToken();
 
-        public Task DeactivateCurrentAsync();
+        Task DeactivateCurrentAsync();
 
-        public Task<bool> IsActiveAsync(string token);
+        Task<bool> IsActiveAsync(string token);
 
-        public Task DeactivateAsync(string token);
+        Task DeactivateAsync(string token);
 
-        public string GenerateToken(IdentityUser user);
+        string GenerateToken(IdentityUser user);
 
-        public Guid ReadProfileId();
+        Guid ReadProfileId();
     }
 }

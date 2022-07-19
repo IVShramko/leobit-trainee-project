@@ -90,7 +90,7 @@ export class RegisterComponent implements OnInit {
       UserName : this.login?.value,
       Email : this.email?.value,
       Password: this.password?.value,
-      Data : {
+      Profile : {
         BirthDate : new Date(this.dateOfBirth?.value),
         Gender : this.gender?.value
       }

@@ -1,5 +1,6 @@
 ﻿using Dating.Logic.DTO;
 using Dating.Logic.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
 
@@ -7,16 +8,16 @@ namespace Dating.Logic.Repositories
 {
     public interface IUserProfileRepository
     {
-        public Task<UserProfile> GetFullUserDataAsync(Guid id);
+        Task<UserProfile> GetFullUserDataAsync(Guid id);
 
-        public Task<UserProfileMainDTO> GetMainUserDataAsync(Guid id);
+        Task<UserProfileMainDTO> GetMainUserDataAsync(Guid id);
 
-        public Task<SearchResultDTO> GetProfilesOnCriteriaAsync(CriteriaDTO criteria);
+        Task<ProfileSearchresult> GetProfilesOnCriteriaAsync(SearchCriteria criteria);
 
-        public void SaveUserData(UserProfile profile);
+        bool SaveUserData(IdentityUser aspUser, ProfileRegisterDTO profile);
 
-        public void UpdateUserData(UserProfile profile);
+        void UpdateUserData(UserProfile profile);
 
-        public Guid GetProfileIdByAspNetId(string aspNetId);
+        Guid GetProfileIdByAspNetId(string aspNetId);
     }
 }

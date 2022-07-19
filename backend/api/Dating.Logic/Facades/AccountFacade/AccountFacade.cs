@@ -48,7 +48,7 @@ namespace Dating.Logic.Facades.AccountFacade
             await _tokenManager.DeactivateCurrentAsync();
         }
 
-        public Task Register(UserProfileRegisterDTO registerData)
+        public Task Register(UserRegisterDTO registerData)
         {
             throw new System.NotImplementedException();
         }

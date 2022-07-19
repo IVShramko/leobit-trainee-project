@@ -62,13 +62,15 @@ namespace Dating.WebAPI
             })
             .AddJwtBearer(config =>
             {
-                var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
+                var secretBytes = Encoding.UTF8.GetBytes(
+                    Configuration.GetSection("Constants")["Secret"]);
+
                 var key = new SymmetricSecurityKey(secretBytes);
 
                 config.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = Constants.Issuer,
-                    ValidAudience = Constants.Audiance,
+                    ValidIssuer = Configuration.GetSection("Constants")["Issuer"],
+                    ValidAudience = Configuration.GetSection("Constants")["Audiance"],
                     IssuerSigningKey = key
                 };
             });

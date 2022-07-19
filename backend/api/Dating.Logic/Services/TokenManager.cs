@@ -3,6 +3,7 @@ using Dating.Logic.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,14 +20,16 @@ namespace Dating.Logic.Services
         private readonly IDistributedCache _cache;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserProfileRepository _profileRepository;
+        private readonly IConfiguration _confing;
 
         public TokenManager(IDistributedCache cache,
                 IHttpContextAccessor httpContextAccessor,
-                IUserProfileRepository profileRepository)
+                IUserProfileRepository profileRepository, IConfiguration confing)
         {
             _cache = cache;
             _httpContextAccessor = httpContextAccessor;
             _profileRepository = profileRepository;
+            _confing = confing;
         }
 
         public async Task<bool> IsActiveAsync(string token)
@@ -79,14 +82,18 @@ namespace Dating.Logic.Services
                 new Claim("ProfileId", profileId.ToString())
             };
             
-            byte[] secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
+            byte[] secretBytes = Encoding.UTF8.GetBytes(
+                _confing.GetSection("Constants")["Secret"]);
+
             SymmetricSecurityKey key = new SymmetricSecurityKey(secretBytes);
 
             SigningCredentials signinCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             JwtSecurityToken token = new JwtSecurityToken(
-                Constants.Issuer, Constants.Audiance, claims,
-                DateTime.Now, DateTime.Now.AddHours(1), signinCredentials);
+                _confing.GetSection("Constants")["Issuer"], 
+                _confing.GetSection("Constants")["Audiance"], 
+                claims, DateTime.Now, DateTime.Now.AddHours(1),
+                signinCredentials);
 
             string tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
 

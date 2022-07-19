@@ -1,4 +1,4 @@
-.content{
+.photo-plates{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     row-gap: 1rem;
@@ -14,8 +14,13 @@
     box-shadow: 0px 0px 15px 0px black;
 }
 
+.carousel-item>img{
+    height: 50vw;
+    object-fit:contain;
+}
+
 @media screen and (max-width: 768px) {
-    .content{
+    .photo-plates{
         display: grid;
         grid-template-columns: 1fr 1fr;
         row-gap: 1rem;
@@ -29,7 +34,7 @@
   }
 
   @media screen and (max-width: 576px) {
-    .content{
+    .photo-plates{
         display: grid;
         grid-template-columns: 1fr;
         row-gap: 1rem;

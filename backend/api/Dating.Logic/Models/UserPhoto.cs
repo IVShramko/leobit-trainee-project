@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dating.Logic.Models
 {
@@ -15,6 +14,5 @@ namespace Dating.Logic.Models
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
-
     }
 }

@@ -42,7 +42,7 @@ namespace Dating.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(UserProfileRegisterDTO registerData)
+        public async Task<IActionResult> Register(UserRegisterDTO registerData)
         {
             bool res = await _profileFacade.RegisterAsync(registerData);
 

@@ -8,12 +8,12 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
 {
     public interface IUserPhotoRepository
     {
-        public Task<ICollection<PhotoMainDTO>> GetAllAsync(Guid albumId);
+        Task<ICollection<PhotoMainDTO>> GetAllAsync(Guid albumId);
 
-        public bool Create(UserPhoto photo);
+        bool Create(Guid albunId, PhotoCreateDTO photo);
 
-        public UserPhoto GetPhotoById(Guid id);
+        UserPhoto GetPhotoById(Guid id);
 
-        public bool Delete(UserPhoto photo);
+        bool Delete(Guid id);
     }
 }

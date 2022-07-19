@@ -26,14 +26,7 @@ namespace Dating.Logic.Facades.AlbumFacade
             {
                 _albumManager.CreateAlbum(userId, album.Name);
 
-                UserAlbum newAlbum = new UserAlbum()
-                {
-                    UserProfileId = userId,
-                    Name = album.Name,
-                    Description = album.Description
-                };
-
-                return _albumRepository.Create(newAlbum);
+                return _albumRepository.Create(userId, album);
             }
             catch (Exception)
             {
@@ -49,14 +42,7 @@ namespace Dating.Logic.Facades.AlbumFacade
             {
                 _albumManager.DeleteAlbum(userId, album.Name);
 
-                UserAlbum delAlbum = new UserAlbum()
-                {
-                    Id = album.Id,
-                    Name = album.Name,
-                    Description = album.Description
-                };
-
-                return _albumRepository.Delete(delAlbum);
+                return _albumRepository.Delete(album);
             }
             catch (Exception)
             {
@@ -66,13 +52,7 @@ namespace Dating.Logic.Facades.AlbumFacade
 
         public async Task<AlbumFullDTO> GetAlbumByIdAsync(Guid id)
         {
-            UserAlbum album = await _albumRepository.GetAlbumByIdAsync(id);
-            return new AlbumFullDTO
-            {
-                Id = album.Id,
-                Name = album.Name,
-                Description = album.Description
-            };
+            return await _albumRepository.GetAlbumByIdAsync(id);
         }
 
         public async Task<ICollection<AlbumMainDTO>> GetAllAlbumsAsync(Guid userId)
@@ -95,15 +75,7 @@ namespace Dating.Logic.Facades.AlbumFacade
             {
                 _albumManager.UpdateAlbum(userId, oldName, album.Name);
 
-                UserAlbum newAlbum = new UserAlbum()
-                {
-                    Id = album.Id,
-                    UserProfileId = userId,
-                    Name = album.Name,
-                    Description = album.Description
-                };
-
-                return _albumRepository.Update(newAlbum);
+                return _albumRepository.Update(album);
             }
             catch (Exception)
             {

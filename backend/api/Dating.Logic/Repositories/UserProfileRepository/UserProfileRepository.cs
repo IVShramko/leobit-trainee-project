@@ -2,6 +2,7 @@
 using Dating.Logic.DTO;
 using Dating.Logic.Enums;
 using Dating.Logic.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -56,9 +57,9 @@ namespace Dating.Logic.Repositories
             return userData;
         }
 
-        public async Task<SearchResultDTO> GetProfilesOnCriteriaAsync(CriteriaDTO criteria)
+        public async Task<ProfileSearchresult> GetProfilesOnCriteriaAsync(SearchCriteria criteria)
         {
-            SearchResultDTO result = new SearchResultDTO();
+            ProfileSearchresult result = new ProfileSearchresult();
 
             IQueryable<UserProfile> query = PrepareQuery(criteria.Profile);
             result.ResultsTotal = query.Count();
@@ -68,7 +69,7 @@ namespace Dating.Logic.Repositories
             result.Profiles = await query
                 .Skip(criteria.PageSize * (criteria.PageIndex - 1))
                 .Take(criteria.PageSize)
-                .Select(u => new SearchResultProfile
+                .Select(u => new ProfileListDTO
                 {
                     UserName = u.AspNetUser.UserName,
                     FirstName = u.FirstName,
@@ -121,17 +122,31 @@ namespace Dating.Logic.Repositories
                 case Filters.Age:
                     query = query.OrderByDescending(u => u.BirthDate);
                     break;
+
                 case Filters.Name:
                     query = query.OrderBy(u => u.FirstName);
                     break;
+
+                default:
+                    throw new Exception("incorrect filter type");
             }
+
             return query;
         }
 
-        public void SaveUserData(UserProfile userProfile)
+        public bool SaveUserData(IdentityUser aspUser, ProfileRegisterDTO registerData)
         {
-            _context.UserProfiles.Add(userProfile);
-            _context.SaveChanges();
+            UserProfile profile = new UserProfile
+            {
+                AspNetUserId = aspUser.Id,
+                BirthDate = registerData.BirthDate,
+                Gender = registerData.Gender
+            };
+
+            _context.UserProfiles.Add(profile);
+            int result = _context.SaveChanges();
+
+            return result != 0;
         }
 
         public void UpdateUserData(UserProfile userProfile)

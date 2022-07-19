@@ -1,15 +1,14 @@
 ﻿using Dating.Logic.DTO;
 using System;
-using System.Collections.Generic;
 
 namespace Dating.Logic.Resourses.PhotoManager
 {
     public interface IPhotoManager
     {
-        public void CreatePhoto(Guid userId, string albumName, PhotoCreateDTO photo);
+        void CreatePhoto(Guid userId, string albumName, PhotoCreateDTO photo);
 
-        public string GetPhotoBase64String(Guid userId, string albumName, string fileName);
+        string GetPhotoBase64String(Guid userId, string albumName, string fileName);
 
-        public void DeletePhoto(Guid userId, string albumName, string fileName);
+        void DeletePhoto(Guid userId, string albumName, string fileName);
     }
 }

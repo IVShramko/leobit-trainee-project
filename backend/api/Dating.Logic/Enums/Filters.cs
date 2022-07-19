@@ -2,7 +2,8 @@
 {
     public enum Filters
     {
-        Age,
-        Name
+        Age = 0,
+
+        Name = 1
     }
 }

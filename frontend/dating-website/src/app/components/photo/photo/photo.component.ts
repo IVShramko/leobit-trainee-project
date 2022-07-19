@@ -1,5 +1,5 @@
 import { PhotoMain } from 'src/app/models/PhotoMain';
-import { AfterContentInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { AfterContentInit, Input, Output, EventEmitter } from '@angular/core';
 import { Component, ContentChild, ElementRef, OnInit, Renderer2, } from '@angular/core';
 
 @Component({
@@ -11,7 +11,9 @@ export class PhotoComponent implements OnInit, AfterContentInit {
 
   @ContentChild('image') image: ElementRef;
   @Input() photo: PhotoMain;
+
   @Output('onDelete') deleteId = new EventEmitter<string>();
+  @Output('OnCarouselViewActivated') activeId = new EventEmitter<PhotoMain>();
 
   isFocused: boolean = false;
 
@@ -33,5 +35,10 @@ export class PhotoComponent implements OnInit, AfterContentInit {
   OnDelete()
   {
     this.deleteId.emit(this.photo.id);
+  }
+
+  OnActivateCarouselView()
+  {
+    this.activeId.emit(this.photo);
   }
 }

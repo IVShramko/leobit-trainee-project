@@ -3,7 +3,7 @@ export interface RegisterDTO
     UserName: string
     Email : string
     Password : string
-    Data : RegisterData
+    Profile : RegisterData
 }
 
 interface RegisterData

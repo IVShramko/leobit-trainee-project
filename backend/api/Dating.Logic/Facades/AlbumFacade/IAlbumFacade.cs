@@ -7,17 +7,16 @@ namespace Dating.Logic.Facades.AlbumFacade
 {
     public interface IAlbumFacade
     {
-        public Task<ICollection<AlbumMainDTO>> GetAllAlbumsAsync(Guid userId);
+        Task<ICollection<AlbumMainDTO>> GetAllAlbumsAsync(Guid userId);
 
-        public Task<AlbumFullDTO> GetAlbumByIdAsync(Guid id);
+        Task<AlbumFullDTO> GetAlbumByIdAsync(Guid id);
 
-        public bool IsValidName(Guid userId, string name);
+        bool IsValidName(Guid userId, string name);
 
-        public bool CreateAlbum(Guid userId, AlbumCreateDTO album);
+        bool CreateAlbum(Guid userId, AlbumCreateDTO album);
 
-        public Task<bool> UpdateAlbumAsync(Guid userId, AlbumFullDTO album);
+        Task<bool> UpdateAlbumAsync(Guid userId, AlbumFullDTO album);
 
-        public Task<bool> DeleteAlbumAsync(Guid userId, Guid albumId);
-
+        Task<bool> DeleteAlbumAsync(Guid userId, Guid albumId);
     }
 }

@@ -18,23 +18,33 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
             _context = context;
         }
 
-        public async Task<UserAlbum> GetAlbumByIdAsync(Guid id)
+        public async Task<AlbumFullDTO> GetAlbumByIdAsync(Guid id)
         {
-            return await _context.UserAlbums
+            AlbumFullDTO album = await _context.UserAlbums
                 .Where(a => a.Id == id)
+                .Select(a => new AlbumFullDTO()
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Description = a.Description
+                })
                 .FirstOrDefaultAsync();
+
+            return album;
         }
 
         public bool Exists(Guid userId, string name)
         {
-            return _context.UserAlbums
+            bool result = _context.UserAlbums
                 .Where(a => a.UserProfileId == userId && a.Name == name)
                 .Any();
+
+            return result;
         }
 
         public async Task<ICollection<AlbumMainDTO>> GetAllAsync(Guid userId)
         {
-            return await _context.UserAlbums
+            var albums =  await _context.UserAlbums
                 .Where(a => a.UserProfileId == userId)
                 .OrderBy(a => a.Name)
                 .Select(a => new AlbumMainDTO
@@ -43,51 +53,53 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
                     Name = a.Name
                 })
                 .ToListAsync();
+
+            return albums;
         }
 
-        public bool Create(UserAlbum album)
+        public bool Create(Guid userId, AlbumCreateDTO album)
         {
-            _context.UserAlbums.Add(album);
+            UserAlbum newAlbum = new()
+            {
+                Id = Guid.NewGuid(),
+                UserProfileId = userId,
+                Name = album.Name,
+                Description = album.Description
+            };
+
+            _context.UserAlbums.Add(newAlbum);
+
             int result = _context.SaveChanges();
 
-            if (result != 0)
-            {
-                return true;
-            }
-
-            return false;
+            return result != 0;
         }
 
-        public bool Update(UserAlbum album)
+        public bool Update(AlbumFullDTO album)
         {
-            var entity = _context.UserAlbums.Find(album.Id);
-            _context.Entry(entity).State = EntityState.Detached;
+            var entity = _context.UserAlbums
+                .Where(a => a.Id == album.Id)
+                .SingleOrDefault();
 
-            _context.Update(album);
+            entity.Name = album.Name;
+            entity.Description = album.Description;
+
+            _context.Update(entity);
             int result = _context.SaveChanges();
 
-            if (result != 0)
-            {
-                return true;
-            }
-
-            return false;
+            return result != 0;
         }
 
-        public bool Delete(UserAlbum album)
+        public bool Delete(AlbumFullDTO album)
         {
-            var entity = _context.UserAlbums.Find(album.Id);
-            _context.Entry(entity).State = EntityState.Detached;
+            var entity = _context.UserAlbums
+                .Where(a => a.Id == album.Id)
+                .SingleOrDefault();
 
-            _context.Remove(album);
+            _context.Remove(entity);
+
             int result = _context.SaveChanges();
 
-            if (result != 0)
-            {
-                return true;
-            }
-
-            return false;
+            return result != 0;
         }
     }
 }
