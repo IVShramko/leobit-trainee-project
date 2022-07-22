@@ -1,0 +1,29 @@
+<div class="row m-0 p-0 bg-secondary">
+    <div class="col">
+        <div class="row" style="height: 50em;">
+            <div class="col-1 d-flex justify-content-start">
+                <button class="btn"
+                (click)="Previous()">
+                    <i class="bi bi-chevron-left" style="font-size: 2rem"></i>
+                </button>
+            </div>
+            <div class="col-10 col d-flex justify-content-center">
+                <img class="photo-active" [src]="ConvertToImage(focusedPhoto.data, focusedPhoto.name)">
+            </div>
+            <div class="col-1 d-flex justify-content-end">
+                <button class="btn"
+                (click)="Next()">
+                    <i class="bi bi-chevron-right" style="font-size: 2rem"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row my-2 photo-row">
+            <img *ngFor="let photo of photos; let index = index"
+            (click)="OnChangeFocusImage(index)"
+            [ngClass]="{'photo-preview-focused': index === focusedPhotoIndex,
+            'photo-preview': true}"
+            [hidden]="IsHidden(index)"
+            [src]="ConvertToImage(photo.data, photo.name)">
+        </div>
+    </div>
+</div>

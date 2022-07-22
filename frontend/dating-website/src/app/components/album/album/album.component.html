@@ -1,4 +1,4 @@
-<div class="container shadow-sm">
+<div class="container-fluid shadow-sm">
     <div class="row align-items-center shadow-sm bg-light">
         <div class="col d-flex justify-content-start">
             <a routerLink="../../albums">
@@ -14,64 +14,59 @@
     <div class="row my-2 shadow-sm bg-light">
         <h5 class="m-0 px-2 py-1">{{album?.description}}</h5>
     </div>
-    <div class="row" *ngIf="carouselViewActivated">
-        <div class="row">
-            <div class="col d-flex justify-content-end">
-                <button type="reset" 
-                class="btn" 
-                (click)="ToggleCarouselView()">
-                    <i class="bi bi-x-lg" style="font-size: 2rem"></i>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div id="photoCarousel" class="carousel carousel-dark slide" data-bs-interval="false">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img [src]="ConvertToImage(focusedPhoto.data, focusedPhoto.name)" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item" *ngFor="let photo of photos">
-                    <img [src]="ConvertToImage(photo.data, photo.name)" class="d-block w-100" [alt]="photo.name">
-                  </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                </button>
-            </div>
-        </div>
-    </div>
-        
-    <div class="row photo-plates" *ngIf="!carouselViewActivated">
-        <app-photo *ngFor="let photo of photos" 
-        [photo]="photo" 
-        (onDelete)="OnPhotoDelete($event)"
-        (OnCarouselViewActivated)="OnActivateCarouselView($event)">
-            <img #image [src]="ConvertToImage(photo.data, photo.name)">
-        </app-photo>
-    </div>
 
-    <div class="row my-3" *ngIf="!carouselViewActivated">
+    <div class="row" *ngIf="carouselViewActivated">
         <div class="col">
-            <div class="card border-none my-2 shadow-sm">
-                <div class="row g-0">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#createModal"
-                    class="btn btn-outline-dark w-100 p-1 d-flex flex-row align-items-center">
-                        <div class="col-1 d-flex justify-content-center">
-                            <i class="bi bi-plus" style="font-size: 2rem"></i>
-                        </div>
-                        <div class="col-10">
-                            <div class="card-body p-0 d-flex justify-content-start">
-                                <h5 class="card-title m-0">Add photo</h5>
-                            </div>
-                        </div>
+            <div class="row">
+                <div class="col d-flex justify-content-end">
+                    <button type="reset" 
+                    class="btn" 
+                    (click)="ToggleCarouselView()">
+                        <i class="bi bi-x-lg" style="font-size: 2rem"></i>
                     </button>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <app-photo-viewer 
+                    [focusedPhoto]="focusedPhoto"
+                    [photos]="photos"></app-photo-viewer>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="row" *ngIf="!carouselViewActivated">
+        <div class="row photo-plates">
+            <app-photo *ngFor="let photo of photos" 
+            [photo]="photo" 
+            (onDelete)="OnPhotoDelete($event)"
+            (OnCarouselViewActivated)="OnActivateCarouselView($event)">
+                <img #image [src]="ConvertToImage(photo.data, photo.name)">
+            </app-photo>
+        </div>
+    
+        <div class="row my-3">
+            <div class="col">
+                <div class="card border-none my-2 shadow-sm">
+                    <div class="row g-0">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#createModal"
+                        class="btn btn-outline-dark w-100 p-1 d-flex flex-row align-items-center">
+                            <div class="col-1 d-flex justify-content-center">
+                                <i class="bi bi-plus" style="font-size: 2rem"></i>
+                            </div>
+                            <div class="col-10">
+                                <div class="card-body p-0 d-flex justify-content-start">
+                                    <h5 class="card-title m-0">Add photo</h5>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="modal" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

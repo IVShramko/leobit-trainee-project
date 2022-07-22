@@ -27,6 +27,7 @@ import { AlbumComponent } from './components/album/album/album.component';
 import { AlbumsComponent } from './components/albums/albums/albums.component';
 import { PhotoComponent } from './components/photo/photo/photo.component';
 import { ViewPhotoNameDirective } from './directives/view-photo-name.directive';
+import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer/photo-viewer.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ViewPhotoNameDirective } from './directives/view-photo-name.directive';
     AlbumsComponent,
     PhotoComponent,
     ViewPhotoNameDirective,
+    PhotoViewerComponent,
   ],
   imports: [
     BrowserModule,

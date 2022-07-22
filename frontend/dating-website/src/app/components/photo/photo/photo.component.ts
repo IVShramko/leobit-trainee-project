@@ -13,7 +13,7 @@ export class PhotoComponent implements OnInit, AfterContentInit {
   @Input() photo: PhotoMain;
 
   @Output('onDelete') deleteId = new EventEmitter<string>();
-  @Output('OnCarouselViewActivated') activeId = new EventEmitter<PhotoMain>();
+  @Output('OnCarouselViewActivated') active = new EventEmitter<PhotoMain>();
 
   isFocused: boolean = false;
 
@@ -39,6 +39,6 @@ export class PhotoComponent implements OnInit, AfterContentInit {
 
   OnActivateCarouselView()
   {
-    this.activeId.emit(this.photo);
+    this.active.emit(this.photo);
   }
 }
