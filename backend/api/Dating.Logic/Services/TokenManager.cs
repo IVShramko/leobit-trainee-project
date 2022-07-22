@@ -34,7 +34,9 @@ namespace Dating.Logic.Services
 
         public async Task<bool> IsActiveAsync(string token)
         {
-            return await _cache.GetStringAsync(GetKey(token)) == null;
+            bool isActive = await _cache.GetStringAsync(GetKey(token)) == null;
+
+            return isActive;
         }
 
         public async Task DeactivateAsync(string token)
@@ -48,7 +50,9 @@ namespace Dating.Logic.Services
 
         public async Task<bool> IsCurentActiveToken()
         {
-            return await IsActiveAsync(GetCurrentAsync());
+            bool isCurrentActive = await IsActiveAsync(GetCurrentAsync());
+
+            return isCurrentActive;
         }
 
         public async Task DeactivateCurrentAsync()
@@ -61,14 +65,18 @@ namespace Dating.Logic.Services
             var authorizationHeader = _httpContextAccessor
                 .HttpContext.Request.Headers["authorization"];
 
-            return authorizationHeader == StringValues.Empty
+            string currentToken = authorizationHeader == StringValues.Empty
                 ? String.Empty
                 : authorizationHeader.Single().Split(" ").Last();
+
+            return currentToken;
         }
 
         private static string GetKey(string token)
         {
-            return $"tokens:{token}:deactivated";
+            string key = $"tokens:{token}:deactivated";
+
+            return key;
         }
 
         public string GenerateToken(IdentityUser user)
@@ -102,26 +110,29 @@ namespace Dating.Logic.Services
 
         private Guid GetProfileId(string aspNetId)
         {
-            return _profileRepository.GetProfileIdByAspNetId(aspNetId);
+            Guid profileId = _profileRepository.GetProfileIdByAspNetId(aspNetId);
+
+            return profileId;
         }
 
         public Guid ReadProfileId()
         {
-            string jsontoken = GetCurrentAsync();
+            Guid profileId = Guid.Empty;
 
+            string jsontoken = GetCurrentAsync();
             var token = new JwtSecurityTokenHandler().ReadJwtToken(jsontoken);
 
-            var id = token.Claims
+            string id = token.Claims
                 .Where(c => c.Type == "ProfileId")
                 .Select(c => c.Value)
                 .FirstOrDefault();
 
             if (id != null)
             {
-                return Guid.Parse(id);
+                profileId = Guid.Parse(id);
             }
 
-            return Guid.Empty;
+            return profileId;
         }
     }
 }

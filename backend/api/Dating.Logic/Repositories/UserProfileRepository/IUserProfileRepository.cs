@@ -8,9 +8,9 @@ namespace Dating.Logic.Repositories
 {
     public interface IUserProfileRepository
     {
-        Task<UserProfile> GetFullUserDataAsync(Guid id);
+        Task<UserProfile> GetUserProfileAsync(Guid id);
 
-        Task<UserProfileMainDTO> GetMainUserDataAsync(Guid id);
+        Task<UserProfileMainDTO> GetUserProfileMainAsync(Guid id);
 
         Task<ProfileSearchresult> GetProfilesOnCriteriaAsync(SearchCriteria criteria);
 

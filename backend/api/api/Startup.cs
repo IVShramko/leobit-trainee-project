@@ -110,6 +110,7 @@ namespace Dating.WebAPI
             services.AddScoped<IPhotoManager, PhotoManager>();
             services.AddScoped<IAlbumManager, AlbumManager>();
 
+            //middlewares
             services.AddTransient<TokenManagerMiddleware>();
 
             services.AddDistributedRedisCache(r =>

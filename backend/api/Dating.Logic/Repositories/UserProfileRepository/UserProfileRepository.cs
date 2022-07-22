@@ -19,7 +19,7 @@ namespace Dating.Logic.Repositories
             _context = context;
         }
 
-        public async Task<UserProfile> GetFullUserDataAsync(Guid id)
+        public async Task<UserProfile> GetUserProfileAsync(Guid id)
         {
             UserProfile userData = await _context.UserProfiles
                 .Where(p => p.Id == id)
@@ -41,7 +41,7 @@ namespace Dating.Logic.Repositories
             return userData;
         }
 
-        public async Task<UserProfileMainDTO> GetMainUserDataAsync(Guid id)
+        public async Task<UserProfileMainDTO> GetUserProfileMainAsync(Guid id)
         {
             UserProfileMainDTO userData = await _context.UserProfiles
                 .Where(p => p.Id == id)
@@ -57,16 +57,18 @@ namespace Dating.Logic.Repositories
             return userData;
         }
 
-        public async Task<ProfileSearchresult> GetProfilesOnCriteriaAsync(SearchCriteria criteria)
+        public async Task<ProfileSearchresult> GetProfilesOnCriteriaAsync(
+            SearchCriteria criteria)
         {
-            ProfileSearchresult result = new ProfileSearchresult();
+            ProfileSearchresult searchResult = new ProfileSearchresult();
 
             IQueryable<UserProfile> query = PrepareQuery(criteria.Profile);
-            result.ResultsTotal = query.Count();
+
+            searchResult.ResultsTotal = query.Count();
 
             query = OrderQuery(query, (Filters)criteria.Filter);
 
-            result.Profiles = await query
+            searchResult.Profiles = await query
                 .Skip(criteria.PageSize * (criteria.PageIndex - 1))
                 .Take(criteria.PageSize)
                 .Select(u => new ProfileListDTO
@@ -78,7 +80,7 @@ namespace Dating.Logic.Repositories
                 })
                 .ToListAsync();
 
-            return result;
+            return searchResult;
         }
 
         private IQueryable<UserProfile> PrepareQuery(ProfileCriteria criteria)
@@ -115,7 +117,8 @@ namespace Dating.Logic.Repositories
             return query;
         }
 
-        private IQueryable<UserProfile> OrderQuery(IQueryable<UserProfile> query, Filters filter)
+        private IQueryable<UserProfile> OrderQuery(
+            IQueryable<UserProfile> query, Filters filter)
         {
             switch (filter)
             {
@@ -157,10 +160,12 @@ namespace Dating.Logic.Repositories
 
         public Guid GetProfileIdByAspNetId(string aspNetId)
         {
-            return _context.UserProfiles
+            Guid profileId = _context.UserProfiles
                 .Where(p => p.AspNetUserId == aspNetId)
                 .Select(p => p.Id)
                 .FirstOrDefault();
+
+            return profileId;
         }
     }
 }

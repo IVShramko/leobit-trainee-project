@@ -1,5 +1,4 @@
 ﻿using Dating.Logic.DTO;
-using Dating.Logic.Models;
 using Dating.Logic.Repositories.UserAlbumRepository;
 using Dating.Logic.Resourses.AlbumManager;
 using System;
@@ -22,65 +21,82 @@ namespace Dating.Logic.Facades.AlbumFacade
 
         public bool CreateAlbum(Guid userId, AlbumCreateDTO album)
         {
+            bool isCreated;
+
             try
             {
                 _albumManager.CreateAlbum(userId, album.Name);
 
-                return _albumRepository.Create(userId, album);
+                isCreated =  _albumRepository.Create(userId, album);
             }
             catch (Exception)
             {
-                return false;
+                isCreated = false;
             }
+
+            return isCreated;
         }
 
         public async Task<bool> DeleteAlbumAsync(Guid userId, Guid albumId)
         {
+            bool isDeleted;
+
             var album = await _albumRepository.GetAlbumByIdAsync(albumId);
 
             try
             {
                 _albumManager.DeleteAlbum(userId, album.Name);
 
-                return _albumRepository.Delete(album);
+                isDeleted = _albumRepository.Delete(album);
             }
             catch (Exception)
             {
-                return false;
+                isDeleted = false;
             }
+
+            return isDeleted;
         }
 
         public async Task<AlbumFullDTO> GetAlbumByIdAsync(Guid id)
         {
-            return await _albumRepository.GetAlbumByIdAsync(id);
+            AlbumFullDTO album = await _albumRepository.GetAlbumByIdAsync(id);
+
+            return album;
         }
 
         public async Task<ICollection<AlbumMainDTO>> GetAllAlbumsAsync(Guid userId)
         {
-            return await _albumRepository.GetAllAsync(userId);
+            ICollection<AlbumMainDTO> albums = 
+                await _albumRepository.GetAllAsync(userId);
+
+            return albums;
         }
 
         public bool IsValidName(Guid userId, string name)
         {
-            bool result = _albumRepository.Exists(userId, name);
+            bool isExist = _albumRepository.Exists(userId, name);
 
-            return !result;
+            return !isExist;
         }
 
         public async Task<bool> UpdateAlbumAsync(Guid userId, AlbumFullDTO album)
         {
+            bool isUpdated;
+
             string oldName = (await _albumRepository.GetAlbumByIdAsync(album.Id)).Name;
 
             try
             {
                 _albumManager.UpdateAlbum(userId, oldName, album.Name);
 
-                return _albumRepository.Update(album);
+                isUpdated = _albumRepository.Update(album);
             }
             catch (Exception)
             {
-                return false;
+                isUpdated = false;
             }
+
+            return isUpdated;
         }
     }
 }

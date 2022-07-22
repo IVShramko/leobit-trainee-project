@@ -11,7 +11,6 @@ namespace Dating.Logic.Resourses.PhotoManager
         public void CreatePhoto(Guid userId, string albumName, PhotoCreateDTO photo)
         {
             string userPath = GetUserDirectory(userId);
-
             string albumPath = Path.Combine(userPath, albumName);
 
             string base64 = Regex
@@ -22,7 +21,6 @@ namespace Dating.Logic.Resourses.PhotoManager
 
             string photoPath = Path.Combine(albumPath, photo.Name);
 
-            
             if (File.Exists(photoPath))
             {
                 throw new IOException();

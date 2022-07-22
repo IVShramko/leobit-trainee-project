@@ -24,9 +24,10 @@ namespace Dating.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAlbumsAsync()
         {
-            Guid id = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            ICollection<AlbumMainDTO> albums = await _albumFacade.GetAllAlbumsAsync(id);
+            ICollection<AlbumMainDTO> albums = 
+                await _albumFacade.GetAllAlbumsAsync(profileId);
 
             return Ok(albums);
         }
@@ -42,21 +43,21 @@ namespace Dating.WebAPI.Controllers
         [HttpPost("check")]
         public IActionResult IsValidName(string name)
         {
-            Guid id = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            bool result = _albumFacade.IsValidName(id, name);
+            bool isValid = _albumFacade.IsValidName(profileId, name);
 
-            return Ok(result);
+            return Ok(isValid);
         }
 
         [HttpPost]
         public IActionResult Create(AlbumCreateDTO album)
         {
-            Guid id = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            bool result = _albumFacade.CreateAlbum(id, album);
+            bool isCreated = _albumFacade.CreateAlbum(profileId, album);
 
-            if (result)
+            if (isCreated)
             {
                 return Ok();
             }
@@ -67,11 +68,11 @@ namespace Dating.WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(AlbumFullDTO album)
         {
-            Guid id = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            bool result = await _albumFacade.UpdateAlbumAsync(id, album);
+            bool isUpdated = await _albumFacade.UpdateAlbumAsync(profileId, album);
 
-            if (result)
+            if (isUpdated)
             {
                 return Ok();
             }
@@ -82,11 +83,11 @@ namespace Dating.WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            Guid userId = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            bool result = await _albumFacade.DeleteAlbumAsync(userId, id);
+            bool isDeleted = await _albumFacade.DeleteAlbumAsync(profileId, id);
 
-            if (result)
+            if (isDeleted)
             {
                 return Ok();
             }

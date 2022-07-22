@@ -3,6 +3,7 @@ using Dating.Logic.Facades.PhotoFacade;
 using Dating.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Dating.WebAPI.Controllers
@@ -24,9 +25,10 @@ namespace Dating.WebAPI.Controllers
         [HttpGet("{albumId}")]
         public async Task<IActionResult> GetAllPhotos(Guid albumId)
         {
-            Guid userId = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            var photos = await _photoFacade.GetAllPhotosAsync(userId, albumId);
+            ICollection<PhotoMainDTO> photos = 
+                await _photoFacade.GetAllPhotosAsync(profileId, albumId);
 
             return Ok(photos);
         }
@@ -34,11 +36,11 @@ namespace Dating.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePhotoAsync(PhotoCreateDTO photo)
         {
-            Guid userId = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            bool result = await _photoFacade.CreatePhotoAsync(userId, photo);
+            bool isCreated = await _photoFacade.CreatePhotoAsync(profileId, photo);
 
-            if (result)
+            if (isCreated)
             {
                 return Ok();
             }
@@ -49,11 +51,11 @@ namespace Dating.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeletePhoto(Guid id)
         {
-            Guid userId = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            bool result = _photoFacade.DeletePhoto(id, userId);
+            bool isDeleted = _photoFacade.DeletePhoto(id, profileId);
 
-            if (result)
+            if (isDeleted)
             {
                 return Ok();
             }

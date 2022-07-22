@@ -15,7 +15,10 @@ namespace Dating.Logic.Facades.SearchFacade
 
         public async Task<ProfileSearchresult> Search(SearchCriteria criteria)
         {
-            return await _repository.GetProfilesOnCriteriaAsync(criteria);
+            ProfileSearchresult searchResult = 
+                await _repository.GetProfilesOnCriteriaAsync(criteria);
+
+            return searchResult;
         }
     }
 }

@@ -26,40 +26,48 @@ namespace Dating.Logic.Facades.PhotoFacade
 
         public async Task<bool> CreatePhotoAsync(Guid userId, PhotoCreateDTO photo)
         {
+            bool isCreated;
+
             AlbumFullDTO album = await _albumRepository.GetAlbumByIdAsync(photo.AlbumId);
 
             try
             {
-                _photoManager.CreatePhoto(userId, album.Name, photo);        
+                _photoManager.CreatePhoto(userId, album.Name, photo);
 
-                return _photoRepository.Create(album.Id, photo);
+                isCreated = _photoRepository.Create(album.Id, photo);
             }
             catch (Exception)
             {
-                return false;
+                isCreated = false;
             }
+
+            return isCreated;
         }
 
         public bool DeletePhoto(Guid id, Guid userId)
         {
+            bool isDeleted;
+
             UserPhoto photo = _photoRepository.GetPhotoById(id);
 
             try
             {
                 _photoManager.DeletePhoto(userId, photo.Album.Name, photo.Name);
 
-                return _photoRepository.Delete(id);
+                isDeleted = _photoRepository.Delete(id);
             }
             catch (Exception)
             {
-                return false;
+                isDeleted = false;
             }
+
+            return isDeleted;
         }
 
         public async Task<ICollection<PhotoMainDTO>> GetAllPhotosAsync(
             Guid userId, Guid albumId)
         {
-            string albumName = (await _albumRepository.GetAlbumByIdAsync(albumId)).Name;
+            AlbumFullDTO album = await _albumRepository.GetAlbumByIdAsync(albumId);
 
             var photos = await _photoRepository.GetAllAsync(albumId);
 
@@ -68,7 +76,7 @@ namespace Dating.Logic.Facades.PhotoFacade
                 try
                 {
                     string base64 = _photoManager
-                        .GetPhotoBase64String(userId, albumName, photo.Name);
+                        .GetPhotoBase64String(userId, album.Name, photo.Name);
 
                     photo.Data = base64;
                 }

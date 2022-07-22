@@ -1,7 +1,6 @@
 ﻿using Dating.Logic.DTO;
 using Dating.Logic.Facades.UserProfileFacade;
 using Dating.Logic.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -25,9 +24,10 @@ namespace Dating.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Main()
         {
-            Guid id = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            var mainProfile = await _profileFacade.GetUserProfileMainDataAsync(id);
+            UserProfileMainDTO mainProfile = 
+                await _profileFacade.GetUserProfileMainDataAsync(profileId);
 
             return Ok(mainProfile);
         }
@@ -35,17 +35,18 @@ namespace Dating.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Full()
         {
-            Guid id = _tokenManager.ReadProfileId();
+            Guid profileId = _tokenManager.ReadProfileId();
 
-            var fullProfile = await _profileFacade.GetUserProfileFullDataAsync(id);
+            UserProfileFullDTO fullProfile = 
+                await _profileFacade.GetUserProfileFullDataAsync(profileId);
 
             return Ok(fullProfile);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Change(UserProfileFullDTO fullData)
+        public async Task<IActionResult> Change(UserProfileFullDTO fullProfile)
         {
-            await _profileFacade.ChangeProfileAsync(fullData);
+            await _profileFacade.ChangeProfileAsync(fullProfile);
 
             return Ok();
         }

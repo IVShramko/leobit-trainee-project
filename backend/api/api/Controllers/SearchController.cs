@@ -19,9 +19,9 @@ namespace Dating.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Criteria(SearchCriteria criteria)
         {
-            ProfileSearchresult result = await _searchFacade.Search(criteria);
+            ProfileSearchresult searchResult = await _searchFacade.Search(criteria);
 
-            return Ok(result);
+            return Ok(searchResult);
         }
     }
 }

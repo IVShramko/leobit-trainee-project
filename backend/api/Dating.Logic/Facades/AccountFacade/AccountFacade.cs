@@ -24,22 +24,22 @@ namespace Dating.Logic.Facades.AccountFacade
 
         public async Task<string> LogIn(string userName, string password)
         {
+            string token = null;
+
             IdentityUser user = await _userManager.FindByNameAsync(userName);
 
             if (user != null)
             {
                 Identity.SignInResult result =
-                await _signInManager.CheckPasswordSignInAsync(user, password, false);
+                    await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
                 if (result.Succeeded)
                 {
-                   string token = _tokenManager.GenerateToken(user);
-
-                   return token;
+                   token = _tokenManager.GenerateToken(user);
                 }
             }
 
-            return null;
+            return token;
         }
 
         public async Task LogOut()

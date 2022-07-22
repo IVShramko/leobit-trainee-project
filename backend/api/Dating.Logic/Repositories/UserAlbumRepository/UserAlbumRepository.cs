@@ -68,7 +68,6 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
             };
 
             _context.UserAlbums.Add(newAlbum);
-
             int result = _context.SaveChanges();
 
             return result != 0;
@@ -96,7 +95,6 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
                 .SingleOrDefault();
 
             _context.Remove(entity);
-
             int result = _context.SaveChanges();
 
             return result != 0;

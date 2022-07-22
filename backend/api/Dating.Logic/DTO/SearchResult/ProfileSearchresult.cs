@@ -6,6 +6,6 @@ namespace Dating.Logic.DTO
     {
         public int ResultsTotal { get; set; }
 
-        public IEnumerable<ProfileListDTO> Profiles { get; set; }
+        public ICollection<ProfileListDTO> Profiles { get; set; }
     }
 }

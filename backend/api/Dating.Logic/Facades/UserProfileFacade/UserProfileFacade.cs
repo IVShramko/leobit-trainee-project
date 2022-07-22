@@ -24,7 +24,7 @@ namespace Dating.Logic.Facades.UserProfileFacade
 
         public async Task<UserProfileFullDTO> GetUserProfileFullDataAsync(Guid id)
         {
-            var profile = await _profileRepository.GetFullUserDataAsync(id);
+            var profile = await _profileRepository.GetUserProfileAsync(id);
 
             string photo = _imageRepository.GetPhotoById(profile.Avatar, profile.Id);
 
@@ -48,29 +48,34 @@ namespace Dating.Logic.Facades.UserProfileFacade
 
         public async Task<UserProfileMainDTO> GetUserProfileMainDataAsync(Guid id)
         {
-            return await _profileRepository.GetMainUserDataAsync(id);
+            UserProfileMainDTO mainProfile =
+                await _profileRepository.GetUserProfileMainAsync(id);
+
+            return mainProfile;
         }
 
         public async Task<bool> RegisterAsync(UserRegisterDTO registerData)
         {
+            bool isRegistered = false;
+
             IdentityUser user = new IdentityUser()
             {
                 UserName = registerData.UserName,
                 Email = registerData.Email
             };
 
-            IdentityResult result = await _userManager.CreateAsync(user, registerData.Password);
+            IdentityResult result = 
+                await _userManager.CreateAsync(user, registerData.Password);
 
             if (result.Succeeded)
             {
                 var aspUser = await _userManager.FindByNameAsync(registerData.UserName);
-               
-                bool res = _profileRepository.SaveUserData(aspUser, registerData.Profile);
 
-                return res;
+                isRegistered = 
+                    _profileRepository.SaveUserData(aspUser, registerData.Profile);
             }
 
-            return false;
+            return isRegistered;
         }
 
         public async Task ChangeProfileAsync(UserProfileFullDTO fullData)
