@@ -48,6 +48,14 @@ namespace Dating.WebAPI.Controllers
             return BadRequest();
         }
 
+        [HttpPost("check")]
+        public IActionResult IsValidName(Guid albumId, string name)
+        {
+            bool isValid = _photoFacade.IsValidName(albumId, name);
+
+            return Ok(isValid);
+        }
+
         [HttpDelete("{id}")]
         public IActionResult DeletePhoto(Guid id)
         {

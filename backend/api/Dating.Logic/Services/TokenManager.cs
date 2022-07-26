@@ -1,5 +1,4 @@
-﻿using Dating.Logic.DB;
-using Dating.Logic.Repositories;
+﻿using Dating.Logic.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Distributed;
@@ -41,8 +40,10 @@ namespace Dating.Logic.Services
 
         public async Task DeactivateAsync(string token)
         {
-            await _cache.SetStringAsync(GetKey(token),
-                String.Empty, new DistributedCacheEntryOptions
+            await _cache.SetStringAsync(
+                GetKey(token), 
+                String.Empty, 
+                new DistributedCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)
                 });

@@ -75,8 +75,9 @@ namespace Dating.Logic.Facades.AlbumFacade
         public bool IsValidName(Guid userId, string name)
         {
             bool isExist = _albumRepository.Exists(userId, name);
+            bool isValid = !isExist;
 
-            return !isExist;
+            return isValid;
         }
 
         public async Task<bool> UpdateAlbumAsync(Guid userId, AlbumFullDTO album)

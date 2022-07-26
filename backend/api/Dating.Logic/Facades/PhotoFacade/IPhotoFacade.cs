@@ -12,5 +12,7 @@ namespace Dating.Logic.Facades.PhotoFacade
         Task<bool> CreatePhotoAsync(Guid userId, PhotoCreateDTO photo);
 
         bool DeletePhoto(Guid id, Guid userId);
+
+        bool IsValidName(Guid albumId, string name);
     }
 }

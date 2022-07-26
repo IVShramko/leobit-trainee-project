@@ -45,6 +45,16 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
             return result != 0;
         }
 
+        public bool Exists(Guid albumId, string name) 
+        {
+            bool isExist = _context.UserPhotos
+                .Where(p => p.AlbumId == albumId && p.Name == name)
+                .Any();
+
+            return isExist;
+        }
+
+
         public async Task<ICollection<PhotoMainDTO>> GetAllAsync(Guid albumId)
         {
             var photos = await _context.UserPhotos

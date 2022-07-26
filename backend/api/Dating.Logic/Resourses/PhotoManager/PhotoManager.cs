@@ -1,6 +1,5 @@
 ﻿using Dating.Logic.DTO;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -32,8 +31,7 @@ namespace Dating.Logic.Resourses.PhotoManager
         public void DeletePhoto(Guid userId, string albumName, string fileName)
         {
             string userPath = GetUserDirectory(userId);
-            string albumPath = Path.Combine(userPath, albumName);
-            string filePath = Path.Combine(albumPath, fileName);
+            string filePath = Path.Combine(userPath, albumName, fileName);
 
             File.Delete(filePath);
         }

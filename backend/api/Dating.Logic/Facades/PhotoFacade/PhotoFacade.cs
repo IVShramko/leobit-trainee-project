@@ -88,5 +88,12 @@ namespace Dating.Logic.Facades.PhotoFacade
 
             return photos;
         }
+
+        public bool IsValidName(Guid albumId, string name)
+        {
+            bool isExist = _photoRepository.Exists(albumId, name);
+
+            return !isExist;
+        }
     }
 }
