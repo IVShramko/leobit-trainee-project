@@ -1,15 +1,23 @@
 ﻿using Dating.Logic.DTO;
+using Dating.Logic.Infrastructure;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Dating.Logic.Resourses.PhotoManager
+namespace Dating.Logic.Managers.PhotoManager
 {
     public class PhotoManager : IPhotoManager
-    { 
+    {
+        private readonly IDirectoryUtility _directoryUtility;
+
+        public PhotoManager(IDirectoryUtility directoryUtility)
+        {
+            _directoryUtility = directoryUtility;
+        }
+
         public void CreatePhoto(Guid userId, string albumName, PhotoCreateDTO photo)
         {
-            string userPath = GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(userId);
             string albumPath = Path.Combine(userPath, albumName);
 
             string base64 = Regex
@@ -30,7 +38,7 @@ namespace Dating.Logic.Resourses.PhotoManager
 
         public void DeletePhoto(Guid userId, string albumName, string fileName)
         {
-            string userPath = GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(userId);
             string filePath = Path.Combine(userPath, albumName, fileName);
 
             File.Delete(filePath);
@@ -38,27 +46,13 @@ namespace Dating.Logic.Resourses.PhotoManager
 
         public string GetPhotoBase64String(Guid userId, string albumName, string fileName)
         {
-            string userPath = GetUserDirectory(userId);
-            string albumPath = Path.Combine(userPath, albumName);
-            string filePath = Path.Combine(albumPath, fileName);
+            string userPath = _directoryUtility.GetUserDirectory(userId);
+            string filePath = Path.Combine(userPath, albumName, fileName);
 
             byte[] bytes = File.ReadAllBytes(filePath);
             string base64 = Convert.ToBase64String(bytes);
 
             return base64;
-        }
-
-        private string GetUserDirectory(Guid userId)
-        {
-            string dir = Directory.GetCurrentDirectory();
-
-            dir = Directory.GetParent(dir).FullName;
-            dir = Directory.GetParent(dir).FullName;
-            dir = Directory.GetParent(dir).FullName;
-
-            string path = Path.Combine(dir, "resourses", userId.ToString());
-
-            return path;
         }
     }
 }

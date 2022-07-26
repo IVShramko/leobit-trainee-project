@@ -1,7 +1,7 @@
 ﻿using Dating.Logic.DTO;
 using System;
 
-namespace Dating.Logic.Resourses.PhotoManager
+namespace Dating.Logic.Managers.PhotoManager
 {
     public interface IPhotoManager
     {

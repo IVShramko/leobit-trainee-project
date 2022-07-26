@@ -1,4 +1,4 @@
-﻿using Dating.Logic.Services;
+﻿using Dating.Logic.Managers.TokenManager;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Threading.Tasks;

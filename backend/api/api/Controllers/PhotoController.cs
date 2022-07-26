@@ -1,6 +1,6 @@
 ﻿using Dating.Logic.DTO;
 using Dating.Logic.Facades.PhotoFacade;
-using Dating.Logic.Services;
+using Dating.Logic.Managers.TokenManager;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

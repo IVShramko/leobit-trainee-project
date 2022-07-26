@@ -1,6 +1,6 @@
 ﻿using Dating.Logic.DTO;
 using Dating.Logic.Repositories.UserAlbumRepository;
-using Dating.Logic.Resourses.AlbumManager;
+using Dating.Logic.Managers.AlbumManager;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

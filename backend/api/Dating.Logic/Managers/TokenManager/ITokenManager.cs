@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Dating.Logic.Services
+namespace Dating.Logic.Managers.TokenManager
 {
     public interface ITokenManager
     {

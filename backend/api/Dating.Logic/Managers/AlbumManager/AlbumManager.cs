@@ -1,22 +1,26 @@
-﻿using Dating.Logic.Resourses.PhotoManager;
+﻿using Dating.Logic.Infrastructure;
+using Dating.Logic.Managers.PhotoManager;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace Dating.Logic.Resourses.AlbumManager
+namespace Dating.Logic.Managers.AlbumManager
 {
     public class AlbumManager : IAlbumManager
     {
         private readonly IPhotoManager _photoManager;
+        private readonly IDirectoryUtility _directoryUtility;
 
-        public AlbumManager(IPhotoManager photoManager)
+        public AlbumManager(IPhotoManager photoManager,
+            IDirectoryUtility directoryUtility)
         {
             _photoManager = photoManager;
+            _directoryUtility = directoryUtility;
         }
 
         public void CreateAlbum(Guid userId, string name)
         {
-            string userPath = GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(userId);
 
             if (!Directory.Exists(userPath))
             {
@@ -30,7 +34,7 @@ namespace Dating.Logic.Resourses.AlbumManager
 
         public void DeleteAlbum(Guid userId, string name)
         {
-            string userPath = GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(userId);
             string albumPath = Path.Combine(userPath, name);
 
             string[] filePaths = Directory.GetFiles(albumPath);
@@ -46,25 +50,12 @@ namespace Dating.Logic.Resourses.AlbumManager
 
         public void UpdateAlbum(Guid userId, string oldName, string newName)
         {
-            string userPath = GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(userId);
 
             string oldPath = Path.Combine(userPath, oldName);
             string newPath = Path.Combine(userPath, newName);
 
             Directory.Move(oldPath, newPath);
-        }
-
-        private string GetUserDirectory(Guid userId)
-        {
-            string dir = Directory.GetCurrentDirectory();
-
-            dir = Directory.GetParent(dir).FullName;
-            dir = Directory.GetParent(dir).FullName;
-            dir = Directory.GetParent(dir).FullName;
-
-            string path = Path.Combine(dir, "resourses", userId.ToString());
-
-            return path;
         }
     }
 }

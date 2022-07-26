@@ -1,6 +1,6 @@
 ﻿using Dating.Logic.DTO;
 using Dating.Logic.Facades.UserProfileFacade;
-using Dating.Logic.Services;
+using Dating.Logic.Managers.TokenManager;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dating.Logic.Resourses.AlbumManager
+namespace Dating.Logic.Managers.AlbumManager
 {
     public interface IAlbumManager
     {

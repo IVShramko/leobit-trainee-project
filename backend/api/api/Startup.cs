@@ -8,9 +8,9 @@ using Dating.Logic.Repositories;
 using Dating.Logic.Repositories.ImageRepository;
 using Dating.Logic.Repositories.UserAlbumRepository;
 using Dating.Logic.Repositories.UserPhotoRepository;
-using Dating.Logic.Resourses.AlbumManager;
-using Dating.Logic.Resourses.PhotoManager;
-using Dating.Logic.Services;
+using Dating.Logic.Managers.AlbumManager;
+using Dating.Logic.Managers.PhotoManager;
+using Dating.Logic.Managers.TokenManager;
 using Dating.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +24,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using Dating.Logic.Infrastructure;
 
 namespace Dating.WebAPI
 {
@@ -112,6 +113,9 @@ namespace Dating.WebAPI
 
             //middlewares
             services.AddTransient<TokenManagerMiddleware>();
+
+            //utilities
+            services.AddSingleton<IDirectoryUtility, DirectoryUtility>();
 
             services.AddDistributedRedisCache(r =>
             {

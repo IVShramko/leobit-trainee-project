@@ -12,7 +12,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dating.Logic.Services
+namespace Dating.Logic.Managers.TokenManager
 {
     public class TokenManager : ITokenManager
     {

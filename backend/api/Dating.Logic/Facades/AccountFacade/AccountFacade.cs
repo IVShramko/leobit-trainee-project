@@ -1,5 +1,5 @@
 ﻿using Dating.Logic.DTO;
-using Dating.Logic.Services;
+using Dating.Logic.Managers.TokenManager;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 

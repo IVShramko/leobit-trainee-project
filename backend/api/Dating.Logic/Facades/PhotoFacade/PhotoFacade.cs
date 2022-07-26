@@ -2,7 +2,7 @@
 using Dating.Logic.Models;
 using Dating.Logic.Repositories.UserAlbumRepository;
 using Dating.Logic.Repositories.UserPhotoRepository;
-using Dating.Logic.Resourses.PhotoManager;
+using Dating.Logic.Managers.PhotoManager;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
