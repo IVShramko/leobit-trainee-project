@@ -51,17 +51,17 @@ namespace Dating.Logic.Managers.TokenManager
 
         public async Task<bool> IsCurentActiveToken()
         {
-            bool isCurrentActive = await IsActiveAsync(GetCurrentAsync());
+            bool isCurrentActive = await IsActiveAsync(GetCurrent());
 
             return isCurrentActive;
         }
 
         public async Task DeactivateCurrentAsync()
         {
-            await DeactivateAsync(GetCurrentAsync());
+            await DeactivateAsync(GetCurrent());
         }
 
-        private string GetCurrentAsync()
+        private string GetCurrent()
         {
             var authorizationHeader = _httpContextAccessor
                 .HttpContext.Request.Headers["authorization"];
@@ -80,9 +80,9 @@ namespace Dating.Logic.Managers.TokenManager
             return key;
         }
 
-        public string GenerateToken(IdentityUser user)
+        public async Task<string> GenerateTokenAsync(IdentityUser user)
         {
-            Guid profileId = GetProfileId(user.Id);
+            Guid profileId = await GetProfileIdAsync(user.Id);
 
             Claim[] claims = new[]
             {
@@ -109,9 +109,10 @@ namespace Dating.Logic.Managers.TokenManager
             return tokenJson;
         }
 
-        private Guid GetProfileId(string aspNetId)
+        private async Task<Guid> GetProfileIdAsync(string aspNetId)
         {
-            Guid profileId = _profileRepository.GetProfileIdByAspNetId(aspNetId);
+            Guid profileId = 
+                await _profileRepository.GetProfileIdByAspNetIdAsync(aspNetId);
 
             return profileId;
         }
@@ -120,7 +121,7 @@ namespace Dating.Logic.Managers.TokenManager
         {
             Guid profileId = Guid.Empty;
 
-            string jsontoken = GetCurrentAsync();
+            string jsontoken = GetCurrent();
             var token = new JwtSecurityTokenHandler().ReadJwtToken(jsontoken);
 
             string id = token.Claims

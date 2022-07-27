@@ -18,7 +18,7 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
             _context = context;
         }
 
-        public bool Create(Guid albumId, PhotoCreateDTO photo)
+        public async Task<bool> Create(Guid albumId, PhotoCreateDTO photo)
         {
             UserPhoto newPhoto = new UserPhoto()
             {
@@ -27,29 +27,29 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
                 Name = photo.Name
             };
 
-            _context.UserPhotos.Add(newPhoto);
-            int result = _context.SaveChanges();
+            await _context.UserPhotos.AddAsync(newPhoto);
+            int result = await _context.SaveChangesAsync();
 
             return result != 0;
         }
 
-        public bool Delete(Guid id)
+        public async Task<bool> Delete(Guid id)
         {
-            var entity = _context.UserPhotos
+            var entity = await _context.UserPhotos
                 .Where(a => a.Id == id)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             _context.Remove(entity);
-            int result = _context.SaveChanges();
+            int result = await _context.SaveChangesAsync();
 
             return result != 0;
         }
 
-        public bool Exists(Guid albumId, string name) 
+        public async Task<bool> Exists(Guid albumId, string name) 
         {
-            bool isExist = _context.UserPhotos
+            bool isExist = await _context.UserPhotos
                 .Where(p => p.AlbumId == albumId && p.Name == name)
-                .Any();
+                .AnyAsync();
 
             return isExist;
         }
@@ -70,14 +70,33 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
             return photos;
         }
 
-        public UserPhoto GetPhotoById(Guid id)
+        public async Task<PhotoMainDTO> GetPhotoById(Guid id)
         {
-            UserPhoto photo = _context.UserPhotos
-                .Include(p => p.Album)
+            PhotoMainDTO photo = await _context.UserPhotos
                 .Where(p => p.Id == id)
-                .FirstOrDefault();
+                .Select(p => new PhotoMainDTO
+                { 
+                    Id = p.Id,
+                    AlbumId = p.AlbumId,
+                    Name = p.Name
+                })
+                .FirstOrDefaultAsync();
 
             return photo;
+        }
+
+        public async Task<bool> Update(PhotoMainDTO photo)
+        {
+            var entity = await _context.UserPhotos
+                .Where(p => p.Id == photo.Id)
+                .SingleOrDefaultAsync();
+
+            entity.Name = photo.Name;
+
+            _context.UserPhotos.Update(entity);
+            int result = await _context.SaveChangesAsync();
+
+            return result != 0;
         }
     }
 }

@@ -6,12 +6,14 @@ namespace Dating.Logic.Facades.UserProfileFacade
 {
     public interface IUserProfileFacade
     {
-        Task<UserProfileFullDTO> GetUserProfileFullDataAsync(Guid id);
+        Task<UserProfileFullDTO> GetFullProfileAsync(Guid id);
 
-        Task<UserProfileMainDTO> GetUserProfileMainDataAsync(Guid id);
+        Task<UserProfileMainDTO> GetMainProfileAsync(Guid id);
 
         Task<bool> RegisterAsync(UserRegisterDTO registerData);
 
-        Task ChangeProfileAsync(UserProfileFullDTO fullData);
+        Task<bool> ChangeProfileAsync(UserProfileFullDTO fullData);
+
+        Task<bool> SetProfileAvatarAsync(Guid profileId, Guid photoId);
     }
 }

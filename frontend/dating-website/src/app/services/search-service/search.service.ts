@@ -18,6 +18,6 @@ export class SearchService {
 
   Search(criteria: Criteria): Observable<SearchResult>
   {
-    return this.server.post<SearchResult>(this.path + 'criteria', criteria);
+    return this.server.post<SearchResult>(this.path, criteria);
   }
 }

@@ -17,7 +17,12 @@ export class PhotoService {
 
   GetAllPhotos(albumId: string): Observable<PhotoMain[]>
   {
-    return this.server.get<PhotoMain[]>(this.path + albumId);
+    return this.server.get<PhotoMain[]>([this.path, "all/", albumId].join(""));
+  }
+
+  GetPhotoById(photoId: string): Observable<PhotoMain>
+  {
+    return this.server.get<PhotoMain>([this.path, photoId].join(""));
   }
 
   CreatePhoto(photo: PhotoCreate): Observable<any>
@@ -28,5 +33,20 @@ export class PhotoService {
   DeletePhoto(id: string): Observable<any>
   {
     return this.server.delete<any>(this.path + id);
+  }
+
+  UpdatePhoto(newPhoto: PhotoMain)
+  {
+    return this.server.put<any>(this.path, newPhoto);
+  }
+
+  CheckNameValidity(albumId: string, name: string): Observable<boolean>
+  {
+    return this.server.post<boolean>(
+      this.path + 'check', null, {
+        params: {
+          name : name,
+          albumId : albumId
+        }});
   }
 }

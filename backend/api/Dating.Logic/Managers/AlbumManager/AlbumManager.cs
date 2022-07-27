@@ -18,9 +18,9 @@ namespace Dating.Logic.Managers.AlbumManager
             _directoryUtility = directoryUtility;
         }
 
-        public void CreateAlbum(Guid userId, string name)
+        public void CreateAlbum(Guid profileId, string name)
         {
-            string userPath = _directoryUtility.GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(profileId);
 
             if (!Directory.Exists(userPath))
             {
@@ -32,9 +32,9 @@ namespace Dating.Logic.Managers.AlbumManager
             Directory.CreateDirectory(albumPath);
         }
 
-        public void DeleteAlbum(Guid userId, string name)
+        public void DeleteAlbum(Guid profileId, string name)
         {
-            string userPath = _directoryUtility.GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(profileId);
             string albumPath = Path.Combine(userPath, name);
 
             string[] filePaths = Directory.GetFiles(albumPath);
@@ -42,15 +42,15 @@ namespace Dating.Logic.Managers.AlbumManager
             foreach (var filePath in filePaths)
             {
                 string file = filePath.Split("\\").Last();
-                _photoManager.DeletePhoto(userId, name, file);
+                _photoManager.DeletePhoto(profileId, name, file);
             }
 
             Directory.Delete(albumPath);
         }
 
-        public void UpdateAlbum(Guid userId, string oldName, string newName)
+        public void UpdateAlbum(Guid profileId, string oldName, string newName)
         {
-            string userPath = _directoryUtility.GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(profileId);
 
             string oldPath = Path.Combine(userPath, oldName);
             string newPath = Path.Combine(userPath, newName);

@@ -40,22 +40,12 @@ namespace Dating.WebAPI.Controllers
             return Ok(album);
         }
 
-        [HttpPost("check")]
-        public IActionResult IsValidName(string name)
-        {
-            Guid profileId = _tokenManager.ReadProfileId();
-
-            bool isValid = _albumFacade.IsValidName(profileId, name);
-
-            return Ok(isValid);
-        }
-
         [HttpPost]
-        public IActionResult Create(AlbumCreateDTO album)
+        public async Task<IActionResult> CreateAsync(AlbumCreateDTO album)
         {
             Guid profileId = _tokenManager.ReadProfileId();
 
-            bool isCreated = _albumFacade.CreateAlbum(profileId, album);
+            bool isCreated = await _albumFacade.CreateAlbum(profileId, album);
 
             if (isCreated)
             {
@@ -63,6 +53,17 @@ namespace Dating.WebAPI.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("check")]
+        public async Task<IActionResult> IsValidNameAsync(string name)
+        {
+            Guid profileId = _tokenManager.ReadProfileId();
+
+            bool isValid = await _albumFacade.IsValidName(profileId, name);
+
+            return Ok(isValid);
         }
 
         [HttpPut]

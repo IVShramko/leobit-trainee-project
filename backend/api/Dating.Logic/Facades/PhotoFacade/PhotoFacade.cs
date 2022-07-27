@@ -6,6 +6,7 @@ using Dating.Logic.Managers.PhotoManager;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Dating.Logic.Facades.PhotoFacade
 {
@@ -24,7 +25,7 @@ namespace Dating.Logic.Facades.PhotoFacade
             _albumRepository = albumRepository;
         }
 
-        public async Task<bool> CreatePhotoAsync(Guid userId, PhotoCreateDTO photo)
+        public async Task<bool> CreatePhotoAsync(Guid profileId, PhotoCreateDTO photo)
         {
             bool isCreated;
 
@@ -32,9 +33,9 @@ namespace Dating.Logic.Facades.PhotoFacade
 
             try
             {
-                _photoManager.CreatePhoto(userId, album.Name, photo);
+                await _photoManager.CreatePhotoAsync(profileId, album.Name, photo);
 
-                isCreated = _photoRepository.Create(album.Id, photo);
+                isCreated = await _photoRepository.Create(album.Id, photo);
             }
             catch (Exception)
             {
@@ -44,17 +45,20 @@ namespace Dating.Logic.Facades.PhotoFacade
             return isCreated;
         }
 
-        public bool DeletePhoto(Guid id, Guid userId)
+        public async Task<bool> DeletePhotoAsync(Guid photoId, Guid profileId)
         {
             bool isDeleted;
 
-            UserPhoto photo = _photoRepository.GetPhotoById(id);
+            PhotoMainDTO photo = await _photoRepository.GetPhotoById(photoId);
+
+            AlbumFullDTO album = 
+                await _albumRepository.GetAlbumByIdAsync(photo.AlbumId);
 
             try
             {
-                _photoManager.DeletePhoto(userId, photo.Album.Name, photo.Name);
+                _photoManager.DeletePhoto(profileId, album.Name, photo.Name);
 
-                isDeleted = _photoRepository.Delete(id);
+                isDeleted = await _photoRepository.Delete(photoId);
             }
             catch (Exception)
             {
@@ -65,7 +69,7 @@ namespace Dating.Logic.Facades.PhotoFacade
         }
 
         public async Task<ICollection<PhotoMainDTO>> GetAllPhotosAsync(
-            Guid userId, Guid albumId)
+            Guid profileId, Guid albumId)
         {
             AlbumFullDTO album = await _albumRepository.GetAlbumByIdAsync(albumId);
 
@@ -75,8 +79,8 @@ namespace Dating.Logic.Facades.PhotoFacade
             {
                 try
                 {
-                    string base64 = _photoManager
-                        .GetPhotoBase64String(userId, album.Name, photo.Name);
+                    string base64 = await _photoManager
+                        .GetPhotoBase64StringAsync(profileId, album.Name, photo.Name);
 
                     photo.Data = base64;
                 }
@@ -89,11 +93,54 @@ namespace Dating.Logic.Facades.PhotoFacade
             return photos;
         }
 
-        public bool IsValidName(Guid albumId, string name)
+        public async Task<PhotoMainDTO> GetPhotoByIdAsync(Guid profileId, Guid photoId)
         {
-            bool isExist = _photoRepository.Exists(albumId, name);
+            PhotoMainDTO photo = await _photoRepository.GetPhotoById(photoId);
+
+            if(photo != null)
+            {
+                AlbumFullDTO album =
+                    await _albumRepository.GetAlbumByIdAsync(photo.AlbumId);
+
+                string base64 =
+                    await _photoManager.GetPhotoBase64StringAsync(
+                        profileId, album.Name, photo.Name);
+
+                photo.Data = base64;
+            };
+
+            return photo;
+        }
+
+        public async Task<bool> IsValidName(Guid albumId, string name)
+        {
+            bool isExist = await _photoRepository.Exists(albumId, name);
 
             return !isExist;
+        }
+
+        public async Task<bool> UpdatePhotoAsync(Guid profileId, PhotoMainDTO newPhoto)
+        {
+            bool isUpadted;
+
+            try
+            {
+                PhotoMainDTO oldPhoto = await _photoRepository.GetPhotoById(newPhoto.Id);
+
+                AlbumFullDTO album = 
+                    await _albumRepository.GetAlbumByIdAsync(newPhoto.AlbumId);
+
+                _photoManager.Rename(
+                    profileId, album.Name, oldPhoto.Name, newPhoto.Name);
+
+                isUpadted = await _photoRepository.Update(newPhoto);
+            }
+            catch (Exception)
+            {
+                isUpadted = false;
+            }
+
+            return isUpadted;
         }
     }
 }

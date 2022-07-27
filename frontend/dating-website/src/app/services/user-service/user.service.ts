@@ -28,4 +28,12 @@ export class UserService {
   {
     return this.server.post<UserProfile>(this.path + "change", newProfile)
   }
+
+  SetProfileAvatar(photoId: string)
+  {
+    return this.server.post<any>(
+      this.path + "avatar", 
+      null, 
+      {params: {photoId: photoId}});
+  }
 }

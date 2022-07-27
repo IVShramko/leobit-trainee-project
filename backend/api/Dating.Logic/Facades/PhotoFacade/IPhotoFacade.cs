@@ -7,12 +7,16 @@ namespace Dating.Logic.Facades.PhotoFacade
 {
     public interface IPhotoFacade
     {
-        Task<ICollection<PhotoMainDTO>> GetAllPhotosAsync(Guid userId, Guid albumId);
+        Task<ICollection<PhotoMainDTO>> GetAllPhotosAsync(Guid profileId, Guid albumId);
 
-        Task<bool> CreatePhotoAsync(Guid userId, PhotoCreateDTO photo);
+        Task<bool> CreatePhotoAsync(Guid profileId, PhotoCreateDTO photo);
 
-        bool DeletePhoto(Guid id, Guid userId);
+        Task<bool> DeletePhotoAsync(Guid photoId, Guid profileId);
 
-        bool IsValidName(Guid albumId, string name);
+        Task<bool> IsValidName(Guid albumId, string name);
+
+        Task<bool> UpdatePhotoAsync(Guid profileId, PhotoMainDTO photo);
+
+        Task<PhotoMainDTO> GetPhotoByIdAsync(Guid profileId, Guid photoId);
     }
 }

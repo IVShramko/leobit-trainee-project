@@ -1,14 +1,17 @@
 ﻿using Dating.Logic.DTO;
 using System;
+using System.Threading.Tasks;
 
 namespace Dating.Logic.Managers.PhotoManager
 {
     public interface IPhotoManager
     {
-        void CreatePhoto(Guid userId, string albumName, PhotoCreateDTO photo);
+        Task CreatePhotoAsync(Guid profileId, string albumName, PhotoCreateDTO photo);
 
-        string GetPhotoBase64String(Guid userId, string albumName, string fileName);
+        Task<string> GetPhotoBase64StringAsync(Guid profileId, string albumName, string fileName);
 
-        void DeletePhoto(Guid userId, string albumName, string fileName);
+        void DeletePhoto(Guid profileId, string albumName, string fileName);
+
+        void Rename(Guid profileId, string albumName, string oldName, string newName);
     }
 }

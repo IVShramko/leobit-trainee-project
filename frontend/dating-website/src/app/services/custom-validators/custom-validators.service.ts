@@ -1,15 +1,17 @@
+import { PhotoMain } from 'src/app/models/PhotoMain';
+import { PhotoService } from './../photo-service/photo.service';
 import { AlbumService } from 'src/app/services/album-service/album.service';
 import { AbstractControl, AsyncValidatorFn, FormControl } from '@angular/forms';
 import { Injectable } from '@angular/core';
-import { map, pipe, tap } from 'rxjs'
-import { NavComponent } from 'src/app/components/navbar/nav/nav.component';
+import { map } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomValidatorsService{
 
-  constructor(private albumService: AlbumService) { }
+  constructor(private albumService: AlbumService,
+    private photoService: PhotoService) { }
 
   ConfirmPasswordValidator(control: AbstractControl)
   {
@@ -72,6 +74,22 @@ export class CustomValidatorsService{
     return (control) => this.albumService.CheckNameValidity(control?.value)
       .pipe(
         map((res) => res ? null : {name_error: 'incorrect name'}))
+  }
+
+  PhotoNameValidator(photo: PhotoMain) : AsyncValidatorFn
+  {
+    const validator = (control: AbstractControl) => {
+      const newName = control?.value;
+      const extension = photo?.name.split('.').pop();
+
+      const fullName = [newName, extension].join('.');
+
+      return this.photoService.CheckNameValidity(photo.albumId, fullName)
+      .pipe(
+        map((res) => res ? null : {name_error: 'incorrect name'}))
+
+    };
+    return validator;
   }
 }
 

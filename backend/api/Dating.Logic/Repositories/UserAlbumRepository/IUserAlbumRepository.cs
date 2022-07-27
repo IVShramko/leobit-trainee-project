@@ -11,12 +11,12 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
 
         Task<AlbumFullDTO> GetAlbumByIdAsync(Guid id);
 
-        bool Exists(Guid userId, string name);
+        Task<bool> Exists(Guid userId, string name);
 
-        bool Create(Guid userId, AlbumCreateDTO album);
+        Task<bool> Create(Guid userId, AlbumCreateDTO album);
 
-        bool Update(AlbumFullDTO album);
+        Task<bool> Update(AlbumFullDTO album);
 
-        bool Delete(AlbumFullDTO album);
+        Task<bool> Delete(AlbumFullDTO album);
     }
 }

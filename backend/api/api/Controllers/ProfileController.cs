@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dating.WebAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProfileController : ControllerBase
     {
@@ -22,33 +22,61 @@ namespace Dating.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("main")]
         public async Task<IActionResult> Main()
         {
             Guid profileId = _tokenManager.ReadProfileId();
 
-            UserProfileMainDTO mainProfile = 
-                await _profileFacade.GetUserProfileMainDataAsync(profileId);
+            UserProfileMainDTO mainProfile =
+                await _profileFacade.GetMainProfileAsync(profileId);
 
             return Ok(mainProfile);
         }
 
         [HttpGet]
+        [Route("full")]
         public async Task<IActionResult> Full()
         {
             Guid profileId = _tokenManager.ReadProfileId();
 
-            UserProfileFullDTO fullProfile = 
-                await _profileFacade.GetUserProfileFullDataAsync(profileId);
+            UserProfileFullDTO fullProfile =
+                await _profileFacade.GetFullProfileAsync(profileId);
 
             return Ok(fullProfile);
         }
 
         [HttpPost]
+        [Route("change")]
         public async Task<IActionResult> Change(UserProfileFullDTO fullProfile)
         {
-            await _profileFacade.ChangeProfileAsync(fullProfile);
+            bool isChanged;
 
-            return Ok();
+            isChanged = await _profileFacade.ChangeProfileAsync(fullProfile);
+
+            if (isChanged)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("avatar")]
+        public async Task<IActionResult> SetProfileAvatarAsync(Guid photoId)
+        {
+            bool isSet;
+
+            Guid profileId = _tokenManager.ReadProfileId();
+
+            isSet = await _profileFacade.SetProfileAvatarAsync(profileId, photoId);
+
+            if (isSet)
+            {
+                return Ok();
+            }
+
+            return BadRequest();        
         }
     }
 }

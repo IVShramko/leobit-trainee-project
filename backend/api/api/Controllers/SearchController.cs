@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Dating.WebAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class SearchController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace Dating.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Criteria(SearchCriteria criteria)
+        public async Task<IActionResult> SearchOnCriteria(SearchCriteria criteria)
         {
             ProfileSearchresult searchResult = await _searchFacade.Search(criteria);
 

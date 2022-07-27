@@ -24,7 +24,7 @@ namespace Dating.Logic.DTO
 
         public string Town { get; set; }
 
-        public string Photo { get; set; }
+        public Guid Avatar { get; set; }
     }
 }
 

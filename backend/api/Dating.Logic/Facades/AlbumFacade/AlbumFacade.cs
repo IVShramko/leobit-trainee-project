@@ -19,15 +19,15 @@ namespace Dating.Logic.Facades.AlbumFacade
             _albumManager = albumManager;
         }
 
-        public bool CreateAlbum(Guid userId, AlbumCreateDTO album)
+        public async Task<bool> CreateAlbum(Guid profileId, AlbumCreateDTO album)
         {
             bool isCreated;
 
             try
             {
-                _albumManager.CreateAlbum(userId, album.Name);
+                _albumManager.CreateAlbum(profileId, album.Name);
 
-                isCreated =  _albumRepository.Create(userId, album);
+                isCreated = await _albumRepository.Create(profileId, album);
             }
             catch (Exception)
             {
@@ -37,7 +37,7 @@ namespace Dating.Logic.Facades.AlbumFacade
             return isCreated;
         }
 
-        public async Task<bool> DeleteAlbumAsync(Guid userId, Guid albumId)
+        public async Task<bool> DeleteAlbumAsync(Guid profileId, Guid albumId)
         {
             bool isDeleted;
 
@@ -45,9 +45,9 @@ namespace Dating.Logic.Facades.AlbumFacade
 
             try
             {
-                _albumManager.DeleteAlbum(userId, album.Name);
+                _albumManager.DeleteAlbum(profileId, album.Name);
 
-                isDeleted = _albumRepository.Delete(album);
+                isDeleted = await _albumRepository.Delete(album);
             }
             catch (Exception)
             {
@@ -64,23 +64,23 @@ namespace Dating.Logic.Facades.AlbumFacade
             return album;
         }
 
-        public async Task<ICollection<AlbumMainDTO>> GetAllAlbumsAsync(Guid userId)
+        public async Task<ICollection<AlbumMainDTO>> GetAllAlbumsAsync(Guid profileId)
         {
             ICollection<AlbumMainDTO> albums = 
-                await _albumRepository.GetAllAsync(userId);
+                await _albumRepository.GetAllAsync(profileId);
 
             return albums;
         }
 
-        public bool IsValidName(Guid userId, string name)
+        public async Task<bool> IsValidName(Guid profileId, string name)
         {
-            bool isExist = _albumRepository.Exists(userId, name);
+            bool isExist = await _albumRepository.Exists(profileId, name);
             bool isValid = !isExist;
 
             return isValid;
         }
 
-        public async Task<bool> UpdateAlbumAsync(Guid userId, AlbumFullDTO album)
+        public async Task<bool> UpdateAlbumAsync(Guid profileId, AlbumFullDTO album)
         {
             bool isUpdated;
 
@@ -88,9 +88,9 @@ namespace Dating.Logic.Facades.AlbumFacade
 
             try
             {
-                _albumManager.UpdateAlbum(userId, oldName, album.Name);
+                _albumManager.UpdateAlbum(profileId, oldName, album.Name);
 
-                isUpdated = _albumRepository.Update(album);
+                isUpdated = await _albumRepository.Update(album);
             }
             catch (Exception)
             {

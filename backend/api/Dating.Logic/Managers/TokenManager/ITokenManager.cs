@@ -14,7 +14,7 @@ namespace Dating.Logic.Managers.TokenManager
 
         Task DeactivateAsync(string token);
 
-        string GenerateToken(IdentityUser user);
+        Task<string> GenerateTokenAsync(IdentityUser user);
 
         Guid ReadProfileId();
     }

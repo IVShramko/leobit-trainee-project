@@ -33,11 +33,11 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
             return album;
         }
 
-        public bool Exists(Guid userId, string name)
+        public async Task<bool> Exists(Guid userId, string name)
         {
-            bool result = _context.UserAlbums
+            bool result = await _context.UserAlbums
                 .Where(a => a.UserProfileId == userId && a.Name == name)
-                .Any();
+                .AnyAsync();
 
             return result;
         }
@@ -57,7 +57,7 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
             return albums;
         }
 
-        public bool Create(Guid userId, AlbumCreateDTO album)
+        public async Task<bool> Create(Guid userId, AlbumCreateDTO album)
         {
             UserAlbum newAlbum = new()
             {
@@ -67,35 +67,35 @@ namespace Dating.Logic.Repositories.UserAlbumRepository
                 Description = album.Description
             };
 
-            _context.UserAlbums.Add(newAlbum);
-            int result = _context.SaveChanges();
+            await _context.UserAlbums.AddAsync(newAlbum);
+            int result = await _context.SaveChangesAsync();
 
             return result != 0;
         }
 
-        public bool Update(AlbumFullDTO album)
+        public async Task<bool> Update(AlbumFullDTO album)
         {
-            var entity = _context.UserAlbums
+            var entity = await _context.UserAlbums
                 .Where(a => a.Id == album.Id)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             entity.Name = album.Name;
             entity.Description = album.Description;
 
             _context.Update(entity);
-            int result = _context.SaveChanges();
+            int result = await _context.SaveChangesAsync();
 
             return result != 0;
         }
 
-        public bool Delete(AlbumFullDTO album)
+        public async Task<bool> Delete(AlbumFullDTO album)
         {
-            var entity = _context.UserAlbums
+            var entity = await _context.UserAlbums
                 .Where(a => a.Id == album.Id)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             _context.Remove(entity);
-            int result = _context.SaveChanges();
+            int result = await _context.SaveChangesAsync();
 
             return result != 0;
         }

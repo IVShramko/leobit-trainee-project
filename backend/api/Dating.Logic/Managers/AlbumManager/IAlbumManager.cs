@@ -4,10 +4,10 @@ namespace Dating.Logic.Managers.AlbumManager
 {
     public interface IAlbumManager
     {
-        void CreateAlbum(Guid userId, string name);
+        void CreateAlbum(Guid profileId, string name);
 
-        void UpdateAlbum(Guid userId, string oldName, string newName);
+        void UpdateAlbum(Guid profileId, string oldName, string newName);
 
-        void DeleteAlbum(Guid userId, string name);
+        void DeleteAlbum(Guid profileId, string name);
     }
 }

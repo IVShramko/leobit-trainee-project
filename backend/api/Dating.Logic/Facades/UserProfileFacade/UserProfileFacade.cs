@@ -1,7 +1,5 @@
 ﻿using Dating.Logic.DTO;
-using Dating.Logic.Models;
 using Dating.Logic.Repositories;
-using Dating.Logic.Repositories.ImageRepository;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
@@ -12,44 +10,26 @@ namespace Dating.Logic.Facades.UserProfileFacade
     {
         private readonly IUserProfileRepository _profileRepository;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IImageRepository _imageRepository;
 
         public UserProfileFacade(IUserProfileRepository profileRepository,
-            UserManager<IdentityUser> userManager, IImageRepository imageRepository)
+            UserManager<IdentityUser> userManager)
         {
             _profileRepository = profileRepository;
             _userManager = userManager;
-            _imageRepository = imageRepository;
         }
 
-        public async Task<UserProfileFullDTO> GetUserProfileFullDataAsync(Guid id)
+        public async Task<UserProfileFullDTO> GetFullProfileAsync(Guid id)
         {
-            var profile = await _profileRepository.GetUserProfileAsync(id);
+            UserProfileFullDTO profile = 
+                await _profileRepository.GetFullProfileAsync(id);
 
-            string photo = _imageRepository.GetPhotoById(profile.Avatar, profile.Id);
-
-            UserProfileFullDTO fullData = new UserProfileFullDTO
-            {
-                Id = profile.Id,
-                UserName = profile.AspNetUser.UserName,
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                Email = profile.AspNetUser.Email,
-                BirthDate = profile.BirthDate,
-                Gender = profile.Gender,
-                PhoneNumber = profile.PhoneNumber,
-                Region = profile.Region,
-                Town = profile.Town,
-                Photo = photo
-            };
-
-            return fullData;
+            return profile;
         }
 
-        public async Task<UserProfileMainDTO> GetUserProfileMainDataAsync(Guid id)
+        public async Task<UserProfileMainDTO> GetMainProfileAsync(Guid id)
         {
             UserProfileMainDTO mainProfile =
-                await _profileRepository.GetUserProfileMainAsync(id);
+                await _profileRepository.GetMainProfileAsync(id);
 
             return mainProfile;
         }
@@ -72,34 +52,34 @@ namespace Dating.Logic.Facades.UserProfileFacade
                 var aspUser = await _userManager.FindByNameAsync(registerData.UserName);
 
                 isRegistered = 
-                    _profileRepository.SaveUserData(aspUser, registerData.Profile);
+                    await _profileRepository.CreateProfileAsync(aspUser, registerData.Profile);
             }
 
             return isRegistered;
         }
 
-        public async Task ChangeProfileAsync(UserProfileFullDTO fullData)
+        public async Task<bool> ChangeProfileAsync(UserProfileFullDTO profile)
         {
-            var aspUser = await _userManager.FindByNameAsync(fullData.UserName);
+            bool isChanged;
 
-            Guid photoId = _imageRepository.AddPhoto(fullData.Photo, fullData.Id);
+            var aspUser = await _userManager.FindByNameAsync(profile.UserName);
 
-            UserProfile profile = new UserProfile()
-            {
-                Id = fullData.Id,
-                AspNetUser = aspUser,
-                AspNetUserId = aspUser.Id,
-                FirstName = fullData.FirstName,
-                LastName = fullData.LastName,
-                BirthDate = fullData.BirthDate,
-                Gender = fullData.Gender,
-                PhoneNumber = fullData.PhoneNumber,
-                Region = fullData.Region,
-                Town = fullData.Town,
-                Avatar = photoId
-            };
+            isChanged = await _profileRepository.UpdateProfileAsync(profile);
 
-            _profileRepository.UpdateUserData(profile);
+            return isChanged;
+        }
+
+        public async Task<bool> SetProfileAvatarAsync(Guid profileId, Guid photoId)
+        {
+            bool isSet;
+
+            var profile = await _profileRepository.GetFullProfileAsync(profileId);
+
+            profile.Avatar = photoId;
+
+            isSet = await _profileRepository.UpdateProfileAsync(profile);
+
+            return isSet;
         }
     }
 }

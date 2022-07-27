@@ -1,5 +1,4 @@
 ﻿using Dating.Logic.DTO;
-using Dating.Logic.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,12 +9,14 @@ namespace Dating.Logic.Repositories.UserPhotoRepository
     {
         Task<ICollection<PhotoMainDTO>> GetAllAsync(Guid albumId);
 
-        bool Create(Guid albunId, PhotoCreateDTO photo);
+        Task<bool> Create(Guid albunId, PhotoCreateDTO photo);
 
-        bool Exists(Guid albumId, string name);
+        Task<bool> Exists(Guid albumId, string name);
 
-        UserPhoto GetPhotoById(Guid id);
+        Task<PhotoMainDTO> GetPhotoById(Guid id);
 
-        bool Delete(Guid id);
+        Task<bool> Delete(Guid id);
+
+        Task<bool> Update(PhotoMainDTO photo);
     }
 }

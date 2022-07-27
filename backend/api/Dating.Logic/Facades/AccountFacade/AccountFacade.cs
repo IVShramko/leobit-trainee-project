@@ -35,7 +35,7 @@ namespace Dating.Logic.Facades.AccountFacade
 
                 if (result.Succeeded)
                 {
-                   token = _tokenManager.GenerateToken(user);
+                   token = await _tokenManager.GenerateTokenAsync(user);
                 }
             }
 

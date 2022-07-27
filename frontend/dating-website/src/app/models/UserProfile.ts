@@ -11,5 +11,5 @@ export interface UserProfile{
     phoneNumber: string
     region: Regions
     town: string
-    photo: string
+    avatar: string | undefined
 }

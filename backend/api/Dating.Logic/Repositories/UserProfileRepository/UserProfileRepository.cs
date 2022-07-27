@@ -19,14 +19,15 @@ namespace Dating.Logic.Repositories
             _context = context;
         }
 
-        public async Task<UserProfile> GetUserProfileAsync(Guid id)
+        public async Task<UserProfileFullDTO> GetFullProfileAsync(Guid id)
         {
-            UserProfile userData = await _context.UserProfiles
+            UserProfileFullDTO profile = await _context.UserProfiles
                 .Where(p => p.Id == id)
-                .Select(p => new UserProfile
+                .Select(p => new UserProfileFullDTO
                 {
                     Id = p.Id,
-                    AspNetUser = p.AspNetUser,
+                    UserName = p.AspNetUser.UserName,
+                    Email = p.AspNetUser.Email,
                     FirstName = p.FirstName,
                     LastName = p.LastName,
                     BirthDate = p.BirthDate,
@@ -38,10 +39,10 @@ namespace Dating.Logic.Repositories
                 })
                 .SingleOrDefaultAsync();
 
-            return userData;
+            return profile;
         }
 
-        public async Task<UserProfileMainDTO> GetUserProfileMainAsync(Guid id)
+        public async Task<UserProfileMainDTO> GetMainProfileAsync(Guid id)
         {
             UserProfileMainDTO userData = await _context.UserProfiles
                 .Where(p => p.Id == id)
@@ -137,33 +138,49 @@ namespace Dating.Logic.Repositories
             return query;
         }
 
-        public bool SaveUserData(IdentityUser aspUser, ProfileRegisterDTO registerData)
+        public async Task<bool> CreateProfileAsync(
+            IdentityUser aspUser, ProfileRegisterDTO registerProfile)
         {
             UserProfile profile = new UserProfile
             {
                 AspNetUserId = aspUser.Id,
-                BirthDate = registerData.BirthDate,
-                Gender = registerData.Gender
+                BirthDate = registerProfile.BirthDate,
+                Gender = registerProfile.Gender
             };
 
-            _context.UserProfiles.Add(profile);
+            await _context.UserProfiles.AddAsync(profile);
             int result = _context.SaveChanges();
 
             return result != 0;
         }
 
-        public void UpdateUserData(UserProfile userProfile)
+        public async Task<bool> UpdateProfileAsync(UserProfileFullDTO profile)
         {
-            _context.UserProfiles.Update(userProfile);
-            _context.SaveChanges();
+            var entity = await _context.UserProfiles
+                .Where(p => p.Id == profile.Id)
+                .SingleOrDefaultAsync();
+
+            entity.FirstName = profile.FirstName;
+            entity.LastName = profile.LastName;
+            entity.AspNetUser.Email = profile.Email;
+            entity.PhoneNumber = profile.PhoneNumber;
+            entity.Region = profile.Region;
+            entity.Town = profile.Town;
+            entity.Avatar = profile.Avatar;
+            entity.BirthDate = profile.BirthDate;
+            entity.Gender = profile.Gender;
+
+            int result = _context.SaveChanges();
+
+            return result != 0;
         }
 
-        public Guid GetProfileIdByAspNetId(string aspNetId)
+        public async Task<Guid> GetProfileIdByAspNetIdAsync(string aspNetId)
         {
-            Guid profileId = _context.UserProfiles
+            Guid profileId = await _context.UserProfiles
                 .Where(p => p.AspNetUserId == aspNetId)
                 .Select(p => p.Id)
-                .FirstOrDefault();
+                .SingleOrDefaultAsync();
 
             return profileId;
         }

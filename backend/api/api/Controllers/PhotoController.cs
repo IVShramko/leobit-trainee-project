@@ -22,12 +22,24 @@ namespace Dating.WebAPI.Controllers
             _tokenManager = tokenManager;
         }
 
-        [HttpGet("{albumId}")]
+        [HttpGet]
+        [Route("{photoId}")]
+        public async Task<IActionResult> GetPhotoById(Guid photoId)
+        {
+            Guid profileId = _tokenManager.ReadProfileId();
+
+            PhotoMainDTO photo = await _photoFacade.GetPhotoByIdAsync(profileId, photoId);
+
+            return Ok(photo);
+        }
+
+        [HttpGet]
+        [Route("all/{albumId}")]
         public async Task<IActionResult> GetAllPhotos(Guid albumId)
         {
             Guid profileId = _tokenManager.ReadProfileId();
 
-            ICollection<PhotoMainDTO> photos = 
+            ICollection<PhotoMainDTO> photos =
                 await _photoFacade.GetAllPhotosAsync(profileId, albumId);
 
             return Ok(photos);
@@ -48,20 +60,36 @@ namespace Dating.WebAPI.Controllers
             return BadRequest();
         }
 
-        [HttpPost("check")]
-        public IActionResult IsValidName(Guid albumId, string name)
+        [HttpPost]
+        [Route("check")]
+        public async Task<IActionResult> IsValidNameAsync(Guid albumId, string name)
         {
-            bool isValid = _photoFacade.IsValidName(albumId, name);
+            bool isValid = await _photoFacade.IsValidName(albumId, name);
 
             return Ok(isValid);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeletePhoto(Guid id)
+        [HttpPut]
+        public async Task<IActionResult> UpdatePhotoAsync(PhotoMainDTO photo)
         {
             Guid profileId = _tokenManager.ReadProfileId();
 
-            bool isDeleted = _photoFacade.DeletePhoto(id, profileId);
+            bool isUpdated = await _photoFacade.UpdatePhotoAsync(profileId, photo);
+
+            if (isUpdated)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePhotoAsync(Guid id)
+        {
+            Guid profileId = _tokenManager.ReadProfileId();
+
+            bool isDeleted = await _photoFacade.DeletePhotoAsync(id, profileId);
 
             if (isDeleted)
             {

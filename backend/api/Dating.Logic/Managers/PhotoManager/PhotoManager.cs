@@ -3,6 +3,7 @@ using Dating.Logic.Infrastructure;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Dating.Logic.Managers.PhotoManager
 {
@@ -15,9 +16,9 @@ namespace Dating.Logic.Managers.PhotoManager
             _directoryUtility = directoryUtility;
         }
 
-        public void CreatePhoto(Guid userId, string albumName, PhotoCreateDTO photo)
+        public async Task CreatePhotoAsync(Guid profileId, string albumName, PhotoCreateDTO photo)
         {
-            string userPath = _directoryUtility.GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(profileId);
             string albumPath = Path.Combine(userPath, albumName);
 
             string base64 = Regex
@@ -33,26 +34,42 @@ namespace Dating.Logic.Managers.PhotoManager
                 throw new IOException();
             }
 
-            File.WriteAllBytes(photoPath, bytes);
+            await File.WriteAllBytesAsync(photoPath, bytes);
         }
 
-        public void DeletePhoto(Guid userId, string albumName, string fileName)
+        public void DeletePhoto(Guid profileId, string albumName, string fileName)
         {
-            string userPath = _directoryUtility.GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(profileId);
             string filePath = Path.Combine(userPath, albumName, fileName);
 
             File.Delete(filePath);
         }
 
-        public string GetPhotoBase64String(Guid userId, string albumName, string fileName)
+        public async Task<string> GetPhotoBase64StringAsync(
+            Guid profileId, string albumName, string fileName)
         {
-            string userPath = _directoryUtility.GetUserDirectory(userId);
+            string userPath = _directoryUtility.GetUserDirectory(profileId);
             string filePath = Path.Combine(userPath, albumName, fileName);
 
-            byte[] bytes = File.ReadAllBytes(filePath);
+            byte[] bytes = await File.ReadAllBytesAsync(filePath);
             string base64 = Convert.ToBase64String(bytes);
 
             return base64;
+        }
+
+        public void Rename(
+            Guid profileId, string albumName, string oldName, string newName)
+        {
+            string userPath = _directoryUtility.GetUserDirectory(profileId);
+            string oldPath = Path.Combine(userPath, albumName, oldName);
+            string newPath = Path.Combine(userPath, albumName, newName);
+
+            if (!File.Exists(oldPath))
+            {
+                throw new FileNotFoundException();
+            }
+
+            File.Move(oldPath, newPath);
         }
     }
 }

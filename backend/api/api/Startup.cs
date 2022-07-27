@@ -5,7 +5,6 @@ using Dating.Logic.Facades.PhotoFacade;
 using Dating.Logic.Facades.SearchFacade;
 using Dating.Logic.Facades.UserProfileFacade;
 using Dating.Logic.Repositories;
-using Dating.Logic.Repositories.ImageRepository;
 using Dating.Logic.Repositories.UserAlbumRepository;
 using Dating.Logic.Repositories.UserPhotoRepository;
 using Dating.Logic.Managers.AlbumManager;
@@ -96,7 +95,6 @@ namespace Dating.WebAPI
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IUserAlbumRepository, UserAlbumRepository>();
             services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
-            services.AddScoped<IImageRepository,ImageRepository>();
 
             //facades
             services.AddScoped<IAccountFacade, AccountFacade>();
