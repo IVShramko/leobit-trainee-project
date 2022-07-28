@@ -157,6 +157,7 @@ namespace Dating.Logic.Repositories
         public async Task<bool> UpdateProfileAsync(UserProfileFullDTO profile)
         {
             var entity = await _context.UserProfiles
+                .Include(p => p.AspNetUser)
                 .Where(p => p.Id == profile.Id)
                 .SingleOrDefaultAsync();
 

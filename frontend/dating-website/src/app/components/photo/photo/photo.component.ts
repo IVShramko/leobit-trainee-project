@@ -86,10 +86,6 @@ export class PhotoComponent implements OnInit, AfterContentInit {
 
   OnSetAsAvatar(id: string)
   {
-    console.log(id);
-
-    this.userService.SetProfileAvatar(id).subscribe(
-      () => console.log("set")
-    )
+    this.userService.SetProfileAvatar(id).subscribe();
   }
 }

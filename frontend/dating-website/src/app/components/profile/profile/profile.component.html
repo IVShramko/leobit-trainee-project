@@ -1,22 +1,32 @@
 <div class="container">
-  <div class="row justify-content-center my-3">
-    <div class="col-8">
-      <h2>Your profile avatar</h2>
-      <img #avatar
-      class="img-fluid profile-image mt-2" 
-      [src]="ImageSourse" alt="">
-    </div>
-  </div>
   <div class="row mt-3 justify-content-center">
       <div class="col-lg-9">
-
           <form [formGroup]="editProfileForm" *ngIf="editProfileForm">
-
-            <div class="row mt-3">
-              <h2>Personal info</h2>
-
-              <div class="row mt-2">
-                <div class="col">
+            <div class="row my-5">
+              <div class="col mx-2 d-flex justify-content-center">
+                <div id="avatar-box" class="position-relative"
+                (mouseleave)="avatarOptions.hidden = true"
+                (mouseenter)="avatarOptions.hidden = false">
+                  <div #avatarOptions
+                  [hidden]="true"
+                  class="position-absolute top-50 start-50 translate-middle">
+                    <button 
+                    type="button"
+                    routerLink="../albums" 
+                    class="btn btn-dark mx-1">
+                      Change</button>
+                  </div>
+                  <img 
+                  class="img" 
+                  id="avatar"
+                  [src]="ImageSourse ?? 'profile-default.jpg'"
+                  alt="avatar">
+                </div>
+              </div>
+              <div class="col mx-2 d-flex flex-column justify-content-center">
+                <h2>Personal info</h2>
+                <div class="row mt-3 mb-1">
+                  <div class="col">
                     <label 
                     [ngClass]="{'form-label': true}" 
                     for="">User name</label>
@@ -24,11 +34,10 @@
                     formControlName="userName"
                     [ngClass]="{'form-control' : true}"
                     type="text">
+                  </div>
                 </div>
-              </div>
-
-              <div class="row mt-2">
-                <div class="col">
+                <div class="row my-1">
+                  <div class="col">
                     <label 
                     [ngClass]="{'form-label': true}" 
                     for="">First name</label>
@@ -38,8 +47,10 @@
                     'is-invalid' : !firstName?.valid && firstName?.touched,
                     'is-valid' : firstName?.valid}"
                     type="text">
+                  </div>
                 </div>
-                <div class="col">
+                <div class="row my-1">
+                  <div class="col">
                     <label 
                     [ngClass]="{'form-label': true}" 
                     for="">Last name</label>
@@ -49,10 +60,12 @@
                     'is-invalid' : !lastName?.valid && lastName?.touched,
                     'is-valid' : lastName?.valid}"
                     type="text">
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div class="row mt-2">
+            <div class="row mt-2">
                 <div class="col position-relative">
                   <label 
                   [ngClass]="{'form-label': true}" 
@@ -80,96 +93,82 @@
                   </select>
                 </div>
             </div>
-            </div>
 
             <div class="row mt-5">
-              <h2>Contacts</h2>
+              <div class="col">
+                <h2>Contacts</h2>
 
-              <div class="row mt-2">
-                <div class="col">
-                    <label 
-                    [ngClass]="{'form-label': true}" 
-                    for="">Email</label>
-                    <input
-                    formControlName="email" 
-                    [ngClass]="{'form-control' : true,
-                    'is-invalid' : !email?.valid && email?.touched,
-                    'is-valid' : email?.valid}"
-                    placeholder="email@test.com" 
-                    type="email">
-                </div>
-              </div>
-
-              <div class="row mt-2">
-                <div class="col">
-                  <label 
-                  [ngClass]="{'form-label': true}" 
-                  for="">Phone number</label>
-                  <div class="input-group">
-                    <span class="input-group-text">+380</span>
-                    <input
-                    PhoneMask
-                    formControlName="phone" 
-                    [ngClass]="{'form-control' : true,
-                    'is-invalid' : !phone?.valid && phone?.touched,
-                    'is-valid' : phone?.valid}"
-                    type="tel">
+                <div class="row mt-2">
+                  <div class="col">
+                      <label 
+                      [ngClass]="{'form-label': true}" 
+                      for="">Email</label>
+                      <input
+                      formControlName="email" 
+                      [ngClass]="{'form-control' : true,
+                      'is-invalid' : !email?.valid && email?.touched,
+                      'is-valid' : email?.valid}"
+                      placeholder="email@test.com" 
+                      type="email">
                   </div>
                 </div>
-              </div>
+                <div class="row mt-2">
+                  <div class="col">
+                    <label 
+                    [ngClass]="{'form-label': true}" 
+                    for="">Phone number</label>
+                    <div class="input-group">
+                      <span class="input-group-text">+380</span>
+                      <input
+                      PhoneMask
+                      formControlName="phone" 
+                      [ngClass]="{'form-control' : true,
+                      'is-invalid' : !phone?.valid && phone?.touched,
+                      'is-valid' : phone?.valid}"
+                      type="tel">
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+
+              
             </div> 
 
             <div class="row mt-5">
-              <h2>Location</h2>
+              <div class="col">
+                <h2>Location</h2>
 
-              <div class="row mt-2">
-                <div class="col">
-                  <label 
-                  [ngClass]="{'form-label': true}" 
-                  for="">Region</label>
-                  <select 
-                  formControlName="region"
-                  [ngClass]="{'form-control' : true,
-                  'is-invalid' : !region?.valid && region?.touched,
-                  'is-valid' : region?.valid}"
-                  type="text">
-                    <option disabled [ngValue]="region?.value">{{region?.value}}</option>
-                    <option *ngFor="let region of regions">{{region}}</option>
-                  </select>
-                </div>
-
-                <div class="col">
-                  <label 
-                  [ngClass]="{'form-label': true}" 
-                  for="">Town</label>
-                  <input 
-                  formControlName="town"
-                  [ngClass]="{'form-control' : true,
-                  'is-invalid' : !town?.valid && town?.touched,
-                  'is-valid' : town?.valid}" 
-                  type="text">
+                <div class="row mt-2">
+                  <div class="col">
+                    <label 
+                    [ngClass]="{'form-label': true}" 
+                    for="">Region</label>
+                    <select 
+                    formControlName="region"
+                    [ngClass]="{'form-control' : true,
+                    'is-invalid' : !region?.valid && region?.touched,
+                    'is-valid' : region?.valid}"
+                    type="text">
+                      <option disabled [ngValue]="region?.value">{{region?.value}}</option>
+                      <option *ngFor="let region of regions">{{region}}</option>
+                    </select>
+                  </div>
+  
+                  <div class="col">
+                    <label 
+                    [ngClass]="{'form-label': true}" 
+                    for="">Town</label>
+                    <input 
+                    formControlName="town"
+                    [ngClass]="{'form-control' : true,
+                    'is-invalid' : !town?.valid && town?.touched,
+                    'is-valid' : town?.valid}" 
+                    type="text">
+                  </div>
                 </div>
               </div>
             </div>
-            
-            <!-- <div class="row mt-5">
-              <h2>Photo</h2> -->
-
-              <!-- <div class="row mt-2">
-                <div class="col position-relative">
-                  <div class="input-group mb-3">
-                    <input type="file"
-                      formControlName="photo"
-                      (change)="OnFileUpload($event)"
-                      [ngClass]="{'form-control' : true,
-                      'is-invalid' : !photo?.valid && photo?.touched,
-                      'is-valid' : photo?.valid}"
-                      accept="image/*">
-                      <div *ngIf="photo?.errors?.file_type_error && photo?.touched" class="invalid-tooltip">only PNG, JPEG, JPG formats are supported</div>
-                  </div>
-                </div>
-              </div> -->
-            <!-- </div> -->
 
             <div class="row my-3">
               <div class="col text-center">

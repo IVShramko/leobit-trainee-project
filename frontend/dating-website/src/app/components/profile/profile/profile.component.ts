@@ -1,10 +1,11 @@
+import { Router } from '@angular/router';
 import { PhotoMain } from 'src/app/models/PhotoMain';
 import { PhotoService } from './../../../services/photo-service/photo.service';
 import { RegionService } from './../../../services/regions-service/region.service';
 import { UserProfile } from './../../../models/UserProfile';
 import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { Genders } from 'src/app/enums/Genders';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -22,7 +23,8 @@ export class ProfileComponent implements OnInit {
     private userService: UserService, 
     private photoService: PhotoService,
     private regionService: RegionService, 
-    private sanitizer: DomSanitizer)
+    private sanitizer: DomSanitizer,
+    private router: Router)
     {}
     
   editProfileForm: FormGroup;
@@ -30,11 +32,11 @@ export class ProfileComponent implements OnInit {
   regions: string[] = [];
   genders: string[] = [];
 
-  private currentProfile: UserProfile | undefined;
+  private currentProfile: UserProfile;
 
   profileImage: PhotoMain;
 
-  ImageSourse: SafeResourceUrl;
+  ImageSourse: SafeResourceUrl | null;
 
   ngOnInit() {
 
@@ -50,8 +52,11 @@ export class ProfileComponent implements OnInit {
             .subscribe(
                 (result) => {
                   this.profileImage = result;
-                  this.ImageSourse = 
-                      this.ConvertToImage(result.data, result.name);
+
+                  if(result != null)
+                  {
+                    this.ImageSourse = this.ConvertToImage(result.data, result.name);
+                  }
                 });
         this.LoadForm();
       });
@@ -164,6 +169,11 @@ export class ProfileComponent implements OnInit {
     
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `data:image/${extension};base64,` + base64 as string);
+  }
+
+  ResetAvatar()
+  {
+    this.userService.SetProfileAvatar(" ");
   }
 
   private ParseDate(date: string): string | undefined
