@@ -5,6 +5,7 @@ import { PhotoMainDTO } from 'src/app/models/photoMainDTO';
 import { AfterContentInit, Input, Output, EventEmitter } from '@angular/core';
 import { Component, ContentChild, ElementRef, OnInit, Renderer2, } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-photo',
@@ -79,6 +80,14 @@ export class PhotoComponent implements OnInit, AfterContentInit {
   }
 
   OnSetAsAvatar(id: string) {
-    this.userService.SetProfileAvatar(id).subscribe();
+    this.userService.SetProfileAvatar(id).subscribe(
+      () => this.userService.currentAvatar.next(id)
+    );
+  }
+
+  IsAvatar() {
+    return this.userService.currentAvatar.pipe(
+      map((avatarId: string) => this.photo.id === avatarId)
+    );
   }
 }

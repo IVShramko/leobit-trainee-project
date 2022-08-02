@@ -11,5 +11,7 @@ namespace Dating.Logic.DTO
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public Guid Avatar { get; set; }
     }
 }

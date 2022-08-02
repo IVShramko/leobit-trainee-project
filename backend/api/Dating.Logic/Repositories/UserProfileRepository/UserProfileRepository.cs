@@ -51,7 +51,8 @@ namespace Dating.Logic.Repositories
                     Id = p.Id,
                     UserName = p.AspNetUser.UserName,
                     FirstName = p.FirstName,
-                    LastName = p.LastName
+                    LastName = p.LastName,
+                    Avatar = p.Avatar
                 })
                 .SingleOrDefaultAsync();
 

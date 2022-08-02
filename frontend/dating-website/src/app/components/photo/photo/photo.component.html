@@ -67,8 +67,14 @@
             <button (click)="SplitName()" data-bs-toggle="modal" [attr.data-bs-target]="'#renameModal' + photo.id"
               class="dropdown-item" type="button">Rename</button>
           </li>
-          <li>
-            <button (click)="OnSetAsAvatar(photo.id)" class="dropdown-item" type="button">Set as avatar</button>
+          <li [hidden]="!(IsAvatar() | async)">
+            <div class="bg-success text-white dropdown-item d-flex align-content-center">
+              Choosed as avatar
+              <i class="bi bi-check-circle mx-2"></i>
+            </div>
+          </li>
+          <li [hidden]="IsAvatar() | async">
+            <button (click)="OnSetAsAvatar(photo.id);" class="dropdown-item" type="button">Set as avatar</button>
           </li>
           <li>
             <button data-bs-toggle="modal" [attr.data-bs-target]="'#delModal' + photo.id" class="dropdown-item"
