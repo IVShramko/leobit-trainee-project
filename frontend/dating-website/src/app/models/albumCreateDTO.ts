@@ -1,5 +1,4 @@
-export interface AlbumCreate
-{
+export interface AlbumCreateDTO {
     name: string,
     description: string
 }

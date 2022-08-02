@@ -1,6 +1,6 @@
 import { Regions } from '../enums/regions';
 
-export interface UserProfile{
+export interface ProfileFullDTO {
     id: string | undefined
     userName: string
     firstName: string

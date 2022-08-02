@@ -1,9 +1,10 @@
-import { SEARCH_PATH } from './../../Paths';
-import { SearchResult } from 'src/app/models/SearchResult';
+import { SEARCH_PATH } from '../../paths';
+import { SearchResultDTO } from 'src/app/models/search-result/SearchResultDTO';
 import { HttpClient } from '@angular/common/http';
-import { Criteria, ProfileCriteria } from './../../models/Criteria';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { ProfileCriteria } from 'src/app/models/search-criteria/profileCriteria';
+import { CriteriaDTO } from 'src/app/models/search-criteria/CriteriaDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,7 @@ export class SearchService {
 
   ProfileCriteria = new Subject<ProfileCriteria>();
 
-  Search(criteria: Criteria): Observable<SearchResult>
-  {
-    return this.server.post<SearchResult>(this.path, criteria);
+  Search(criteria: CriteriaDTO): Observable<SearchResultDTO> {
+    return this.server.post<SearchResultDTO>(this.path, criteria);
   }
 }

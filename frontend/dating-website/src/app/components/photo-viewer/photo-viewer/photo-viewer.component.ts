@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { PhotoMain } from 'src/app/models/PhotoMain';
+import { PhotoMainDTO } from 'src/app/models/photoMainDTO';
 
 @Component({
   selector: 'app-photo-viewer',
@@ -9,8 +9,8 @@ import { PhotoMain } from 'src/app/models/PhotoMain';
 })
 export class PhotoViewerComponent implements OnInit, OnChanges {
 
-  @Input() photos: PhotoMain[];
-  @Input() focusedPhoto: PhotoMain;
+  @Input() photos: PhotoMainDTO[];
+  @Input() focusedPhoto: PhotoMainDTO;
 
   focusedPhotoIndex: number;
   prewiewRowLength: number = 7;
@@ -19,8 +19,7 @@ export class PhotoViewerComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    if(changes.photos && changes.focusedPhoto)
-    {
+    if (changes.photos && changes.focusedPhoto) {
       this.focusedPhotoIndex = this.photos.indexOf(this.focusedPhoto);
     }
   }
@@ -28,61 +27,51 @@ export class PhotoViewerComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
 
-  Next()
-  {
-    if(this.focusedPhotoIndex < this.photos.length-1)
-    {
+  Next() {
+    if (this.focusedPhotoIndex < this.photos.length - 1) {
       ++this.focusedPhotoIndex;
       this.focusedPhoto = this.photos[this.focusedPhotoIndex];
     }
   }
 
-  Previous()
-  {
-    if(this.focusedPhotoIndex > 0)
-    {
+  Previous() {
+    if (this.focusedPhotoIndex > 0) {
       --this.focusedPhotoIndex;
       this.focusedPhoto = this.photos[this.focusedPhotoIndex];
-    } 
+    }
   }
-  OnChangeFocusImage(index: number)
-  {
+  OnChangeFocusImage(index: number) {
     this.focusedPhotoIndex = index;
     this.focusedPhoto = this.photos[index];
   }
 
-  IsHidden(index: number): boolean
-  {
+  IsHidden(index: number): boolean {
     const a = Math.floor(this.prewiewRowLength / 2);
 
     let startIndex = this.focusedPhotoIndex - a;
 
     let lastIndex = this.focusedPhotoIndex + a;
 
-    if(startIndex <= 0)
-    {
+    if (startIndex <= 0) {
       lastIndex += 0 - startIndex;
       startIndex = 0;
     }
 
-    if(lastIndex >= this.photos.length)
-    {
+    if (lastIndex >= this.photos.length) {
       startIndex -= lastIndex - this.photos.length + 1;
       lastIndex = this.photos.length;
     }
 
-    if(index < startIndex || index > lastIndex)
-    {
+    if (index < startIndex || index > lastIndex) {
       return true;
     }
 
     return false;
   }
 
-  ConvertToImage(base64: string, name: string): SafeResourceUrl
-  {
+  ConvertToImage(base64: string, name: string): SafeResourceUrl {
     const extension = name.split('.').shift();
-    
+
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `data:image/${extension};base64,` + base64 as string);
   }

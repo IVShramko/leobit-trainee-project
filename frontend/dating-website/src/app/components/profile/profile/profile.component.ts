@@ -1,12 +1,11 @@
-import { Router } from '@angular/router';
-import { PhotoMain } from 'src/app/models/PhotoMain';
+import { PhotoMainDTO } from 'src/app/models/photoMainDTO';
 import { PhotoService } from './../../../services/photo-service/photo.service';
 import { RegionService } from './../../../services/regions-service/region.service';
-import { UserProfile } from './../../../models/UserProfile';
+import { ProfileFullDTO } from '../../../models/profileFullDTO';
 import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
-import { Genders } from 'src/app/enums/Genders';
+import { Component, OnInit } from '@angular/core';
+import { Genders } from 'src/app/enums/genders';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -20,21 +19,19 @@ export class ProfileComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     public customValidatorsService: CustomValidatorsService,
-    private userService: UserService, 
+    private userService: UserService,
     private photoService: PhotoService,
-    private regionService: RegionService, 
-    private sanitizer: DomSanitizer,
-    private router: Router)
-    {}
-    
+    private regionService: RegionService,
+    private sanitizer: DomSanitizer) { }
+
   editProfileForm: FormGroup;
 
   regions: string[] = [];
   genders: string[] = [];
 
-  private currentProfile: UserProfile;
+  private currentProfile: ProfileFullDTO;
 
-  profileImage: PhotoMain;
+  profileImage: PhotoMainDTO;
 
   ImageSourse: SafeResourceUrl | null;
 
@@ -49,66 +46,55 @@ export class ProfileComponent implements OnInit {
         this.currentProfile = result;
 
         this.photoService.GetPhotoById(this.currentProfile?.avatar as string)
-            .subscribe(
-                (result) => {
-                  this.profileImage = result;
+          .subscribe(
+            (result) => {
+              this.profileImage = result;
 
-                  if(result != null)
-                  {
-                    this.ImageSourse = this.ConvertToImage(result.data, result.name);
-                  }
-                });
+              if (result != null) {
+                this.ImageSourse = this.ConvertToImage(result.data, result.name);
+              }
+            });
         this.LoadForm();
       });
   }
 
-  get userName()
-  {
+  get userName() {
     return this.editProfileForm.controls.userName;
   }
 
-  get firstName()
-  {
+  get firstName() {
     return this.editProfileForm.controls.firstName;
   }
 
-  get lastName()
-  {
+  get lastName() {
     return this.editProfileForm.controls.lastName;
   }
 
-  get email()
-  {
+  get email() {
     return this.editProfileForm.controls.email;
   }
 
-  get phone()
-  {
+  get phone() {
     return this.editProfileForm.controls.phone;
   }
 
-  get birthDate()
-  {
+  get birthDate() {
     return this.editProfileForm.controls.birthDate;
   }
 
-  get gender()
-  {
+  get gender() {
     return this.editProfileForm.controls.gender;
   }
 
-  get region()
-  {
+  get region() {
     return this.editProfileForm.controls.region;
   }
 
-  get town()
-  {
+  get town() {
     return this.editProfileForm.controls.town;
   }
 
-  private LoadForm()
-  {
+  private LoadForm() {
     this.editProfileForm = this.formBuilder.group({
       userName: new FormControl({
         value: this.currentProfile?.userName,
@@ -163,50 +149,44 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  ConvertToImage(base64: string, name: string): SafeResourceUrl
-  {
+  ConvertToImage(base64: string, name: string): SafeResourceUrl {
     const extension = name.split('.').shift();
-    
+
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `data:image/${extension};base64,` + base64 as string);
   }
 
-  ResetAvatar()
-  {
+  ResetAvatar() {
     this.userService.SetProfileAvatar(" ");
   }
 
-  private ParseDate(date: string): string | undefined
-  {
+  private ParseDate(date: string): string | undefined {
     return date.split("T").shift();
   }
 
-  private ParsePhone(phone: string): string | undefined
-  {
+  private ParsePhone(phone: string): string | undefined {
     return phone?.split('+380').pop()
   }
 
-  private PrepareProfile()
-  {
-    const profile: UserProfile = {
-      id : this.currentProfile?.id,
-      userName : this.userName?.value,
-      firstName : this.firstName?.value,
-      lastName : this.lastName?.value,
-      birthDate : this.birthDate?.value,
-      gender : Boolean(Number(Genders[this.gender?.value as Genders])),
-      email : this.email?.value,
-      phoneNumber : "+380" + this.phone?.value,
-      region : this.region?.value,
-      town : this.town?.value,
-      avatar : this.currentProfile?.avatar
+  private PrepareProfile() {
+    const profile: ProfileFullDTO = {
+      id: this.currentProfile?.id,
+      userName: this.userName?.value,
+      firstName: this.firstName?.value,
+      lastName: this.lastName?.value,
+      birthDate: this.birthDate?.value,
+      gender: Boolean(Number(Genders[this.gender?.value as Genders])),
+      email: this.email?.value,
+      phoneNumber: "+380" + this.phone?.value,
+      region: this.region?.value,
+      town: this.town?.value,
+      avatar: this.currentProfile?.avatar
     }
 
     return profile;
   }
 
-  OnApply()
-  {
+  OnApply() {
     const userProfile = this.PrepareProfile();
 
     this.userService.ChangeProfile(userProfile).subscribe(

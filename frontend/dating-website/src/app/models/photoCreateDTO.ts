@@ -1,6 +1,4 @@
-export interface PhotoMain
-{
-    id: string
+export interface PhotoCreateDTO {
     albumId: string
     name: string
     data: string

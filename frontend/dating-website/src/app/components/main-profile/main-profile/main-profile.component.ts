@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MainData } from 'src/app/models/MainData';
+import { ProfileMainDTO } from 'src/app/models/profileMainDTO';
 
 @Component({
   selector: 'app-main-profile',
@@ -13,6 +13,6 @@ export class MainProfileComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  @Input() MainProfile: MainData | null
+  @Input() MainProfile: ProfileMainDTO | null
 
 }

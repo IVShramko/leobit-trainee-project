@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
-import { PHOTO_PATH } from './../../Paths';
+import { PHOTO_PATH } from '../../paths';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PhotoMain } from 'src/app/models/PhotoMain';
-import { PhotoCreate } from 'src/app/models/PhotoCreate';
+import { PhotoMainDTO } from 'src/app/models/photoMainDTO';
+import { PhotoCreateDTO } from 'src/app/models/photoCreateDTO';
 
 
 @Injectable({
@@ -15,38 +15,33 @@ export class PhotoService {
 
   private readonly path: string = PHOTO_PATH;
 
-  GetAllPhotos(albumId: string): Observable<PhotoMain[]>
-  {
-    return this.server.get<PhotoMain[]>([this.path, "all/", albumId].join(""));
+  GetAllPhotos(albumId: string): Observable<PhotoMainDTO[]> {
+    return this.server.get<PhotoMainDTO[]>([this.path, "all/", albumId].join(""));
   }
 
-  GetPhotoById(photoId: string): Observable<PhotoMain>
-  {
-    return this.server.get<PhotoMain>([this.path, photoId].join(""));
+  GetPhotoById(photoId: string): Observable<PhotoMainDTO> {
+    return this.server.get<PhotoMainDTO>([this.path, photoId].join(""));
   }
 
-  CreatePhoto(photo: PhotoCreate): Observable<any>
-  {
+  CreatePhoto(photo: PhotoCreateDTO): Observable<any> {
     return this.server.post<any>(this.path, photo);
   }
 
-  DeletePhoto(id: string): Observable<any>
-  {
+  DeletePhoto(id: string): Observable<any> {
     return this.server.delete<any>(this.path + id);
   }
 
-  UpdatePhoto(newPhoto: PhotoMain)
-  {
+  UpdatePhoto(newPhoto: PhotoMainDTO) {
     return this.server.put<any>(this.path, newPhoto);
   }
 
-  CheckNameValidity(albumId: string, name: string): Observable<boolean>
-  {
+  CheckNameValidity(albumId: string, name: string): Observable<boolean> {
     return this.server.post<boolean>(
       this.path + 'check', null, {
-        params: {
-          name : name,
-          albumId : albumId
-        }});
+      params: {
+        name: name,
+        albumId: albumId
+      }
+    });
   }
 }

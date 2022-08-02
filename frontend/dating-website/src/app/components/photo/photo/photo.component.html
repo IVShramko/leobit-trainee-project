@@ -1,22 +1,22 @@
-<div class="modal" [id]="'delModal' + photo?.id" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Delete photo</h5>
-          <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Delete {{photo?.name}}?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" (click)="OnDelete()" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
-        </div>
+<div class="modal" [id]="'delModal' + photo.id" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete photo</h5>
+        <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Delete {{photo.name}}?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" (click)="OnDelete()" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
       </div>
     </div>
+  </div>
 </div>
 
-<div class="modal" [id]="'renameModal' + photo?.id" tabindex="-1">
+<div class="modal" [id]="'renameModal' + photo.id" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -27,76 +27,55 @@
         <form>
           <label class="form-label">Enter new name</label>
           <div class="input-group">
-            <input 
-            [formControl]="photoNameInput"
-            type="text" [ngClass]="{'form-control' : true,
-            'is-invalid' : !photoNameControl?.valid && !photoNameControl?.pristine,
-            'is-valid' : photoNameControl?.valid}">
+            <input [formControl]="photoNameInput" type="text" [ngClass]="{'form-control' : true,
+            'is-invalid' : !photoNameControl.valid && !photoNameControl.pristine,
+            'is-valid' : photoNameControl.valid}">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-        <button [disabled]="!photoNameControl?.valid"
-        type="submit" (click)="OnRename()" 
-        data-bs-dismiss="modal" class="btn btn-success">Apply</button>
+        <button [disabled]="!photoNameControl.valid" type="submit" (click)="OnRename()" data-bs-dismiss="modal"
+          class="btn btn-success">Apply</button>
       </div>
     </div>
   </div>
 </div>
 
 <div appViewPhotoName (imageHover)="OnToggleFocus($event)" class="row">
-    <div class="col position-relative">
-        <ng-content></ng-content>
-        <div [hidden]="!isFocused"
-        class="position-absolute top-50 start-50 translate-middle">
-          <div class="d-flex">
-            <button 
-              (click)="OnActivateCarouselView()"
-              type="button" 
-              class="btn btn-dark mx-1">
-                <i class="bi bi-eye"></i>
-            </button>
-            <button type="button"
-            data-bs-toggle="dropdown"
-              class="btn btn-dark mx-1">
-                <i class="bi bi-three-dots"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-start 
+  <div class="col position-relative">
+    <ng-content></ng-content>
+    <div [hidden]="!isFocused" class="position-absolute top-50 start-50 translate-middle">
+      <div class="d-flex">
+        <button (click)="OnActivateCarouselView()" type="button" class="btn btn-dark mx-1">
+          <i class="bi bi-eye"></i>
+        </button>
+        <button type="button" data-bs-toggle="dropdown" class="btn btn-dark mx-1">
+          <i class="bi bi-three-dots"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-start 
             position-absolute top-50 start-50 translate-middle">
-              <li class="d-flex justify-content-end">
-                <button
-                data-bs-toggle="dropdown-menu" 
-                class="dropdown-item w-auto" type="button">
-                  <i class="bi bi-x-lg"></i>
-                </button>
-              </li>
-              <li>
-                <button 
-                class="dropdown-item" type="button">Edit</button>
-              </li>
-              <li>
-                <button (click)="SplitName()"
-                data-bs-toggle="modal" 
-                [attr.data-bs-target]="'#renameModal' + photo?.id" 
-                class="dropdown-item" type="button">Rename</button>
-              </li>
-              <li>
-                <button (click)="OnSetAsAvatar(photo.id)"
-                class="dropdown-item" type="button">Set as avatar</button>
-              </li>
-              <li>
-                <button
-                data-bs-toggle="modal" 
-                [attr.data-bs-target]="'#delModal' + photo?.id" 
-                class="dropdown-item" type="button">Delete</button>
-              </li>
-            </ul>
-          </div>
-        </div>
+          <li class="d-flex justify-content-end">
+            <button data-bs-toggle="dropdown-menu" class="dropdown-item w-auto" type="button">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" type="button">Edit</button>
+          </li>
+          <li>
+            <button (click)="SplitName()" data-bs-toggle="modal" [attr.data-bs-target]="'#renameModal' + photo.id"
+              class="dropdown-item" type="button">Rename</button>
+          </li>
+          <li>
+            <button (click)="OnSetAsAvatar(photo.id)" class="dropdown-item" type="button">Set as avatar</button>
+          </li>
+          <li>
+            <button data-bs-toggle="modal" [attr.data-bs-target]="'#delModal' + photo.id" class="dropdown-item"
+              type="button">Delete</button>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
 </div>
-
-
-
-

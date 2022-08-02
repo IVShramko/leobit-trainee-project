@@ -8,8 +8,7 @@
         <div class="col">
             <div class="card border-none my-2 shadow-sm" *ngFor="let album of albums">
                 <div class="row g-0">
-                    <button (dblclick)="OpenAlbum(album)"
-                    class="btn w-100 p-1 d-flex flex-row align-items-center">
+                    <button (dblclick)="OpenAlbum(album)" class="btn w-100 p-1 d-flex flex-row align-items-center">
                         <div class="col-1 d-flex justify-content-center">
                             <i class="bi bi-folder" style="font-size: 2rem"></i>
                         </div>
@@ -25,14 +24,14 @@
                             <ul class="dropdown-menu dropdown-menu-end p-0 my-1 shadow-sm">
                                 <div class="d-flex flex-row">
                                     <li class="dropdown-item p-1 d-flex justify-content-center">
-                                        <button (click)="LoadFullAlbum(album.id)"
-                                        class="btn" type="button" data-bs-toggle="modal" data-bs-target="#editModal">
+                                        <button (click)="LoadFullAlbum(album.id)" class="btn" type="button"
+                                            data-bs-toggle="modal" data-bs-target="#editModal">
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                     </li>
                                     <li class="dropdown-item p-1 d-flex justify-content-center">
-                                        <button (click)="LoadFullAlbum(album.id)"
-                                        class="btn" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                        <button (click)="LoadFullAlbum(album.id)" class="btn" type="button"
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal">
                                             <i class="bi bi-trash3"></i>
                                         </button>
                                     </li>
@@ -41,57 +40,55 @@
                         </div>
                     </button>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 
     <div class="modal" id="deleteModal" tabindex="-1">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Delete album</h5>
-              <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <p>Delete this Album?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" (click)="DeleteAlbum()" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    <div class="modal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <form [formGroup]="albumForm"
-              (ngSubmit)="EditAlbum()">
-
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit album</h5>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete album</h5>
                     <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="form-group">
-                        <label class="form-label">Enter name</label>
-                        <input formControlName="name"
-                        type="text" [ngClass]="{'form-control' : true,
-                        'is-valid': name?.valid,
-                        'is-invalid': !name?.valid && !name?.pristine}">
-                        <label class="form-label">Enter description</label>
-                        <input formControlName="description"
-                        type="text" [ngClass]="{'form-control' : true,
-                        'is-valid': description?.valid,
-                        'is-invalid': !description?.valid && !description?.pristine}">
-                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>Delete this Album?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="!albumForm.valid" data-bs-dismiss="modal"
-                    class="btn btn-success">Apply</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" (click)="DeleteAlbum()" data-bs-dismiss="modal"
+                        class="btn btn-danger">Delete</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <form [formGroup]="albumForm" (ngSubmit)="EditAlbum()">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit album</h5>
+                        <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">Enter name</label>
+                            <input formControlName="name" type="text" [ngClass]="{'form-control' : true,
+                        'is-valid': name.valid,
+                        'is-invalid': !name.valid && !name.pristine}">
+                            <label class="form-label">Enter description</label>
+                            <input formControlName="description" type="text" [ngClass]="{'form-control' : true,
+                        'is-valid': description.valid,
+                        'is-invalid': !description.valid && !description.pristine}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" [disabled]="!albumForm.valid" data-bs-dismiss="modal"
+                            class="btn btn-success">Apply</button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -102,7 +99,7 @@
             <div class="card border-none my-2 shadow-sm">
                 <div class="row g-0">
                     <button type="button" data-bs-toggle="modal" data-bs-target="#createModal"
-                    class="btn btn-outline-dark w-100 p-1 d-flex flex-row align-items-center">
+                        class="btn btn-outline-dark w-100 p-1 d-flex flex-row align-items-center">
                         <div class="col-1 d-flex justify-content-center">
                             <i class="bi bi-plus" style="font-size: 2rem"></i>
                         </div>
@@ -118,34 +115,31 @@
     </div>
 
     <div class="modal" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <form [formGroup]="albumForm"
-              (ngSubmit)="CreateAlbum()">
+        <form [formGroup]="albumForm" (ngSubmit)="CreateAlbum()">
 
-              <div class="modal-dialog">
+            <div class="modal-dialog">
                 <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create album</h5>
-                    <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="form-group">
-                        <label class="form-label">Enter name</label>
-                        <input formControlName="name"
-                        type="text" [ngClass]="{'form-control' : true,
-                        'is-valid': name?.valid,
-                        'is-invalid': !name?.valid && !name?.pristine}">
-                        <label class="form-label">Enter description</label>
-                        <input formControlName="description"
-                        type="text" [ngClass]="{'form-control' : true,
-                        'is-valid': description?.valid,
-                        'is-invalid': !description?.valid && !description?.pristine}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create album</h5>
+                        <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="!albumForm.valid" data-bs-dismiss="modal"
-                    class="btn btn-success">Apply</button>
-                </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">Enter name</label>
+                            <input formControlName="name" type="text" [ngClass]="{'form-control' : true,
+                        'is-valid': name.valid,
+                        'is-invalid': !name.valid && !name.pristine}">
+                            <label class="form-label">Enter description</label>
+                            <input formControlName="description" type="text" [ngClass]="{'form-control' : true,
+                        'is-valid': description.valid,
+                        'is-invalid': !description.valid && !description.pristine}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" [disabled]="!albumForm.valid" data-bs-dismiss="modal"
+                            class="btn btn-success">Apply</button>
+                    </div>
                 </div>
             </div>
         </form>

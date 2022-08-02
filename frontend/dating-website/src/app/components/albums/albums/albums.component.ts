@@ -1,9 +1,9 @@
-import { AlbumFull } from './../../../models/AlbumFull';
-import { AlbumCreate } from './../../../models/AlbumCreate';
+import { AlbumFullDTO } from '../../../models/albumFullDTO';
+import { AlbumCreateDTO } from '../../../models/albumCreateDTO';
 import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlbumService } from './../../../services/album-service/album.service';
-import { AlbumMain } from './../../../models/AlbumMain';
+import { AlbumMainDTO } from '../../../models/albumMainDTO';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -14,16 +14,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AlbumsComponent implements OnInit {
 
-  constructor(private albumService: AlbumService, 
+  constructor(private albumService: AlbumService,
     private router: Router,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private customValidatorsService: CustomValidatorsService) { }
 
-  albums: AlbumMain[];
+  albums: AlbumMainDTO[];
 
   albumForm: FormGroup;
-  id:string ='';
+  id: string = '';
 
   ngOnInit(): void {
     this.LoadPageData();
@@ -46,31 +46,26 @@ export class AlbumsComponent implements OnInit {
         this.customValidatorsService.AlbumNameValidator())
   }
 
-  get name()
-  {
+  get name() {
     return this.albumForm.controls.name;
   }
 
-  get description()
-  {
+  get description() {
     return this.albumForm.controls.description;
   }
 
-  private LoadPageData()
-  {
+  private LoadPageData() {
     this.albumService.GetAllAlbums().subscribe(
       (albums) => this.albums = albums
     )
   }
 
-  OpenAlbum(album: AlbumMain)
-  {
-    this.router.navigate([album.id], {relativeTo: this.route});
+  OpenAlbum(album: AlbumMainDTO) {
+    this.router.navigate([album.id], { relativeTo: this.route });
   }
 
-  CreateAlbum()
-  {
-    const newAlbum: AlbumCreate = {
+  CreateAlbum() {
+    const newAlbum: AlbumCreateDTO = {
       name: this.name?.value,
       description: this.description?.value
     }
@@ -82,8 +77,7 @@ export class AlbumsComponent implements OnInit {
     )
   }
 
-  LoadFullAlbum(id: string)
-  {
+  LoadFullAlbum(id: string) {
     this.albumService.GetAlbumById(id).subscribe(
       (album) => {
         this.id = album.id;
@@ -93,9 +87,8 @@ export class AlbumsComponent implements OnInit {
     )
   }
 
-  EditAlbum()
-  {
-    const newAlbum: AlbumFull = {
+  EditAlbum() {
+    const newAlbum: AlbumFullDTO = {
       id: this.id,
       name: this.name?.value,
       description: this.description?.value
@@ -106,8 +99,7 @@ export class AlbumsComponent implements OnInit {
     )
   }
 
-  DeleteAlbum()
-  {
+  DeleteAlbum() {
     this.albumService.DeleteAlbum(this.id).subscribe(
       (res) => this.LoadPageData(),
     )

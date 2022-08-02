@@ -12,26 +12,23 @@ export class SearchResultPaginationComponent implements OnInit {
   constructor() { }
 
   @Input() SearchResultTotal: number | null;
-  @Input() pageSize : number;
-  @Input() pageIndex : number;
+  @Input() pageSize: number;
+  @Input() pageIndex: number;
   pageNumber: number;
   @Output() PageChangeEvent = new EventEmitter<number>();
 
-  ngOnChanges(): void
-  {
+  ngOnChanges(): void {
     this.pageNumber = this.CountPageNumber();
   }
 
   ngOnInit(): void {
   }
 
-  private CountPageNumber()
-  {
+  private CountPageNumber() {
     return Math.ceil((this.SearchResultTotal ?? 0) / this.pageSize);
   }
 
-  ChangePage(index: number)
-  {
+  ChangePage(index: number) {
     this.PageChangeEvent.emit(index);
   }
 

@@ -1,5 +1,4 @@
 import { TokenInterceptor } from './interceptors/token.interceptor';
-import { AuthGuard } from './guards/AuthGuard';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,7 +20,6 @@ import { SearchResultPageComponent } from './components/search-result-page/searc
 import { SearchResultPaginationComponent } from './components/search-result-pagination/search-result-pagination/search-result-pagination.component';
 import { MainProfileComponent } from './components/main-profile/main-profile/main-profile.component';
 import { SearchSettingsComponent } from './components/search-settings/search-settings/search-settings.component';
-import { FileUploadDirective } from './directives/file-upload.directive';
 import { AccountComponent } from './components/account/account/account.component';
 import { AlbumComponent } from './components/album/album/album.component';
 import { AlbumsComponent } from './components/albums/albums/albums.component';
@@ -46,7 +44,6 @@ import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer/pho
     SearchResultPaginationComponent,
     MainProfileComponent,
     SearchSettingsComponent,
-    FileUploadDirective,
     AccountComponent,
     AlbumComponent,
     AlbumsComponent,

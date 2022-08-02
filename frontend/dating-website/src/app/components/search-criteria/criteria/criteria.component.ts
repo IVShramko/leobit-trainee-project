@@ -1,8 +1,8 @@
 import { SearchService } from './../../../services/search-service/search.service';
-import { Criteria, ProfileCriteria } from './../../../models/Criteria';
 import { RegionService } from './../../../services/regions-service/region.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { ProfileCriteria } from 'src/app/models/search-criteria/profileCriteria';
 
 @Component({
   selector: 'app-criteria',
@@ -12,8 +12,8 @@ import { Component, OnInit } from '@angular/core';
 export class CriteriaComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
-    private regionService: RegionService, private searchService: SearchService) 
-  {
+    private regionService: RegionService,
+    private searchService: SearchService) {
     this.regions = this.regionService.GetAllRegions();
   }
 
@@ -33,7 +33,7 @@ export class CriteriaComponent implements OnInit {
       ],
       maxAge: [
         this.MAX_AGE
-      ], 
+      ],
       region: [
         null
       ],
@@ -42,33 +42,27 @@ export class CriteriaComponent implements OnInit {
       ]
     })
   }
-  get gender()
-  {
+  get gender() {
     return this.criteriaForm.controls.gender;
   }
 
-  get minAge()
-  {
+  get minAge() {
     return this.criteriaForm.controls.minAge;
   }
 
-  get maxAge()
-  {
+  get maxAge() {
     return this.criteriaForm.controls.maxAge;
   }
 
-  get region()
-  {
+  get region() {
     return this.criteriaForm.controls.region;
   }
 
-  get town()
-  {
+  get town() {
     return this.criteriaForm.controls.town;
   }
 
-  private GetProfileCriteria()
-  {
+  private GetProfileCriteria() {
     const criteria: ProfileCriteria = {
       Gender: this.gender?.value,
       MinAge: this.minAge?.value,
@@ -80,9 +74,8 @@ export class CriteriaComponent implements OnInit {
     return criteria;
   }
 
-  RunSearch()
-  {
+  RunSearch() {
     this.searchService.ProfileCriteria.next(this.GetProfileCriteria());
   }
-  
+
 }

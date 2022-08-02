@@ -6,8 +6,7 @@
                     <span class="input-group-text">
                         <i class="bi bi-funnel"></i>
                     </span>
-                    <select class="form-select" formControlName="filter"
-                    (change)="ChangeFilter()">
+                    <select class="form-select" formControlName="filter" (change)="ChangeFilter()">
                         <option selected disabled [ngValue]="null">Choose filter</option>
                         <option [ngValue]="0">Age</option>
                         <option [ngValue]="1">Name</option>
@@ -16,9 +15,9 @@
             </div>
             <div class="col">
                 <label class="form-label">Number:</label>
-                <input (change)="ChangeSize()"
-                formControlName="size" type="range" min="2" max="8" step="2" class="form-range">
+                <input (change)="ChangeSize()" formControlName="size" type="range" min="2" max="8" step="2"
+                    class="form-range">
             </div>
-        </div>    
+        </div>
     </form>
 </div>

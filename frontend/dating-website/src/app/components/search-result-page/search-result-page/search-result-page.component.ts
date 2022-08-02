@@ -1,7 +1,5 @@
-import { UserProfile } from 'src/app/models/UserProfile';
-import { SearchResultUserProfile } from './../../../models/SearchResult';
-import { SearchResult } from 'src/app/models/SearchResult';
 import { Component, Input, OnInit } from '@angular/core';
+import { ProfileSearchResult } from 'src/app/models/search-result/profileSearchResult';
 
 @Component({
   selector: 'app-search-result-page',
@@ -12,7 +10,7 @@ export class SearchResultPageComponent implements OnInit {
 
   constructor() { }
 
-  @Input() UserProfiles: SearchResultUserProfile[] | null;
+  @Input() UserProfiles: ProfileSearchResult[] | null;
 
   ngOnInit(): void {
 

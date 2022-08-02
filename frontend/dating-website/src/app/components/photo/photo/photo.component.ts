@@ -1,7 +1,7 @@
 import { UserService } from 'src/app/services/user-service/user.service';
 import { PhotoService } from './../../../services/photo-service/photo.service';
 import { CustomValidatorsService } from 'src/app/services/custom-validators/custom-validators.service';
-import { PhotoMain } from 'src/app/models/PhotoMain';
+import { PhotoMainDTO } from 'src/app/models/photoMainDTO';
 import { AfterContentInit, Input, Output, EventEmitter } from '@angular/core';
 import { Component, ContentChild, ElementRef, OnInit, Renderer2, } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -14,10 +14,10 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 export class PhotoComponent implements OnInit, AfterContentInit {
 
   @ContentChild('image') image: ElementRef;
-  @Input() photo: PhotoMain;
+  @Input() photo: PhotoMainDTO;
 
   @Output('onDelete') deleteId = new EventEmitter<string>();
-  @Output('OnCarouselViewActivated') active = new EventEmitter<PhotoMain>();
+  @Output('OnCarouselViewActivated') active = new EventEmitter<PhotoMainDTO>();
 
   isFocused: boolean = false;
 
@@ -25,7 +25,7 @@ export class PhotoComponent implements OnInit, AfterContentInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private renderer: Renderer2, 
+    private renderer: Renderer2,
     private photoService: PhotoService,
     private customValidatorsService: CustomValidatorsService,
     private userService: UserService) { }
@@ -45,35 +45,29 @@ export class PhotoComponent implements OnInit, AfterContentInit {
     this.renderer.addClass(img, 'photo')
   }
 
-  get photoNameControl()
-  {
+  get photoNameControl() {
     return this.photoNameInput;
   }
 
-  SplitName()
-  {
+  SplitName() {
     let noExtensionName = this.photo.name.split('.');
     noExtensionName.pop();
     this.photoNameInput.setValue(noExtensionName);
   }
 
-  OnToggleFocus(value: boolean)
-  {
+  OnToggleFocus(value: boolean) {
     this.isFocused = value;
   }
 
-  OnDelete()
-  {
+  OnDelete() {
     this.deleteId.emit(this.photo.id);
   }
 
-  OnActivateCarouselView()
-  {
+  OnActivateCarouselView() {
     this.active.emit(this.photo);
   }
 
-  OnRename()
-  {
+  OnRename() {
     const newPhoto = this.photo;
     const extension = this.photo.name.split('.').pop();
 
@@ -84,8 +78,7 @@ export class PhotoComponent implements OnInit, AfterContentInit {
     )
   }
 
-  OnSetAsAvatar(id: string)
-  {
+  OnSetAsAvatar(id: string) {
     this.userService.SetProfileAvatar(id).subscribe();
   }
 }

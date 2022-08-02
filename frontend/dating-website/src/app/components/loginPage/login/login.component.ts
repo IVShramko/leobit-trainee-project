@@ -10,37 +10,34 @@ import { AuthService } from 'src/app/services/auth-service/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm : FormGroup;
+  loginForm: FormGroup;
   isError: boolean;
 
-  constructor(private formBuiler : FormBuilder,
+  constructor(private formBuiler: FormBuilder,
     private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuiler.group({
-      login : [
+      login: [
         null,
         Validators.required
       ],
-      password : [
+      password: [
         null,
         Validators.required
       ]
     });
   }
 
-  get login()
-  {
+  get login() {
     return this.loginForm.controls.login;
   }
 
-  get password()
-  {
+  get password() {
     return this.loginForm.controls.password;
   }
 
-  LogIn (userName: string, password: string)
-  {
+  LogIn(userName: string, password: string) {
     this.authService.LogIn(userName, password).subscribe(
       (result) => result ? this.router.navigate(['/home']) : this.isError = result
     );

@@ -3,21 +3,22 @@
         <div class="col">
             <ul class="nav nav-tabs nav-fill" id="nav-tab">
                 <li class="nav-item">
-                    <a class="nav-link link-dark" routerLink="./profile" 
-                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                    Profile</a>
+                    <a class="nav-link link-dark" routerLink="./profile" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        Profile
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link link-dark" routerLink="./albums" 
-                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-                    Gallery</a>
+                    <a class="nav-link link-dark" routerLink="./albums" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: false}">
+                        Gallery</a>
                 </li>
-              </ul>
-              <div class="tab-content" id="nav-tabContent">
-                  <div class="tab-pane fade show active">
+            </ul>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active">
                     <router-outlet></router-outlet>
-                  </div>
-              </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

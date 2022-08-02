@@ -5,8 +5,8 @@
             <div class="row my-4">
                 <h4 class="form-label">Choose gender</h4>
                 <div class="col">
-                    <select formControlName="gender" 
-                    [ngClass]="{'form-select': true, 'is-invalid': !gender?.valid && gender?.touched}">
+                    <select formControlName="gender"
+                        [ngClass]="{'form-select': true, 'is-invalid': !gender.valid && gender.touched}">
                         <option [ngValue]="true">Male</option>
                         <option [ngValue]="false">Female</option>
                     </select>
@@ -43,9 +43,8 @@
 
             <div class="row">
                 <div class="col text-center">
-                    <button class="btn btn-outline-dark"
-                    [disabled]="!criteriaForm?.valid"
-                    (click)="RunSearch()">Search</button>
+                    <button class="btn btn-outline-dark" [disabled]="!criteriaForm.valid"
+                        (click)="RunSearch()">Search</button>
                 </div>
             </div>
         </form>

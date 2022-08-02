@@ -1,9 +1,9 @@
-import { RegisterDTO } from './../../../models/RegisterData';
+import { RegisterDTO } from '../../../models/registerDTO';
 import { CustomValidatorsService } from './../../../services/custom-validators/custom-validators.service';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-register',
@@ -12,41 +12,41 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
-  registerForm : FormGroup;
+  registerForm: FormGroup;
   isError: boolean | null = null;
 
-  constructor(private formBuiler : FormBuilder,
-    public authService: AuthService, private router: Router,
+  constructor(private formBuiler: FormBuilder,
+    public authService: AuthService,
     private customValidatorsService: CustomValidatorsService) { }
 
   ngOnInit(): void {
     this.registerForm = this.formBuiler.group({
-      login : [
+      login: [
         null,
         Validators.required
       ],
-      email : [
+      email: [
         null, [
           Validators.required,
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
         ]
       ],
-      dateOfBirth : [
+      dateOfBirth: [
         null, [
           Validators.required,
           this.customValidatorsService.DateOfBirthValidator
         ]
       ],
-      gender : [
+      gender: [
         null,
         Validators.required
       ],
-      password : [
+      password: [
         null,
         Validators.required
       ],
-      confirmPassword : [
-        null,[
+      confirmPassword: [
+        null, [
           Validators.required,
           this.customValidatorsService.ConfirmPasswordValidator
         ]
@@ -54,53 +54,45 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  get login()
-  {
+  get login() {
     return this.registerForm.controls.login;
   }
 
-  get email()
-  {
+  get email() {
     return this.registerForm.controls.email;
   }
 
-  get dateOfBirth()
-  {
+  get dateOfBirth() {
     return this.registerForm.controls.dateOfBirth;
   }
 
-  get gender()
-  {
+  get gender() {
     return this.registerForm.controls.gender;
   }
 
-  get password()
-  {
+  get password() {
     return this.registerForm.controls.password;
   }
 
-  get confirmPassword()
-  {
+  get confirmPassword() {
     return this.registerForm.controls.confirmPassword;
   }
 
-  private GetUserData()
-  {
+  private GetUserData() {
     const registerData: RegisterDTO = {
-      UserName : this.login?.value,
-      Email : this.email?.value,
+      UserName: this.login?.value,
+      Email: this.email?.value,
       Password: this.password?.value,
-      Profile : {
-        BirthDate : new Date(this.dateOfBirth?.value),
-        Gender : this.gender?.value
+      Profile: {
+        BirthDate: new Date(this.dateOfBirth?.value),
+        Gender: this.gender?.value
       }
     }
 
     return registerData;
   }
 
-  Register()
-  {
+  Register() {
     const data = this.GetUserData();
     this.authService.Register(data).subscribe(
       (result) => {

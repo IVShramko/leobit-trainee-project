@@ -2,7 +2,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
-import { Filters } from 'src/app/enums/Filters';
+import { Filters } from 'src/app/enums/filters';
 
 @Component({
   selector: 'app-search-settings',
@@ -30,24 +30,20 @@ export class SearchSettingsComponent implements OnInit {
       ]
     })
   }
-  
-  get size()
-  {
+
+  get size() {
     return this.settingsForm.controls.size;
   }
 
-  get filter()
-  {
+  get filter() {
     return this.settingsForm.controls.filter;
   }
 
-  ChangeSize()
-  {
+  ChangeSize() {
     this.sizeChangeEvent.emit(this.size?.value);
   }
 
-  ChangeFilter()
-  {
+  ChangeFilter() {
     this.filterChangeEvent.emit(this.filter?.value);
   }
 }

@@ -1,9 +1,9 @@
-import { PROFILE_PATH } from './../../Paths';
+import { PROFILE_PATH } from '../../paths';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserProfile } from 'src/app/models/UserProfile';
-import { MainData } from 'src/app/models/MainData';
+import { ProfileFullDTO } from 'src/app/models/profileFullDTO';
+import { ProfileMainDTO } from 'src/app/models/profileMainDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -14,26 +14,22 @@ export class UserService {
 
   private readonly path: string = PROFILE_PATH;
 
-  GetFullProfile(): Observable<UserProfile>
-  {
-    return this.server.get<UserProfile>(this.path + "full")
+  GetFullProfile(): Observable<ProfileFullDTO> {
+    return this.server.get<ProfileFullDTO>(this.path + "full")
   }
 
-  GetMainProfile(): Observable<MainData>
-  {
-    return this.server.get<MainData>(this.path + "main")
+  GetMainProfile(): Observable<ProfileMainDTO> {
+    return this.server.get<ProfileMainDTO>(this.path + "main")
   }
 
-  ChangeProfile(newProfile: UserProfile): Observable<any>
-  {
-    return this.server.post<UserProfile>(this.path + "change", newProfile)
+  ChangeProfile(newProfile: ProfileFullDTO): Observable<any> {
+    return this.server.post<ProfileFullDTO>(this.path + "change", newProfile)
   }
 
-  SetProfileAvatar(photoId: string)
-  {
+  SetProfileAvatar(photoId: string) {
     return this.server.post<any>(
-      this.path + "avatar", 
-      null, 
-      {params: {photoId: photoId}});
+      this.path + "avatar",
+      null,
+      { params: { photoId: photoId } });
   }
 }

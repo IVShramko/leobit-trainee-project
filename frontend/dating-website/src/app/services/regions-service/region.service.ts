@@ -12,8 +12,7 @@ export class RegionService {
 
   private regions: string[] = [];
 
-  GetAllRegions()
-  {
+  GetAllRegions() {
     return this.regions;
   }
 }
