@@ -35,6 +35,10 @@ export class PhotoService {
     return this.server.put<any>(this.path, newPhoto);
   }
 
+  UpdatePhotoDataUrl(newPhoto: PhotoMainDTO) {
+    return this.server.put<any>([this.path, 'data'].join(''), newPhoto);
+  }
+
   CheckNameValidity(albumId: string, name: string): Observable<boolean> {
     return this.server.post<boolean>(
       this.path + 'check', null, {

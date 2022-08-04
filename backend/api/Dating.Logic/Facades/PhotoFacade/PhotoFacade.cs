@@ -142,5 +142,25 @@ namespace Dating.Logic.Facades.PhotoFacade
 
             return isUpadted;
         }
+
+        public async Task<bool> UpdatePhotoDataUrlAsync(Guid profileId, PhotoMainDTO photo)
+        {
+            bool isUpdated;
+
+            AlbumFullDTO album = await _albumRepository.GetAlbumByIdAsync(photo.AlbumId);
+
+            try
+            {
+                await _photoManager.ChangeDataUrlAsync(profileId, album.Name, photo);
+
+                isUpdated = true;
+            }
+            catch (Exception)
+            {
+                isUpdated = false;
+            }
+
+            return isUpdated;
+        }
     }
 }

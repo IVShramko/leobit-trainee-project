@@ -13,5 +13,8 @@ namespace Dating.Logic.Managers.PhotoManager
         void DeletePhoto(Guid profileId, string albumName, string fileName);
 
         void Rename(Guid profileId, string albumName, string oldName, string newName);
+
+        Task ChangeDataUrlAsync(Guid profileId, string albumName, PhotoMainDTO photo);
+
     }
 }

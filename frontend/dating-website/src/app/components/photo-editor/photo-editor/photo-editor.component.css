@@ -1,0 +1,16 @@
+.canvas-box{
+    overflow: auto;
+}
+
+.panel{
+    list-style: none;
+    padding: 0;
+}
+
+.panel-item{
+    font-size: 2em;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

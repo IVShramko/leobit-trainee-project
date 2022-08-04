@@ -92,7 +92,7 @@ export class AlbumComponent implements OnInit {
   }
 
   ConvertToImage(base64: string, name: string): SafeResourceUrl {
-    const extension = name.split('.').shift();
+    const extension = name.split('.').pop();
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `data:image/${extension};base64,` + base64 as string);

@@ -16,6 +16,22 @@ namespace Dating.Logic.Managers.PhotoManager
             _directoryUtility = directoryUtility;
         }
 
+        public async Task ChangeDataUrlAsync(Guid profileId, string albumName, PhotoMainDTO photo)
+        {
+            string userPath = _directoryUtility.GetUserDirectory(profileId);
+            string albumPath = Path.Combine(userPath, albumName);
+
+            string base64 = Regex
+                    .Match(photo.Data, @"data:image/(?<type>.+?),(?<data>.+)")
+                    .Groups["data"].Value;
+
+            byte[] bytes = Convert.FromBase64String(base64);
+
+            string photoPath = Path.Combine(albumPath, photo.Name);
+
+            await File.WriteAllBytesAsync(photoPath, bytes);
+        }
+
         public async Task CreatePhotoAsync(Guid profileId, string albumName, PhotoCreateDTO photo)
         {
             string userPath = _directoryUtility.GetUserDirectory(profileId);

@@ -66,7 +66,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Upload photo</h5>
-                    <button (click)="photoControl?.reset()" type="reset" class="btn-close" data-bs-dismiss="modal"
+                    <button (click)="photoControl.reset()" type="reset" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -74,8 +74,8 @@
                         <form>
                             <div class="input-group mb-3">
                                 <input type="file" (change)="OnFileUpload($event)" [ngClass]="{'form-control' : true,
-                            'is-invalid' : !photoControl?.valid && !photoControl?.pristine,
-                            'is-valid' : photoControl?.valid}" accept="image/*" [formControl]="photoInput">
+                            'is-invalid' : !photoControl.valid && !photoControl.pristine,
+                            'is-valid' : photoControl.valid}" accept="image/*" [formControl]="photoInput">
                                 <div *ngIf="photoControl?.errors?.file_type_error && photoControl?.touched"
                                     class="invalid-tooltip">only PNG, JPEG, JPG formats are supported</div>
                             </div>
@@ -83,9 +83,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button (click)="photoControl?.reset()" type="reset" class="btn btn-danger"
+                    <button (click)="photoControl.reset()" type="reset" class="btn btn-danger"
                         data-bs-dismiss="modal">Cancel</button>
-                    <button [disabled]="!photoControl?.valid" type="submit" data-bs-dismiss="modal"
+                    <button [disabled]="!photoControl.valid" type="submit" data-bs-dismiss="modal"
                         class="btn btn-success" (click)="AddPhoto()">Upload</button>
                 </div>
             </div>

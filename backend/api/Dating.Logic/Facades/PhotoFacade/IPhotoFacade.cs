@@ -17,6 +17,8 @@ namespace Dating.Logic.Facades.PhotoFacade
 
         Task<bool> UpdatePhotoAsync(Guid profileId, PhotoMainDTO photo);
 
+        Task<bool> UpdatePhotoDataUrlAsync(Guid profileId, PhotoMainDTO photo);
+
         Task<PhotoMainDTO> GetPhotoByIdAsync(Guid profileId, Guid photoId);
     }
 }

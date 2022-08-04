@@ -1,3 +1,4 @@
+import { PhotoEditorComponent } from './components/photo-editor/photo-editor/photo-editor.component';
 import { AlbumsComponent } from './components/albums/albums/albums.component';
 import { AccountComponent } from './components/account/account/account.component';
 import { AuthGuard } from './guards/authGuard';
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: 'unauthorized',
     component: UnauthorizedComponent,
+  },
+  {
+    path: 'editor/:id',
+    component: PhotoEditorComponent,
   },
   {
     path: 'account',

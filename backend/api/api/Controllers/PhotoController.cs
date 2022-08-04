@@ -84,6 +84,22 @@ namespace Dating.WebAPI.Controllers
             return BadRequest();
         }
 
+        [HttpPut]
+        [Route("data")]
+        public async Task<IActionResult> UpdatePhotoDataUrlAsync(PhotoMainDTO photo)
+        {
+            Guid profileId = _tokenManager.ReadProfileId();
+
+            bool isUpdated = await _photoFacade.UpdatePhotoDataUrlAsync(profileId, photo);
+
+            if (isUpdated)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhotoAsync(Guid id)
         {

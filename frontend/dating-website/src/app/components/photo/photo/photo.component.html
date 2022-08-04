@@ -61,7 +61,7 @@
             </button>
           </li>
           <li>
-            <button class="dropdown-item" type="button">Edit</button>
+            <button (click)="OpenEditor()" class="dropdown-item" type="button">Edit</button>
           </li>
           <li>
             <button (click)="SplitName()" data-bs-toggle="modal" [attr.data-bs-target]="'#renameModal' + photo.id"

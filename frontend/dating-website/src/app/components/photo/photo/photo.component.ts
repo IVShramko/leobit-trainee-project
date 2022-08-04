@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { PhotoService } from './../../../services/photo-service/photo.service';
 import { CustomValidatorsService } from 'src/app/services/custom-validators/custom-validators.service';
@@ -29,7 +30,8 @@ export class PhotoComponent implements OnInit, AfterContentInit {
     private renderer: Renderer2,
     private photoService: PhotoService,
     private customValidatorsService: CustomValidatorsService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.photoNameInput = this.formBuilder.control(
@@ -89,5 +91,9 @@ export class PhotoComponent implements OnInit, AfterContentInit {
     return this.userService.currentAvatar.pipe(
       map((avatarId: string) => this.photo.id === avatarId)
     );
+  }
+
+  OpenEditor() {
+    this.router.navigate(['../editor', this.photo.id])
   }
 }
