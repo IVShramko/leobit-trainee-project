@@ -1,22 +1,36 @@
 <div class="container">
     <div class="row bg-secondary">
         <div class="col-1 d-flex align-items-center justify-content-center">
-            <button style="font-size: 2em;" class="btn">
+            <button [routerLink]="['../../account/albums/', photo?.albumId]"
+            style="font-size: 2em;" class="btn">
                 <i class="bi bi-x-lg text-danger"></i>
             </button>
         </div>
         <div class="col">
             <ul class="panel d-flex flex-row">
                 <li>
-                    <button (click)="customCanvas?.Rotate(90)"
-                    class="btn panel-item">
+                    <button (click)="customCanvas?.Rotate(90)" class="btn panel-item">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
                 </li>
                 <li>
-                    <button (click)="customCanvas?.Rotate(-90)"
-                    class="btn panel-item">
+                    <button (click)="customCanvas?.Rotate(-90)" class="btn panel-item">
                         <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                </li>
+                <li>
+                    <button class="btn panel-item">
+                        <i class="bi bi-crop"></i>
+                    </button>
+                </li>
+                <li>
+                    <button (click)="customCanvas?.ZoomIn()" class="btn panel-item">
+                        <i class="bi bi-zoom-in"></i>
+                    </button>
+                </li>
+                <li>
+                    <button (click)="customCanvas?.ZoomOut()" class="btn panel-item">
+                        <i class="bi bi-zoom-out"></i>
                     </button>
                 </li>
             </ul>
@@ -31,19 +45,21 @@
         <div class="col-1 bg-secondary">
             <ul class="panel">
                 <li class="">
-                    <button class="btn panel-item">
+                    <button (click)="customCanvas?.ToggleMode(1)"
+                        [ngClass]="{'btn panel-item': true, 'text-primary': customCanvas?.options?.mode == 1}">
                         <i class="bi bi-brush"></i>
                     </button>
                 </li>
                 <li>
-                    <button class="btn panel-item">
+                    <button (click)="customCanvas?.ToggleMode(2)"
+                        [ngClass]="{'btn panel-item': true, 'text-primary': customCanvas?.options?.mode == 2}">
                         <i class="bi bi-square"></i>
                     </button>
                 </li>
                 <li>
                     <button class="btn panel-item">
-                        <input (change)="customCanvas?.SetColor($event)" class="form-control form-control-color"
-                            type="color">
+                        <input [value]="customCanvas?.options?.color" (change)="customCanvas?.SetColor($event)"
+                            class="form-control form-control-color" type="color">
                     </button>
                 </li>
             </ul>
@@ -55,10 +71,10 @@
         <div class="col-2 bg-secondary">
             <label class="form-label">Size:</label>
             <input (change)="customCanvas?.SetBrushSize($event)" type="range" class="form-range" min="1" max="20"
-                value="5">
+                [value]="customCanvas?.options?.size">
             <label class="form-label">Style:</label>
-            <select (change)="customCanvas?.SetBrushStyle($event)"
-            class="form-select">
+            <select [value]="customCanvas?.options?.style" (change)="customCanvas?.SetBrushStyle($event)"
+                class="form-select">
                 <option value="round">Round</option>
                 <option value="square">Square</option>
                 <option value="butt">Butt</option>

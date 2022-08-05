@@ -20,7 +20,7 @@ export class PhotoEditorComponent implements OnInit {
 
   photo: PhotoMainDTO;
 
-  customCanvas: CustomCanvas | undefined;
+  customCanvas: CustomCanvas;
 
   ngOnInit(): void {
     this.route.params.subscribe(
@@ -39,7 +39,8 @@ export class PhotoEditorComponent implements OnInit {
     photo.src =
       this.ConvertToImage(this.photo.data, this.photo.name);
 
-    this.customCanvas.SetCanvasImage(photo as CanvasImageSource);
+    photo.onload = () =>
+      this.customCanvas?.SetCanvasImage(photo as CanvasImageSource);
   }
 
   ConvertToImage(base64: string, name: string): string {
