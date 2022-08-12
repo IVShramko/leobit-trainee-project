@@ -27,6 +27,7 @@ import { PhotoComponent } from './components/photo/photo/photo.component';
 import { ViewPhotoNameDirective } from './directives/view-photo-name.directive';
 import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer/photo-viewer.component';
 import { PhotoEditorComponent } from './components/photo-editor/photo-editor/photo-editor.component';
+import { SideBarComponent } from './components/home/side-bar/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { PhotoEditorComponent } from './components/photo-editor/photo-editor/pho
     ViewPhotoNameDirective,
     PhotoViewerComponent,
     PhotoEditorComponent,
+    SideBarComponent,
   ],
   imports: [
     BrowserModule,

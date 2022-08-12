@@ -1,0 +1,5 @@
+img{
+    object-fit: cover;
+    height: 18vw;
+    max-height: 25em;
+}

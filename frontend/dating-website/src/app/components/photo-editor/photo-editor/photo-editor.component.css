@@ -1,5 +1,10 @@
 .canvas-box{
     overflow: auto;
+    height: calc(83vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
 }
 
 .panel{
@@ -7,7 +12,12 @@
     padding: 0;
 }
 
+#top {
+    height: 7vh;
+}
+
 .panel-item{
+    margin: 5px 0;
     font-size: 2em;
     width: 100%;
     display: flex;

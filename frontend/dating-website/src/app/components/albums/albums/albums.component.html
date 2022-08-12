@@ -9,15 +9,15 @@
             <div class="card border-none my-2 shadow-sm" *ngFor="let album of albums">
                 <div class="row g-0">
                     <button (dblclick)="OpenAlbum(album)" class="btn w-100 p-1 d-flex flex-row align-items-center">
-                        <div class="col-1 d-flex justify-content-center">
-                            <i class="bi bi-folder" style="font-size: 2rem"></i>
+                        <div class="col d-flex justify-content-center">
+                            <i class="bi bi-folder mx-2" style="font-size: 2rem"></i>
                         </div>
-                        <div class="col-10">
+                        <div class="col-10 col-sm-8">
                             <div class="card-body p-0 d-flex justify-content-start">
                                 <h5 class="card-title m-0">{{album.name}}</h5>
                             </div>
                         </div>
-                        <div class="col-1 d-flex justify-content-center">
+                        <div class="col d-flex justify-content-start">
                             <button class="btn" data-bs-toggle="dropdown">
                                 <i class="bi bi-three-dots"></i>
                             </button>

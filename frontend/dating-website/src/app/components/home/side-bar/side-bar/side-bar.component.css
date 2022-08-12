@@ -1,0 +1,12 @@
+.side-bar-menu {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+}
+
+.side-bar-menu-item :hover {
+    color:rgb(39, 87, 184);
+}

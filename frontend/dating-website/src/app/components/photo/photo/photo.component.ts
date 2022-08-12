@@ -17,12 +17,10 @@ export class PhotoComponent implements OnInit, AfterContentInit {
 
   @ContentChild('image') image: ElementRef;
   @Input() photo: PhotoMainDTO;
-
   @Output('onDelete') deleteId = new EventEmitter<string>();
   @Output('OnCarouselViewActivated') active = new EventEmitter<PhotoMainDTO>();
 
   isFocused: boolean = false;
-
   photoNameInput: FormControl;
 
   constructor(

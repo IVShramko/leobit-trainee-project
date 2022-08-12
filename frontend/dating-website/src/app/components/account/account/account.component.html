@@ -1,20 +1,20 @@
 <div class="container">
-    <div class="row my-3">
-        <div class="col">
-            <ul class="nav nav-tabs nav-fill" id="nav-tab">
+    <div class="row">
+        <div class="col bg-light rounded p-3">
+            <ul class="nav nav-tabs nav-fill rounded" id="nav-tab">
                 <li class="nav-item">
-                    <a class="nav-link link-dark" routerLink="./profile" routerLinkActive="active"
+                    <a class="nav-link link-dark" routerLink="./profile" routerLinkActive="active bg-light"
                         [routerLinkActiveOptions]="{exact: true}">
                         Profile
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link link-dark" routerLink="./albums" routerLinkActive="active"
+                    <a class="nav-link link-dark" routerLink="./albums" routerLinkActive="active bg-light"
                         [routerLinkActiveOptions]="{exact: false}">
                         Gallery</a>
                 </li>
             </ul>
-            <div class="tab-content" id="nav-tabContent">
+            <div class="tab-content bg-ligt" id="nav-tabContent">
                 <div class="tab-pane fade show active">
                     <router-outlet></router-outlet>
                 </div>

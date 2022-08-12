@@ -1,7 +1,8 @@
+import { ImageUtility } from './../../../utilities/image-utility';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, ValidatorFn, Validators } from '@angular/forms';
 import { PhotoCreateDTO } from '../../../models/photoCreateDTO';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SafeResourceUrl } from '@angular/platform-browser';
 import { PhotoService } from './../../../services/photo-service/photo.service';
 import { AlbumFullDTO } from '../../../models/albumFullDTO';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -36,9 +37,10 @@ export class AlbumComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private albumService: AlbumService,
     private photoService: PhotoService,
-    private sanitizer: DomSanitizer,
     private formBuilder: FormBuilder,
-    private customValidatorsService: CustomValidatorsService) { }
+    private customValidatorsService: CustomValidatorsService,
+    private imageUtility: ImageUtility) {
+  }
 
   ngOnInit(): void {
 
@@ -48,10 +50,8 @@ export class AlbumComponent implements OnInit {
         Validators.required
       ]
     })
-
     this.route.params.subscribe(
       (params: Params) => {
-
         this.albumService.GetAlbumById(params.id).subscribe(
           (album) => {
             this.album = album
@@ -75,27 +75,15 @@ export class AlbumComponent implements OnInit {
     const file = input.files?.item(0);
 
     if (file) {
-      this.newImage.data = await this.ConvertToBase64(file) as string;
+      this.newImage.data = await this.imageUtility
+        .ConvertToBase64(file) as string;
       this.newImage.name = input.value?.split('\\').pop() as string;
       this.newImage.albumId = this.album.id;
     }
   }
 
-  private ConvertToBase64(file: File) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  }
-
   ConvertToImage(base64: string, name: string): SafeResourceUrl {
-    const extension = name.split('.').pop();
-
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `data:image/${extension};base64,` + base64 as string);
+    return this.imageUtility.ConvertToSafeResourceUrl(base64, name);
   }
 
   AddPhoto() {

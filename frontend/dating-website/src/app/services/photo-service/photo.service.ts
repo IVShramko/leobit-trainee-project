@@ -23,6 +23,15 @@ export class PhotoService {
     return this.server.get<PhotoMainDTO>([this.path, photoId].join(""));
   }
 
+  GetSearchResultAvatar(profileId: string, photoId: string) {
+    return this.server.get<PhotoMainDTO>(
+      [this.path,'search/', photoId].join(""), {
+        params: {
+          profileId: profileId
+        }
+      });
+  }
+
   CreatePhoto(photo: PhotoCreateDTO): Observable<any> {
     return this.server.post<any>(this.path, photo);
   }

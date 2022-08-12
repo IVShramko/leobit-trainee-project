@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col bg-light rounded shadow p-2">
+        <ul class="side-bar-menu mt-2">
+            <li class="side-bar-menu-item my-1">
+                <button class="btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+                    aria-controls="offcanvasExample">
+                    <i style="font-size: 2em" class="bi bi-chat"></i>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start" data-bs-backdrop="false" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Your chats</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <a routerLink="../chat">go to chat</a>
+    </div>
+</div>

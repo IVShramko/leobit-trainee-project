@@ -34,6 +34,15 @@ namespace Dating.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("search/{photoId}")]
+        public async Task<IActionResult> GetSearchResultAvatar(Guid profileId, Guid photoId)
+        {
+            PhotoMainDTO photo = await _photoFacade.GetPhotoByIdAsync(profileId, photoId);
+
+            return Ok(photo);
+        }
+
+        [HttpGet]
         [Route("all/{albumId}")]
         public async Task<IActionResult> GetAllPhotos(Guid albumId)
         {

@@ -1,5 +1,5 @@
 <nav class="nav justify-content-center">
-  <ul class="pagination pagination-lg">
+  <ul class="pagination pagination-lg shadow-sm">
     <li *ngFor="let page of [].constructor(pageNumber); let i = index" (click)="ChangePage(i+1)"
       [ngClass]="{'page-item' : true, 'active' : pageIndex === i+1}">
       <button class="page-link">{{i+1}}</button>

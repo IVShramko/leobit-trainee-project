@@ -1,32 +1,41 @@
-<div class="container-fluid h-100 background">
+<div class="container-fluid background">
     <div *ngIf="isError" class="alert alert-danger error-message" role="alert">
         Invalid login or password
     </div>
-    <div class="row h-100 align-items-center">
-        <form [formGroup]="loginForm">
-
-            <div class="row mt-3 justify-content-center ">
-                <div class="col-7 col-sm-5 col-md-3 col-lg-2">
-                    <h3 [ngClass]="{'form-label' : true}" for="">LOGIN</h3>
-                    <input formControlName="login" type="text" [ngClass]="{'form-control' : true,
-                    'is-invalid' : !login.valid && login.touched}">
+    <div class="row h-100">
+        <div class="col d-flex align-items-center justify-content-center">
+            <form [formGroup]="loginForm">
+                <div class="row">
+                    <div class="col">
+                        <div class="row mt-3 justify-content-center ">
+                            <div class="col">
+                                <h3 [ngClass]="{'form-label' : true}" for="">LOGIN</h3>
+                                <input formControlName="login" type="text" [ngClass]="{'form-control' : true,
+                                'is-invalid' : !login.valid && login.touched}">
+                            </div>
+                        </div>
+            
+                        <div class="row my-3 justify-content-center">
+                            <div class="col">
+                                <h5 [ngClass]="{'form-label' : true}" for="">PASSWORD</h5>
+                                <input formControlName="password" type="password" [ngClass]="{'form-control' : true,
+                                'is-invalid' : !password.valid && password.touched}">
+                            </div>
+                        </div>
+            
+                        <div class="row justify-content-around">
+                            <div class="col text-center">
+                                <button [disabled]="!loginForm.valid" (click)="LogIn(login.value, password.value)"
+                                    [ngClass]="{'btn btn-dark btn-lg' : true}" type="button">Log in</button>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
-            </div>
 
-            <div class="row my-3 justify-content-center">
-                <div class="col-7 col-sm-5 col-md-3 col-lg-2">
-                    <h5 [ngClass]="{'form-label' : true}" for="">PASSWORD</h5>
-                    <input formControlName="password" type="password" [ngClass]="{'form-control' : true,
-                    'is-invalid' : !password.valid && password.touched}">
-                </div>
-            </div>
-
-            <div class="row justify-content-around">
-                <div class="col text-center">
-                    <button [disabled]="!loginForm.valid" (click)="LogIn(login.value, password.value)"
-                        [ngClass]="{'btn btn-dark btn-lg' : true}" type="button">Log in</button>
-                </div>
-            </div>
-        </form>
+                
+            </form>
+        </div>
+        
     </div>
 </div>

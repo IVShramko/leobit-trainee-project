@@ -1,4 +1,4 @@
-<div class="container-fluid h-100 background">
+<div class="container-fluid background">
     <div *ngIf="!isError && isError!== null" class="alert alert-danger error-message" role="alert">
         Invalid login or password
     </div>
@@ -6,73 +6,81 @@
         You registered successfully!
         <a class="link-light" routerLink="/login">Login</a>
     </div>
-    <div class="row h-100 align-items-center">
-        <form class="form-background" [formGroup]="registerForm">
-
-            <div class="row mt-3 justify-content-center ">
-                <div class="col-7 col-sm-5 col-md-3 col-lg-2">
-                    <h3 [ngClass]="{'form-label' : true}" for="">LOGIN</h3>
-                    <input formControlName="login" type="text" [ngClass]="{'form-control' : true,
-                    'is-invalid' : !login.valid && login.touched}">
-                </div>
-            </div>
-
-            <div class="row mt-3 justify-content-center ">
-                <div class="col-7 col-sm-5 col-md-3 col-lg-2">
-                    <h5 [ngClass]="{'form-label' : true}" for="">EMAIL</h5>
-                    <input formControlName="email" type="email" [ngClass]="{'form-control' : true,
-                    'is-invalid' : !email.valid && email.touched}">
-                </div>
-            </div>
-
-            <div class="row mt-3 justify-content-center ">
-                <div class="col-7 col-sm-5 col-md-3 col-lg-2">
-                    <h5 [ngClass]="{'form-label' : true}" for="">DATE OF BIRTH</h5>
-                    <input formControlName="dateOfBirth" type="date" [ngClass]="{'form-control' : true,
-                    'is-invalid' : !dateOfBirth.valid && dateOfBirth.touched}">
-                </div>
-            </div>
-
-            <div class="row mt-3 justify-content-center">
-                <div class="col-7 col-sm-5 col-md-3 col-lg-2">
-                    <h5 [ngClass]="{'form-label' : true}" for="">GENDER</h5>
-                    <div>
-                        <div class="form-check form-check-inline">
-                            <label class="form-label">Male</label>
-                            <input formControlName="gender" type="radio" [value]="true"
-                                [ngClass]="{'form-check-input' : true}">
+    <div class="row h-100">
+        <div class="col d-flex align-items-center justify-content-center">
+            <form [formGroup]="registerForm">
+                <div class="row">
+                    <div class="col">
+                        <div class="row mt-3 justify-content-center ">
+                            <div class="col">
+                                <h3 [ngClass]="{'form-label' : true}" for="">LOGIN</h3>
+                                <input formControlName="login" type="text" [ngClass]="{'form-control' : true,
+                                'is-invalid' : !login.valid && login.touched}">
+                            </div>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <label class="form-label">Female</label>
-                            <input formControlName="gender" type="radio" [value]="false"
-                                [ngClass]="{'form-check-input' : true}">
+            
+                        <div class="row mt-3 justify-content-center ">
+                            <div class="col">
+                                <h5 [ngClass]="{'form-label' : true}" for="">EMAIL</h5>
+                                <input formControlName="email" type="email" [ngClass]="{'form-control' : true,
+                                'is-invalid' : !email.valid && email.touched}">
+                            </div>
+                        </div>
+            
+                        <div class="row mt-3 justify-content-center ">
+                            <div class="col">
+                                <h5 [ngClass]="{'form-label' : true}" for="">DATE OF BIRTH</h5>
+                                <input formControlName="dateOfBirth" type="date" [ngClass]="{'form-control' : true,
+                                'is-invalid' : !dateOfBirth.valid && dateOfBirth.touched}">
+                            </div>
+                        </div>
+            
+                        <div class="row mt-3 justify-content-center">
+                            <div class="col">
+                                <h5 [ngClass]="{'form-label' : true}" for="">GENDER</h5>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-label">Male</label>
+                                        <input formControlName="gender" type="radio" [value]="true"
+                                            [ngClass]="{'form-check-input' : true}">
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-label">Female</label>
+                                        <input formControlName="gender" type="radio" [value]="false"
+                                            [ngClass]="{'form-check-input' : true}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="row my-3 justify-content-center">
+                            <div class="col">
+                                <h5 [ngClass]="{'form-label' : true}" for="">PASSWORD</h5>
+                                <input formControlName="password" type="password" [ngClass]="{'form-control' : true,
+                                'is-invalid' : !password.valid && password.touched}">
+                            </div>
+                        </div>
+            
+                        <div class="row my-3 justify-content-center">
+                            <div class="col">
+                                <h5 [ngClass]="{'form-label' : true}" for=""> CONFIRM PASSWORD</h5>
+                                <input formControlName="confirmPassword" type="password" [ngClass]="{'form-control' : true,
+                                'is-invalid' : !confirmPassword.valid && confirmPassword.touched}">
+                            </div>
+                        </div>
+            
+                        <div class="row justify-content">
+                            <div class="col text-center">
+                                <button [disabled]="!registerForm.valid" (click)="Register()"
+                                    [ngClass]="{'btn btn-dark btn-lg' : true}" type="button">Register</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row my-3 justify-content-center">
-                <div class="col-7 col-sm-5 col-md-3 col-lg-2">
-                    <h5 [ngClass]="{'form-label' : true}" for="">PASSWORD</h5>
-                    <input formControlName="password" type="password" [ngClass]="{'form-control' : true,
-                    'is-invalid' : !password.valid && password.touched}">
-                </div>
-            </div>
 
-            <div class="row my-3 justify-content-center">
-                <div class="col-7 col-sm-5 col-md-3 col-lg-2">
-                    <h5 [ngClass]="{'form-label' : true}" for=""> CONFIRM PASSWORD</h5>
-                    <input formControlName="confirmPassword" type="password" [ngClass]="{'form-control' : true,
-                    'is-invalid' : !confirmPassword.valid && confirmPassword.touched}">
-                </div>
-            </div>
-
-            <div class="row justify-content">
-                <div class="col text-center">
-                    <button [disabled]="!registerForm.valid" (click)="Register()"
-                        [ngClass]="{'btn btn-dark btn-lg' : true}" type="button">Register</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        
     </div>
 </div>

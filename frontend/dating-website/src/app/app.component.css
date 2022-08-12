@@ -1,0 +1,5 @@
+.bg{
+    background-image: linear-gradient(to left, #540d387e, #12527d78);
+    height: fit-content;
+    min-height: 100vh;
+}

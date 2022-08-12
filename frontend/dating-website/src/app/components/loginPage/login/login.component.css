@@ -2,6 +2,7 @@
     background-image: linear-gradient(to right, #540d387e, #12527d78), url("img/3.jpg");
     background-position: center;
     background-size: cover;
+    height: 100vh;
 }
 
 .form-control{

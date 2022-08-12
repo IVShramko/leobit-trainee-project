@@ -1,8 +1,8 @@
-<div class="row my-5">
+<div class="row my-5 bg-light rounded shadow py-3 px-2">
     <div class="col">
-        <div class="row align-items-center">
-            <div class="col-4">
-                <h3>Total results: {{ResultsTotal$ | async}}</h3>
+        <div class="row mt-2 p-3">
+            <div class="col-4 d-flex align-items-center">
+                <h3>Total results: {{ ResultsTotal$ | async}}</h3>
             </div>
             <div class="col-8">
                 <app-search-settings (sizeChangeEvent)="OnPageSizeChange($event)"
@@ -15,7 +15,9 @@
             </div>
         </div>
         <div class="row my-3">
-            <app-search-result-page [UserProfiles]="Profiles$ | async"></app-search-result-page>
+            <div class="col">
+                <app-search-result-page [UserProfiles]="Profiles$ | async"></app-search-result-page>
+            </div>
         </div>
         <div class="row my-3">
             <app-search-result-pagination (PageChangeEvent)="OnPageIndexChange($event)" [pageSize]="PageSize"

@@ -1,5 +1,6 @@
-import { PaintingMode } from './paintingMode';
-export interface ICustomCanvasOptions {
+import { PaintingMode } from './painting-mode';
+
+export interface ICustomCanvasSettings {
     mode: PaintingMode,
     isActive: boolean,
     size: number,

@@ -1,9 +1,10 @@
-import { CustomCanvas } from './../customCanvas';
+import { ImageUtility } from './../../../utilities/image-utility';
 import { tap } from 'rxjs';
 import { PhotoService } from './../../../services/photo-service/photo.service';
 import { PhotoMainDTO } from 'src/app/models/photoMainDTO';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { CustomCanvas } from '../custom-canvas/custom-сanvas';
 
 @Component({
   selector: 'app-photo-editor',
@@ -14,12 +15,12 @@ export class PhotoEditorComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private photoService: PhotoService,
-    private router: Router) { }
+    private router: Router,
+    private imageUtility: ImageUtility) {
+  }
 
   @ViewChild('canvas') canvasElem: ElementRef;
-
   photo: PhotoMainDTO;
-
   customCanvas: CustomCanvas;
 
   ngOnInit(): void {
@@ -36,16 +37,12 @@ export class PhotoEditorComponent implements OnInit {
   private InitCanvas() {
     this.customCanvas = new CustomCanvas(this.canvasElem.nativeElement);
     const photo = new Image();
-    photo.src =
-      this.ConvertToImage(this.photo.data, this.photo.name);
+    
+    photo.src = this.imageUtility
+      .ConvertToStringUrl(this.photo.data, this.photo.name);
 
     photo.onload = () =>
       this.customCanvas?.SetCanvasImage(photo as CanvasImageSource);
-  }
-
-  ConvertToImage(base64: string, name: string): string {
-    const extension = name.split('.').pop();
-    return `data:image/${extension};base64,` + base64;
   }
 
   ApplyChanges() {
@@ -62,8 +59,7 @@ export class PhotoEditorComponent implements OnInit {
       .pipe(
         tap(() => this.router
           .navigate(['account', 'albums', this.photo.albumId]))
-      )
-      .subscribe()
+      ).subscribe();
   }
 
 }

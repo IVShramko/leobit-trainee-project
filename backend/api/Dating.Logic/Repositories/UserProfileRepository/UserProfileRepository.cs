@@ -75,10 +75,12 @@ namespace Dating.Logic.Repositories
                 .Take(criteria.PageSize)
                 .Select(u => new ProfileListDTO
                 {
+                    Id = u.Id,
                     UserName = u.AspNetUser.UserName,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    Age = DateTime.Now.Year - u.BirthDate.Year
+                    Age = DateTime.Now.Year - u.BirthDate.Year,
+                    Avatar = u.Avatar
                 })
                 .ToListAsync();
 

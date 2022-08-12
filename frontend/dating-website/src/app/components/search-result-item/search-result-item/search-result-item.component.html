@@ -1,5 +1,6 @@
-<div class="card">
-  <img src="https://picsum.photos/seed/picsum/250" class="card-img-top" alt="">
+<div class="card shadow-sm">
+  <img
+  [src]="avatar ?? 'assets/profile-default.jpg'" class="card-img-top" alt="">
   <div class="card-body">
     <h5 class="card-title">{{Profile.userName}}</h5>
     <p class="card-text">{{Profile.firstName}} {{Profile.lastName}}</p>
