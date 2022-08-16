@@ -24,7 +24,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     const receiver =
       (document.querySelector('#receiver') as HTMLInputElement).value;
-    await this.SignalRService.connection.invoke("SendToAllAsync", message, receiver);
+    await this.SignalRService.connection.invoke("SendToUser", message, receiver);
   }
 
   ngOnDestroy(): void {
