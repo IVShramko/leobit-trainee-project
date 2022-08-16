@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dating.Logic", "..\Dating.Logic\Dating.Logic.csproj", "{651A5A39-0A22-43D8-8E25-0C3F90BBD874}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dating.Chat", "..\Dating.Chat\Dating.Chat.csproj", "{C8AB4B79-1472-4C7D-B398-E5D4B5C02BD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{651A5A39-0A22-43D8-8E25-0C3F90BBD874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{651A5A39-0A22-43D8-8E25-0C3F90BBD874}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{651A5A39-0A22-43D8-8E25-0C3F90BBD874}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{651A5A39-0A22-43D8-8E25-0C3F90BBD874}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8AB4B79-1472-4C7D-B398-E5D4B5C02BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8AB4B79-1472-4C7D-B398-E5D4B5C02BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8AB4B79-1472-4C7D-B398-E5D4B5C02BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8AB4B79-1472-4C7D-B398-E5D4B5C02BD8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5EC58340-048E-4FDA-9AFC-1BF38DCFF0A1}
+	EndGlobalSection
+EndGlobal
