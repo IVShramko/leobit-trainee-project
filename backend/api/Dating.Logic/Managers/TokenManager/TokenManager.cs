@@ -41,11 +41,11 @@ namespace Dating.Logic.Managers.TokenManager
         public async Task DeactivateAsync(string token)
         {
             await _cache.SetStringAsync(
-                GetKey(token), 
-                String.Empty, 
+                GetKey(token),
+                String.Empty,
                 new DistributedCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
                 });
         }
 

@@ -1,3 +1,4 @@
+import { ChatComponent } from './components/chat/chat/chat.component';
 import { PhotoEditorComponent } from './components/photo-editor/photo-editor/photo-editor.component';
 import { AlbumsComponent } from './components/albums/albums/albums.component';
 import { AccountComponent } from './components/account/account/account.component';
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'editor/:id',
     component: PhotoEditorComponent,
+  },
+  {
+    path: 'chat',
+    component: ChatComponent,
   },
   {
     path: 'account',

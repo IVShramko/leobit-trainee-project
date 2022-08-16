@@ -24,6 +24,9 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using Dating.Logic.Infrastructure;
+using Dating.WebAPI.Hubs;
+using System.Threading.Tasks;
+using StackExchange.Redis;
 
 namespace Dating.WebAPI
 {
@@ -73,6 +76,18 @@ namespace Dating.WebAPI
                     ValidAudience = Configuration.GetSection("Constants")["Audiance"],
                     IssuerSigningKey = key
                 };
+                config.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        if (!String.IsNullOrEmpty(accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -116,9 +131,11 @@ namespace Dating.WebAPI
             services.AddSingleton<IDirectoryUtility, DirectoryUtility>();
 
             services.AddDistributedRedisCache(r =>
-            {
+            {                
                 r.Configuration = Configuration["redis:ConnectionString"];
             });
+
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -143,6 +160,9 @@ namespace Dating.WebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>(
+                    Configuration
+                    .GetSection("Hubs")["ChatHub"]);
             });
         }
     }
