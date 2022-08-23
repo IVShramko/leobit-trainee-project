@@ -188,5 +188,22 @@ namespace Dating.Logic.Repositories
 
             return profileId;
         }
+
+        public async Task<ProfileChatDTO> GetChatProfileAsync(string aspNetUserId)
+        {
+            ProfileChatDTO profile = await _context.UserProfiles
+                 .Where(p => p.AspNetUserId == aspNetUserId)
+                 .Include(p => p.AspNetUser)
+                 .Select(p => new ProfileChatDTO
+                 {
+                     AspNetUserId = p.AspNetUserId,
+                     UserName = p.AspNetUser.UserName,
+                     FirstName = p.FirstName,
+                     LastName = p.LastName
+                 })
+                 .SingleOrDefaultAsync();
+
+            return profile;
+        }
     }
 }

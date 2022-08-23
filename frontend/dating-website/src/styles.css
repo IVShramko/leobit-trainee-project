@@ -5,3 +5,15 @@
     color: #FC3939;
     text-shadow: 0 0 black;
 }
+
+.chat-message{
+    color: white;
+    font-size: 18px;
+    background-color: rgb(36, 131, 254);
+    padding: 5px 20px 5px 20px;
+    max-width: 50%;
+    width:max-content;
+    margin: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+}

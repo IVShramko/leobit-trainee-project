@@ -1,0 +1,9 @@
+#message-box{
+  height: 70vh;
+  border: 5px solid rgb(211, 211, 211);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  background-color: rgb(240, 240, 240);
+}

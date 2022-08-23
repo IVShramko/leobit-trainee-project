@@ -17,5 +17,7 @@ namespace Dating.Logic.Managers.TokenManager
         Task<string> GenerateTokenAsync(IdentityUser user);
 
         Guid ReadProfileId();
+
+        string ReadAspNetUserId();
     }
 }

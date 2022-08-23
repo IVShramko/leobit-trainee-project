@@ -1,25 +1,26 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Dating.Logic.DTO;
+using Dating.Logic.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dating.Chat.Hubs
 {
-    [Authorize]
+    //[Authorize]
     public class ChatHub : Hub
     {
-        public async Task SendToUser(string message, string receiverId)
-        {
-            string adresseeName = Context.User.Claims
-                .Where(c => c.Type == "UserName")
-                .Select(c => c.Value)
-                .FirstOrDefault();
+        public async Task SendToUser(ChatMessageDTO message)
+        { 
+            var receiver = Clients.User(message.ReceiverId);
+            var sender = Clients.User(message.SenderId);
 
-            string response = adresseeName + " says: " + message;
+            Task sendMessage = receiver.SendAsync("ReceiveMessage", message);
 
-            var receiver = Clients.User(receiverId);
+            Task sendMessageStatus = sender
+                    .SendAsync("GetMessageDeliveryStatus", MessageDeliveryStatus.Sent);
 
-            await receiver.SendAsync("ReceiveMessage", response);
+            await sendMessage.ContinueWith( (sendMessageStatus) => { });
         }
     }
 }

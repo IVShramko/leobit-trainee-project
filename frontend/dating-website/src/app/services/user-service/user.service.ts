@@ -1,3 +1,4 @@
+import { IProfileChatDTO } from './../../models/profile-chat-dto';
 import { PROFILE_PATH } from '../../paths';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -33,5 +34,9 @@ export class UserService {
       this.path + "avatar",
       null,
       { params: { photoId: photoId } });
+  }
+
+  GetChatProfile(aspNetUserId: string) {
+    return this.server.get<IProfileChatDTO>(this.path + 'chat/' + aspNetUserId);
   }
 }

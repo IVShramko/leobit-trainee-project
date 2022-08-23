@@ -45,6 +45,16 @@ namespace Dating.WebAPI.Controllers
             return Ok(fullProfile);
         }
 
+        [HttpGet]
+        [Route("chat/{aspNetUserId}")]
+        public async Task<IActionResult> GetChatProfile(string aspNetUserId)
+        {
+            ProfileChatDTO profile = await 
+                _profileFacade.GetChatProfileAsync(aspNetUserId);
+
+            return Ok(profile);
+        }
+
         [HttpPost]
         [Route("change")]
         public async Task<IActionResult> Change(UserProfileFullDTO fullProfile)

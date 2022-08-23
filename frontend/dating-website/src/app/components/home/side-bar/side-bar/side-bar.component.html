@@ -17,6 +17,8 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <a routerLink="../chat">go to chat</a>
+        <button class="btn" *ngFor="let chat of chats" [routerLink]="['../chat/', chat.id].join('')">
+            {{chat.name}}
+        </button>
     </div>
 </div>

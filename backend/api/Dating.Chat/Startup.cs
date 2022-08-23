@@ -1,7 +1,10 @@
 using Dating.Chat.Hubs;
+using Dating.Logic.DB;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,17 +26,15 @@ namespace Dating.Chat
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSignalR();
-
             services.AddControllers();
 
             services.AddCors(options => 
             {
                 options.AddDefaultPolicy(policy => 
                 {
-                    policy.AllowAnyMethod();
-                    policy.AllowAnyOrigin();
-                    policy.AllowAnyHeader();
+                    policy.AllowAnyMethod()
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader();
                 });
             });
 
@@ -69,6 +70,9 @@ namespace Dating.Chat
                     }
                 };
             });
+
+            services.AddSignalR();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -92,7 +96,8 @@ namespace Dating.Chat
             {
                 endpoints.MapControllers();
 
-                endpoints.MapHub<ChatHub>(Configuration["Hubs:ChatHub"]);
+                string chatEndpoint = Configuration["Hubs:ChatHub"];
+                endpoints.MapHub<ChatHub>(chatEndpoint);
             });
         }
     }

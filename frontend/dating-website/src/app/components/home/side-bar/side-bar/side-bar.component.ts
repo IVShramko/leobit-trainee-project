@@ -1,4 +1,7 @@
+import { IChatShortDTO } from './../../../../models/chat/chat-short-dto';
+import { ChatService } from './../../../../services/chat-service/chat.service';
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-side-bar',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private chatService: ChatService) { }
+
+  chats: IChatShortDTO[];
 
   ngOnInit(): void {
+    this.LoadChats();
+  }
+
+  private LoadChats() {
+    this.chatService.GetAllChats().pipe(
+      tap((chats: IChatShortDTO[]) => this.chats = chats)
+    ).subscribe();
   }
 
 }

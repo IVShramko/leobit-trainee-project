@@ -15,5 +15,7 @@ namespace Dating.Logic.Facades.UserProfileFacade
         Task<bool> ChangeProfileAsync(UserProfileFullDTO fullData);
 
         Task<bool> SetProfileAvatarAsync(Guid profileId, Guid photoId);
+
+        Task<ProfileChatDTO> GetChatProfileAsync(string aspNetUserId);
     }
 }

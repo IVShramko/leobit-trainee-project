@@ -81,5 +81,13 @@ namespace Dating.Logic.Facades.UserProfileFacade
 
             return isSet;
         }
+
+        public async Task<ProfileChatDTO> GetChatProfileAsync(string aspNetUserId)
+        {
+            ProfileChatDTO profile = 
+                await _profileRepository.GetChatProfileAsync(aspNetUserId);
+
+            return profile;
+        }
     }
 }

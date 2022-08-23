@@ -4,14 +4,16 @@ using Dating.Logic.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dating.Logic.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220817085830_ChatsMessagesChatMembers")]
+    partial class ChatsMessagesChatMembers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,22 +52,9 @@ namespace Dating.Logic.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ChatId");
+
                     b.ToTable("ChatMembers");
-                });
-
-            modelBuilder.Entity("Dating.Logic.Models.ChatMemberChat", b =>
-                {
-                    b.Property<Guid>("ChatId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ChatMemberId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ChatId", "ChatMemberId");
-
-                    b.HasIndex("ChatMemberId");
-
-                    b.ToTable("ChatMemberChats");
                 });
 
             modelBuilder.Entity("Dating.Logic.Models.ChatMessage", b =>
@@ -388,23 +377,15 @@ namespace Dating.Logic.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Dating.Logic.Models.ChatMemberChat", b =>
+            modelBuilder.Entity("Dating.Logic.Models.ChatMember", b =>
                 {
                     b.HasOne("Dating.Logic.Models.Chat", "Chat")
-                        .WithMany("ChatMemberChats")
+                        .WithMany("Members")
                         .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dating.Logic.Models.ChatMember", "ChatMember")
-                        .WithMany("ChatMemberChats")
-                        .HasForeignKey("ChatMemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Chat");
-
-                    b.Navigation("ChatMember");
                 });
 
             modelBuilder.Entity("Dating.Logic.Models.ChatMessage", b =>
@@ -516,14 +497,9 @@ namespace Dating.Logic.Migrations
 
             modelBuilder.Entity("Dating.Logic.Models.Chat", b =>
                 {
-                    b.Navigation("ChatMemberChats");
+                    b.Navigation("Members");
 
                     b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("Dating.Logic.Models.ChatMember", b =>
-                {
-                    b.Navigation("ChatMemberChats");
                 });
 
             modelBuilder.Entity("Dating.Logic.Models.UserAlbum", b =>

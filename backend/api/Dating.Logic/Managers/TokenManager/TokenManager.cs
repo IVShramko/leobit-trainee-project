@@ -121,8 +121,8 @@ namespace Dating.Logic.Managers.TokenManager
         {
             Guid profileId = Guid.Empty;
 
-            string jsontoken = GetCurrent();
-            var token = new JwtSecurityTokenHandler().ReadJwtToken(jsontoken);
+            string jsonToken = GetCurrent();
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(jsonToken);
 
             string id = token.Claims
                 .Where(c => c.Type == "ProfileId")
@@ -135,6 +135,19 @@ namespace Dating.Logic.Managers.TokenManager
             }
 
             return profileId;
+        }
+
+        public string ReadAspNetUserId()
+        {
+            string jsonToken = GetCurrent();
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(jsonToken);
+
+            string id = token.Claims
+                .Where(c => c.Type == "sub")
+                .Select(c => c.Value)
+                .FirstOrDefault();
+
+            return id;
         }
     }
 }

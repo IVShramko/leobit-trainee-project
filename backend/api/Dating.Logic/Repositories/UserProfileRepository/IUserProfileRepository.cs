@@ -18,5 +18,7 @@ namespace Dating.Logic.Repositories
         Task<bool> UpdateProfileAsync(UserProfileFullDTO profile);
 
         Task<Guid> GetProfileIdByAspNetIdAsync(string aspNetId);
+
+        Task<ProfileChatDTO> GetChatProfileAsync(string aspNetUserId);
     }
 }

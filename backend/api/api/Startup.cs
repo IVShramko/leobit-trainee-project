@@ -24,7 +24,10 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using Dating.Logic.Infrastructure;
-using System.Threading.Tasks;
+using Dating.Logic.Facades.ChatFacade;
+using Dating.Logic.Repositories.ChatRepository;
+using Dating.Logic.Repositories.ChatMessageRepository;
+using Dating.Logic.Facades.MessageFacade;
 
 namespace Dating.WebAPI
 {
@@ -96,6 +99,8 @@ namespace Dating.WebAPI
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IUserAlbumRepository, UserAlbumRepository>();
             services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<IChatMessageRepository, ChatMessageRepository>();
 
             //facades
             services.AddScoped<IAccountFacade, AccountFacade>();
@@ -103,6 +108,8 @@ namespace Dating.WebAPI
             services.AddScoped<ISearchFacade, SearchFacade>();
             services.AddScoped<IAlbumFacade, AlbumFacade>();
             services.AddScoped<IPhotoFacade, PhotoFacade>();
+            services.AddScoped<IChatFacade, ChatFacade>();
+            services.AddScoped<IMessageFacade, MessageFacade>();
 
             //managers
             services.AddTransient<ITokenManager, TokenManager>();

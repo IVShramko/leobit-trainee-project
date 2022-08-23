@@ -35,7 +35,7 @@ const routes: Routes = [
     component: PhotoEditorComponent,
   },
   {
-    path: 'chat',
+    path: 'chat/:id',
     component: ChatComponent,
   },
   {
