@@ -1,4 +1,5 @@
 export enum ChatMehods {
     SendToUser = 'SendToUser',
-    GetMessageDeliveryStatus = 'GetMessageDeliveryStatus'
+    GetMessageDeliveryStatus = 'GetMessageDeliveryStatus',
+    ReceiveMessage = 'ReceiveMessage'
 }

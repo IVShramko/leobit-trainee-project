@@ -1,3 +1,4 @@
+import { CommunicationService } from './../../../services/communication-service/communication.service';
 import { MessageService } from './../../../services/message-service/message.service';
 import { IProfileChatDTO } from './../../../models/profile-chat-dto';
 import { IChatMessageDTO } from './../../../models/chat/chat-message-dto';
@@ -7,9 +8,8 @@ import { tap } from 'rxjs';
 import { IChatFullDTO } from './../../../models/chat/chat-full-dto';
 import { ChatService } from './../../../services/chat-service/chat.service';
 import { SignalRService } from './../../../services/signalr-service/signalr.service';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, Renderer2, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { IChatMessageCreateDTO } from 'src/app/models/chat/chat-message-create-dto';
-import { ChatMehods } from 'src/app/enums/chat-methods';
 
 @Component({
   selector: 'app-chat',
@@ -23,7 +23,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userService: UserService,
     private renderer: Renderer2,
-    private messageService: MessageService) {
+    private messageService: MessageService,
+    private communicationService: CommunicationService) {
   }
 
   @ViewChild('message_box') messageBox: ElementRef;
@@ -35,11 +36,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       (params: Params) => this.LoadChat(params.id)
     );
 
+    //to messaging service
     this.SignalRService.StartConnection();
 
-    this.SignalRService.connection.on("ReceiveMessage", (message: IChatMessageDTO) => {
-      this.DisplayMessage(message);
-    })
+    //unsubscribe manually?
+    this.communicationService.ReceiveMessage().subscribe(
+      (message) => this.DisplayMessage(message)
+    );
   }
 
   private LoadChat(id: string) {
@@ -64,10 +67,19 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.messageService.GetAllChatMessages(this.chat.id).pipe(
       tap((messages: IChatMessageDTO[]) => {
         messages.forEach((message) => {
-          this.DisplayMessage(message)
+          this.DisplayMessage(message);
         })
       })
-    ).subscribe();
+    ).subscribe(
+      () => this.ScrollToLastMessage()
+    );
+  }
+
+  private ScrollToLastMessage() {
+    const elemToFocus = (<HTMLElement>this.messageBox.nativeElement)
+      .lastElementChild;
+
+    elemToFocus?.scrollIntoView();
   }
 
   private CreateMessageElement(sender: string, text: string, isReceived: boolean) {
@@ -120,22 +132,20 @@ export class ChatComponent implements OnInit, OnDestroy {
     return newMessage;
   }
 
-  async Send(text: string) {
+  Send(text: string) {
     for (const receiver of this.chat.receivers) {
-
       const newMessage = this.CreateMessageForSending(text, receiver.aspNetUserId);
 
-      this.SignalRService.connection
-        .invoke(ChatMehods.SendToUser, newMessage);
-
-      this.SignalRService.connection.on(ChatMehods.GetMessageDeliveryStatus, (status: number) => {
-        if (status === 0) {
-          this.DisplayMessage(newMessage);
-          const dbMessage = this.CreateMessageForDb(text, receiver.id);
-          this.messageService.CreateMessage(dbMessage).subscribe();
-        }
-        this.SignalRService.connection.off(ChatMehods.GetMessageDeliveryStatus)
-      })
+      //unsubscribe manually?
+      this.communicationService.SendMessage(newMessage)
+        .pipe(
+          tap((isSent) => {
+            if (isSent) {
+              //where put sending to db
+              this.DisplayMessage(newMessage);
+              this.ScrollToLastMessage();
+            }
+          })).subscribe();
     }
   }
 

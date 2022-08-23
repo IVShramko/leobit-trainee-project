@@ -19,25 +19,12 @@ namespace Dating.Logic.Repositories.ChatRepository
 
         public async Task<ICollection<ChatShortDTO>> GetAllUserChatsAsync(string aspNetUserId)
         {
-            //ICollection<ChatShortDTO> chats = await _context.ChatMembers
-            //    .Where(m => m.AspNetUserId == aspNetUserId)
-            //    .Include(m => m.ChatMemberChats)
-            //    .ThenInclude(cmc => cmc.Chat)
-            //    .Select(cmc => cmc.ChatMemberChats
-            //        .Select(cmc => new ChatShortDTO()
-            //        {
-            //            Id = cmc.ChatId,
-            //            Name = cmc.Chat.Name
-            //        })
-            //        .SingleOrDefault()
-            //     ).ToListAsync();
-
             ICollection<ChatShortDTO> chats = await _context.ChatMemberChats
+                .Where(m => m.ChatMember.AspNetUserId == aspNetUserId)
                 .Include(cmc => cmc.ChatMember)
                 .Include(cmc => cmc.Chat)
-                .Where(m => m.ChatMember.AspNetUserId == aspNetUserId)
                 .Select(m => new ChatShortDTO()
-                { 
+                {
                     Id = m.ChatId,
                     Name = m.Chat.Name
                 })
