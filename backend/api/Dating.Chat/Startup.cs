@@ -1,4 +1,6 @@
+using Dating.Chat.Facades;
 using Dating.Chat.Hubs;
+using Dating.Chat.Repositories.StatusRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +73,18 @@ namespace Dating.Chat
 
             services.AddSignalR();
 
+            services.AddScoped<IStatusRepository, StatusRepository>();
+
+            services.AddScoped<IStatusFacade, StatusFacade>();
+
+            services.AddSingleton<IConnectionMultiplexer, ConnectionMultiplexer>(options =>
+            {
+                string connectionString = Configuration.GetConnectionString("RedisConnection");
+                var multiplexer = ConnectionMultiplexer.Connect(connectionString);
+
+                return multiplexer;
+            });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -95,6 +110,13 @@ namespace Dating.Chat
 
                 string chatEndpoint = Configuration["Hubs:ChatHub"];
                 endpoints.MapHub<ChatHub>(chatEndpoint);
+
+                string statusEndpoint = Configuration["Hubs:StatusHub"];
+                endpoints.MapHub<StatusHub>(statusEndpoint);
+
+                string notificationEndpoint = Configuration["Hubs:NotificationHub"];
+                endpoints.MapHub<NotificationHub>(notificationEndpoint);
+
             });
         }
     }

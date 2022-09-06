@@ -8,6 +8,17 @@
             </div>
             <div class="row p-2">
                 <div class="col">
+                    <div *ngFor="let receiver of receivers">
+                        <h6>{{receiver.userName}}</h6>
+                        <h6 *ngIf="(statusUpdate | async)?.userId === receiver.aspNetUserId">
+                            {{DisplayStatus((statusUpdate | async)?.status)}}
+                        </h6>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col">
                     <div #message_box id="message-box">
                     </div>
                 </div>

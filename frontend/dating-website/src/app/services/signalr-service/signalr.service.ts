@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { ACCESS_TOKEN } from './../../constants';
 import { TokenManager } from './../../managers/tokenManager';
 import { Injectable } from '@angular/core';
@@ -10,11 +11,20 @@ export class SignalRService {
 
   constructor(private tokenManager: TokenManager) { }
 
-  connection: Signalr.HubConnection;
+  private connections = new Map<string, Signalr.HubConnection>();
 
-  async StartConnection() {
-    this.connection = new Signalr.HubConnectionBuilder()
-      .withUrl('https://localhost:44321/chat', {
+  IsHubConnectionOpened(hubName: string) {
+    const isOpened = this.connections.has(hubName);
+    return isOpened;
+  }
+
+  GetHubConnection(hubName: string) {
+    return this.connections.get(hubName);
+  }
+
+  async StartHubConnection(hubName: string) {
+    const connection = new Signalr.HubConnectionBuilder()
+      .withUrl('https://localhost:44321/' + hubName, {
         skipNegotiation: true,
         transport: Signalr.HttpTransportType.WebSockets,
         accessTokenFactory: () =>
@@ -22,10 +32,16 @@ export class SignalRService {
       })
       .build();
 
-    await this.connection.start();
+    await connection.start();
+    this.connections.set(hubName, connection);
+
+    return connection;
   }
 
-  async StopConnection() {
-    await this.connection.stop();
+  StopHubConnection(hubName: string) {
+    const connection = this.connections.get(hubName);
+    connection?.stop().then(() => {
+      this.connections.delete(hubName);
+    });
   }
 }

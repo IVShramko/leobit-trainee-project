@@ -1,15 +1,17 @@
+import { StatusService } from './../../../services/status-service/status.service';
 import { CommunicationService } from './../../../services/communication-service/communication.service';
 import { MessageService } from './../../../services/message-service/message.service';
 import { IProfileChatDTO } from './../../../models/profile-chat-dto';
 import { IChatMessageDTO } from './../../../models/chat/chat-message-dto';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import { tap } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import { IChatFullDTO } from './../../../models/chat/chat-full-dto';
 import { ChatService } from './../../../services/chat-service/chat.service';
 import { SignalRService } from './../../../services/signalr-service/signalr.service';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { IChatMessageCreateDTO } from 'src/app/models/chat/chat-message-create-dto';
+import { Hubs } from 'src/app/enums/hubs';
 
 @Component({
   selector: 'app-chat',
@@ -18,31 +20,44 @@ import { IChatMessageCreateDTO } from 'src/app/models/chat/chat-message-create-d
 })
 export class ChatComponent implements OnInit, OnDestroy {
 
-  constructor(private SignalRService: SignalRService,
+  constructor(private signalRService: SignalRService,
     private chatService: ChatService,
     private route: ActivatedRoute,
     private userService: UserService,
     private renderer: Renderer2,
     private messageService: MessageService,
-    private communicationService: CommunicationService) {
+    private communicationService: CommunicationService,
+    private statusService: StatusService) {
   }
 
   @ViewChild('message_box') messageBox: ElementRef;
   chat: IChatFullDTO;
   receivers: IProfileChatDTO[] = [];
 
-  async ngOnInit() {
+  statusUpdate: Observable<{userId: string, status: boolean}>;
+  //add all subscriptions and unsubscribe in ondestroy
+  subscriptions: Subscription[];
+
+  ngOnInit() {
     this.route.params.subscribe(
       (params: Params) => this.LoadChat(params.id)
     );
 
-    //to messaging service
-    this.SignalRService.StartConnection();
+    this.statusUpdate = this.statusService.GetUserStatus();
+    
 
-    //unsubscribe manually?
+    //to messaging service
+
     this.communicationService.ReceiveMessage().subscribe(
       (message) => this.DisplayMessage(message)
     );
+
+    //unsubscribe manually?
+
+  }
+
+  DisplayStatus(status: boolean | undefined){
+    return status ? 'online' : 'offline'
   }
 
   private LoadChat(id: string) {
@@ -50,7 +65,8 @@ export class ChatComponent implements OnInit, OnDestroy {
       .pipe(
         tap((chat: IChatFullDTO) => this.chat = chat),
         tap(() => this.LoadChatMembersProfile()),
-        tap(() => this.LoadChatMessages())
+        tap(() => this.LoadChatMessages()),
+        tap(this.statusService.RegisterChatEnterance(id))
       ).subscribe();
   }
 
@@ -150,7 +166,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.SignalRService.StopConnection();
+    this.signalRService.StopHubConnection(Hubs.Chat);
   }
 
 }

@@ -5,5 +5,8 @@
         public const string ReceiveMessage = "ReceiveMessage";
 
         public const string GetMessageDeliveryStatus = "GetMessageDeliveryStatus";
+
+        public const string GetStatusUpdates = "GetStatusUpdates";
+
     }
 }

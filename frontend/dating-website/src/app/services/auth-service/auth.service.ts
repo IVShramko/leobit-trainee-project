@@ -1,3 +1,4 @@
+import { StatusService } from './../status-service/status.service';
 import { TokenManager } from '../../managers/tokenManager';
 import { ACCESS_TOKEN } from '../../constants';
 import { AUTH_PATH, HOME_PATH } from '../../paths';
@@ -15,7 +16,8 @@ import { of } from 'rxjs';
 export class AuthService {
 
   constructor(private server: HttpClient,
-    private tokenManager: TokenManager) { }
+    private tokenManager: TokenManager,
+    private statusService: StatusService) { }
 
   private readonly authPath: string = AUTH_PATH;
   private readonly homePath: string = HOME_PATH;
@@ -41,7 +43,10 @@ export class AuthService {
         catchError((error) => of(false)),
         tap((val: boolean) => {
           this._AuthenticationStatus$.next(val);
-        }));
+        }),
+        tap(
+          this.statusService.UpdateUserStatus(true)
+        ));
   }
 
   LogOut(): Observable<boolean> {
@@ -52,7 +57,8 @@ export class AuthService {
         tap((val) => {
           this._AuthenticationStatus$.next(!val);
           val ? this.tokenManager.DeleteToken(ACCESS_TOKEN) : val;
-        }));
+        }),
+        tap(this.statusService.UpdateUserStatus(false)));
   }
 
   Register(data: RegisterDTO): Observable<boolean> {
